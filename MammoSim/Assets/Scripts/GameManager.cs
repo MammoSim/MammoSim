@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     [SerializeField] ApiClient api;
+    [SerializeField] SimulationScreen simulationScreen;
 
     public FaseSimulacion Fase { get; private set; }
     public string DecisionInicial { get; private set; }
@@ -31,23 +32,60 @@ public class GameManager : MonoBehaviour
     void OnDestroy() { if (Instance == this) Instance = null; }
 
     // ---------- Entradas públicas ----------
-
-    // Lo llama el botón "Iniciar Simulación" (vía SimulationScreen.Abrir) o React con SendMessage.
-    public void IniciarCaso(string casoId)
+    // Recibe desde React el caso clínico seleccionado.
+public void RecibirCasoDesdeReact(string casoId)
+{
+    if (string.IsNullOrWhiteSpace(casoId))
     {
-        DecisionInicial = null;
-        _i = 0;
-        _enviando = false;
-        CambiarFase(FaseSimulacion.Cargando);
-
-        AsegurarSesion(() =>
-            StartCoroutine(api.Get<CasoDto>($"/casos/{casoId}", dto =>
-            {
-                CasoActual = CaseDtoAdapter.Adaptar(dto);
-                SimulationEvents.OnCasoSeleccionado?.Invoke(CasoActual);
-                MostrarActual();
-            }, Fallo)));
+        Debug.Log("[PRUEBA REACT] Valor recibido: [" + casoId + "]");
+        Debug.LogWarning("[MammoSim] React no envió un caso válido.");
+        return;
     }
+
+    if (simulationScreen == null)
+    {
+        Debug.LogError("[MammoSim] SimulationScreen no está asignado.");
+        return;
+    }
+
+    Debug.Log("[MammoSim] React seleccionó: " + casoId);
+
+    simulationScreen.Abrir(casoId);
+}
+    // Lo llama el botón "Iniciar Simulación" (vía SimulationScreen.Abrir) o React con SendMessage.
+
+public void IniciarCaso(string casoId)
+{
+    DecisionInicial = null;
+    _i = 0;
+    _enviando = false;
+    CambiarFase(FaseSimulacion.Cargando);
+
+    AsegurarSesion(() =>
+        StartCoroutine(api.Get<CasoDto>($"/casos/{casoId}", dto =>
+        {
+            CasoActual = CaseDtoAdapter.Adaptar(dto);
+
+            // Crear el historial del caso.
+            if (HistorialManager.Instance != null)
+            {
+                HistorialManager.Instance.IniciarAnalisis(
+                    CasoActual.Id,
+                    dto.titulo
+                );
+            }
+            else
+            {
+                Debug.LogWarning(
+                    "[MammoSim] No se encontró HistorialManager."
+                );
+            }
+
+            SimulationEvents.OnCasoSeleccionado?.Invoke(CasoActual);
+            MostrarActual();
+
+        }, Fallo)));
+}
 
     // La vista llama aquí con la opción elegida (letra A-D en técnicas; biopsiar/seguimiento/... en decisiones).
     public void EnviarOpcion(string opcion)
@@ -57,27 +95,57 @@ public class GameManager : MonoBehaviour
 
         switch (Fase)
         {
-            case FaseSimulacion.Pregunta:
-                StartCoroutine(api.Post<RespuestaReq, RespuestaRes>(
-                    Ruta("respuestas"),
-                    new RespuestaReq { numero_pregunta = Actual.Numero, opcion = opcion },
-                    r =>
-                    {
-                        _enviando = false;
-                        CambiarFase(FaseSimulacion.Retroalimentacion);
-                        SimulationEvents.OnRetroalimentacion?.Invoke(r);
-                    }, Fallo));
-                break;
+case FaseSimulacion.Pregunta:
+    StartCoroutine(api.Post<RespuestaReq, RespuestaRes>(
+        Ruta("respuestas"),
+        new RespuestaReq
+        {
+            numero_pregunta = Actual.Numero,
+            opcion = opcion
+        },
+        r =>
+        {
+            _enviando = false;
 
+            // Registrar la respuesta en el historial.
+            if (HistorialManager.Instance != null)
+            {
+                HistorialManager.Instance.RegistrarRespuesta(
+                    Actual.Numero,
+                    Actual.Enunciado,
+                    opcion,
+                    r.opcion_correcta,
+                    r.correcta,
+                    r.explicacion
+                );
+            }
+
+            CambiarFase(FaseSimulacion.Retroalimentacion);
+            SimulationEvents.OnRetroalimentacion?.Invoke(r);
+
+        }, Fallo));
+    break;
             case FaseSimulacion.DecisionInicial:
                 StartCoroutine(api.Post<DecisionReq, RecomendacionRes>(
                     Ruta("decision-inicial"),
                     new DecisionReq { decision = opcion },
                     r =>
                     {
-                        _enviando = false;
-                        DecisionInicial = opcion;
-                        SimulationEvents.OnDecisionRegistrada?.Invoke("inicial");
+                        
+_enviando = false;
+DecisionInicial = opcion;
+
+// Registrar la decisión inicial y la recomendación de IA.
+if (HistorialManager.Instance != null)
+{
+    HistorialManager.Instance.RegistrarDecisionInicial(
+        opcion,
+        r.conducta
+    );
+}
+
+SimulationEvents.OnDecisionRegistrada?.Invoke("inicial");
+
                         CambiarFase(FaseSimulacion.DecisionFinal);   // desde aquí la IA ya puede mostrarse
                         SimulationEvents.OnPreguntaMostrada?.Invoke(Actual, _i, CasoActual.Preguntas.Length);
                         SimulationEvents.OnRecomendacionRecibida?.Invoke(r);
@@ -85,21 +153,34 @@ public class GameManager : MonoBehaviour
                 break;
 
             case FaseSimulacion.DecisionFinal:
-                StartCoroutine(api.Post<DecisionReq, ResultadoCasoRes>(
-                    Ruta("decision-final"),
-                    new DecisionReq { decision = opcion },
-                    r =>
-                    {
-                        _enviando = false;
-                        SimulationEvents.OnDecisionRegistrada?.Invoke("final");
-                        CambiarFase(FaseSimulacion.Resultado);
-                        SimulationEvents.OnEvaluacionDisponible?.Invoke(r);
-                    }, Fallo));
-                break;
+    StartCoroutine(api.Post<DecisionReq, ResultadoCasoRes>(
+        Ruta("decision-final"),
+        new DecisionReq { decision = opcion },
+        r =>
+        {
+            _enviando = false;
 
-            default:
-                _enviando = false;
-                break;
+            // Registrar la decisión final y el resultado.
+           
+if (HistorialManager.Instance != null)
+{
+    // Registrar la decisión final y el resultado.
+    HistorialManager.Instance.RegistrarResultadoFinal(
+        opcion,
+        r
+    );
+
+    // Guardar el análisis completo en el archivo JSON.
+    HistorialManager.Instance.GuardarHistorial();
+}
+
+
+            SimulationEvents.OnDecisionRegistrada?.Invoke("final");
+            CambiarFase(FaseSimulacion.Resultado);
+            SimulationEvents.OnEvaluacionDisponible?.Invoke(r);
+
+        }, Fallo));
+    break;
         }
     }
 
