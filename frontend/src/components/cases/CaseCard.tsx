@@ -3,13 +3,14 @@ import "../../styles/CasesCatalog.css";
 
 type CaseCardProps = {
   clinicalCase: clinicalCase;
+  onSelect: (selectedCase: clinicalCase) => void;
 };
 
-export default function CaseCard({ clinicalCase }: CaseCardProps) {
-  const difficulty =
-    clinicalCase.difficulty === "baja"
+export default function CaseCard({ clinicalCase, onSelect }: CaseCardProps) {
+  const dificultad =
+    clinicalCase.dificultad === "baja"
       ? "#22C55E"
-      : clinicalCase.difficulty === "media"
+      : clinicalCase.dificultad === "media"
         ? "#F5B301"
         : "#EF4444";
 
@@ -18,7 +19,7 @@ export default function CaseCard({ clinicalCase }: CaseCardProps) {
     <article className="card">
       <h2>{clinicalCase.id}</h2>
       <img src={clinicalCase.imgUrl} alt="mamografía" width={100} />
-      <p style={{ color: difficulty }}>Dificultad: {clinicalCase.difficulty}</p>
+      <p style={{ color: dificultad }}>Dificultad: {clinicalCase.dificultad}</p>
       <h3>{clinicalCase.title} </h3>
       <p>
         Edad estimada del paciente: <br /> {clinicalCase.pacientAge}
@@ -26,6 +27,7 @@ export default function CaseCard({ clinicalCase }: CaseCardProps) {
       <p>
         Tipo de estudio: <br /> {clinicalCase.imagingStudy}
       </p>
+      <button type="button" className="detail_button" onClick={() => onSelect(clinicalCase)}>Ver detalle</button>
     </article>
   );
 }
