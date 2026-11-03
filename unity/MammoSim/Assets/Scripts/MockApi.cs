@@ -1,48 +1,316 @@
+
+using System;
 using UnityEngine;
 
-// Respuestas de ejemplo (caso_001 recortado a 2 preguntas técnicas + la diagnóstica) para probar la UI sin backend.
-// Se usa cuando ApiClient tiene marcada la casilla "Usar Datos De Ejemplo". Se puede borrar al conectar la API real.
+// API simulada para probar MammoSim sin backend.
+// Lee los casos desde Assets/Resources/Casos/casos_mammosim.json.
 public static class MockApi
 {
-    // Se escribe con comilla simple y se convierte a doble al final, para no llenar el código de escapes.
-    const string Caso =
-        "{'id_caso':'caso_001','titulo':'Mamografía de mama izquierda','descripcion_breve':'Mujer de 62 años (edad simulada)'," +
-        "'lado':'izquierda','vistas':['CC','MLO'],'dificultad':'medio','edad_simulada':62,'modelo_3d_ref':'mama_caso_001','preguntas':[" +
-        "{'numero':1,'tipo':'tecnica','enunciado':'En la lectura sistemática del estudio, ¿qué lateralidad corresponde a la anomalía anotada?'," +
-        "'opciones':[{'id':'A','texto':'Derecha'},{'id':'B','texto':'Izquierda'},{'id':'C','texto':'Ambas'},{'id':'D','texto':'No está especificado'}]}," +
-        "{'numero':2,'tipo':'tecnica','enunciado':'Según la taxonomía de hallazgos mamográficos del dataset, ¿cuál es la clase de anomalía?'," +
-        "'opciones':[{'id':'A','texto':'Calcificaciones'},{'id':'B','texto':'Asimetría aislada'},{'id':'C','texto':'Masa'},{'id':'D','texto':'Distorsión sin masa identificada'}]}," +
-        "{'numero':8,'tipo':'diagnostica','enunciado':'Con lo observado, ¿cuál es la conducta clínica más adecuada para esta paciente?'," +
-        "'opciones':[{'id':'estudio_adicional','texto':'Estudios de imagen adicionales (proyecciones focalizadas, ecografía)'}," +
-        "{'id':'biopsiar','texto':'Biopsia guiada por imagen'},{'id':'seguimiento','texto':'Seguimiento por imagen a corto plazo (6 meses)'}," +
-        "{'id':'ignorar','texto':'Control de rutina (continuar el tamizaje)'}]}]}";
+    [Serializable]
+    public class ListaCasos
+    {
+        public CasoCompleto[] casos;
+    }
+
+    // Clases internas: contienen las respuestas para evaluar localmente.
+    // No modifican los DTO de Models.cs.
+    [Serializable]
+    public class CasoCompleto
+    {
+        public string id_caso;
+        public string titulo;
+        public string descripcion_breve;
+        public string lado;
+        public string[] vistas;
+        public string dificultad;
+        public int edad_simulada;
+        public string modelo_3d_ref;
+        public PreguntaCompleta[] preguntas;
+
+        public string respuesta_correcta;
+        public string opcion_ia_incorrecta;
+        public string recomendacion_ia_correcta;
+        public string recomendacion_ia_incorrecta;
+        public string retroalimentacion;
+        public string hallazgos;
+    }
+
+    [Serializable]
+    public class PreguntaCompleta
+    {
+        public int numero;
+        public string tipo;
+        public string enunciado;
+        public OpcionDto[] opciones;
+
+        public string respuesta_correcta;
+        public string explicacion;
+        public bool con_ia;
+    }
+
+    // Guardamos las decisiones de la simulación actual.
+    static CasoCompleto casoActual;
+    static string decisionInicial;
+    static string recomendacionIA;
+    static string decisionFinal;
+
+    static ListaCasos CargarCasos()
+    {
+        TextAsset archivo =
+            Resources.Load<TextAsset>("Casos/casos_mammosim");
+
+        if (archivo == null)
+        {
+            Debug.LogError(
+                "MammoSim: No se encontró casos_mammosim.json."
+            );
+            return null;
+        }
+
+        ListaCasos datos =
+            JsonUtility.FromJson<ListaCasos>(archivo.text);
+
+        if (datos == null || datos.casos == null)
+        {
+            Debug.LogError(
+                "MammoSim: No se pudieron leer los casos."
+            );
+            return null;
+        }
+
+        return datos;
+    }
+
+    // Devuelve únicamente los datos que necesita la interfaz.
+    // Las respuestas correctas no se incluyen en el caso enviado.
+    static CasoDto PrepararCaso(CasoCompleto original)
+    {
+        CasoDto caso = new CasoDto();
+
+        caso.id_caso = original.id_caso;
+        caso.titulo = original.titulo;
+        caso.descripcion_breve = original.descripcion_breve;
+        caso.lado = original.lado;
+        caso.vistas = original.vistas;
+        caso.dificultad = original.dificultad;
+        caso.edad_simulada = original.edad_simulada;
+        caso.modelo_3d_ref = original.modelo_3d_ref;
+
+        caso.preguntas = new PreguntaDto[original.preguntas.Length];
+
+        for (int i = 0; i < original.preguntas.Length; i++)
+        {
+            PreguntaCompleta p = original.preguntas[i];
+
+            caso.preguntas[i] = new PreguntaDto
+            {
+                numero = p.numero,
+                tipo = p.tipo,
+                enunciado = p.enunciado,
+                opciones = p.opciones
+            };
+        }
+
+        return caso;
+    }
+
+    static string TextoOpcion(PreguntaCompleta pregunta, string id)
+    {
+        if (pregunta.opciones == null)
+            return id;
+
+        foreach (OpcionDto opcion in pregunta.opciones)
+        {
+            if (opcion.id == id)
+                return opcion.texto;
+        }
+
+        return id;
+    }
+
+    static string TextoConducta(string id)
+    {
+        if (casoActual == null || casoActual.preguntas == null)
+            return id;
+
+        foreach (PreguntaCompleta pregunta in casoActual.preguntas)
+        {
+            if (pregunta.tipo == "diagnostica")
+                return TextoOpcion(pregunta, id);
+        }
+
+        return id;
+    }
 
     public static string Responder(string path, string body)
     {
-        string j = null;
-
+        // Crear sesión de prueba.
         if (path == "/sesiones")
-            j = "{'sesion_id':'ses_prueba_001','casos_asignados':['caso_001']}";
-        else if (path.StartsWith("/casos/"))
-            j = Caso;
-        else if (path.EndsWith("/respuestas"))
         {
-            var r = JsonUtility.FromJson<RespuestaReq>(body);
-            string correctaId = r.numero_pregunta == 1 ? "B" : "C";
-            string correctaTxt = r.numero_pregunta == 1 ? "Izquierda" : "Masa";
-            string expl = r.numero_pregunta == 1
-                ? "El lado se confirma siempre antes de interpretar el estudio."
-                : "Una masa es una lesión con volumen, visible en más de una proyección.";
-            string ok = r.opcion == correctaId ? "true" : "false";
-            j = "{'correcta':" + ok + ",'opcion_correcta':'" + correctaId + "','texto_correcto':'" + correctaTxt + "','explicacion':'" + expl + "'}";
+            return JsonUtility.ToJson(new SesionRes
+            {
+                sesion_id = "ses_prueba_001",
+                casos_asignados = new string[] { "caso_001" }
+            });
         }
-        else if (path.EndsWith("/decision-inicial"))
-            j = "{'conducta':'Seguimiento por imagen a corto plazo (6 meses)','texto':'La masa podría corresponder a un cambio benigno; se recomienda control por imagen en 6 meses.'}";
-        else if (path.EndsWith("/decision-final"))
-            j = "{'acierto_inicial':true,'acierto_final':true,'siguio_ia':false," +
-                "'hallazgos':'Masa irregular de bordes espiculados en la mama izquierda (texto de ejemplo).'," +
-                "'retroalimentacion':'La masa presenta forma irregular y bordes espiculados, características muy sospechosas de malignidad; la conducta adecuada es biopsia guiada por imagen.'}";
 
-        return j?.Replace('\'', '"');
+        // Cargar el caso solicitado.
+        if (path.StartsWith("/casos/"))
+        {
+            ListaCasos datos = CargarCasos();
+
+            if (datos == null)
+                return null;
+
+            string idCaso = path.Substring("/casos/".Length);
+            idCaso = idCaso.Split('?')[0].TrimEnd('/');
+
+            foreach (CasoCompleto caso in datos.casos)
+            {
+                if (caso.id_caso == idCaso)
+                {
+                    casoActual = caso;
+
+                    // Reiniciamos las decisiones al iniciar otro caso.
+                    decisionInicial = null;
+                    recomendacionIA = null;
+                    decisionFinal = null;
+
+                    Debug.Log(
+                        "MammoSim: Caso cargado: " + idCaso +
+                        " | Preguntas: " + caso.preguntas.Length
+                    );
+
+                    return JsonUtility.ToJson(PrepararCaso(caso));
+                }
+            }
+
+            Debug.LogWarning(
+                "MammoSim: No se encontró el caso " + idCaso
+            );
+            return null;
+        }
+
+        if (casoActual == null)
+        {
+            Debug.LogError(
+                "MammoSim: Debes cargar un caso antes de responder."
+            );
+            return null;
+        }
+
+        // Evaluar las preguntas técnicas usando el JSON real.
+        if (path.EndsWith("/respuestas"))
+        {
+            RespuestaReq respuesta =
+                JsonUtility.FromJson<RespuestaReq>(body);
+
+            foreach (PreguntaCompleta pregunta in casoActual.preguntas)
+            {
+                if (pregunta.numero == respuesta.numero_pregunta)
+                {
+                    RespuestaRes resultado = new RespuestaRes
+                    {
+                        correcta =
+                            respuesta.opcion == pregunta.respuesta_correcta,
+
+                        opcion_correcta = pregunta.respuesta_correcta,
+
+                        texto_correcto = TextoOpcion(
+                            pregunta,
+                            pregunta.respuesta_correcta
+                        ),
+
+                        explicacion = pregunta.explicacion
+                    };
+
+                    return JsonUtility.ToJson(resultado);
+                }
+            }
+
+            Debug.LogWarning(
+                "MammoSim: Pregunta no encontrada: " +
+                respuesta.numero_pregunta
+            );
+
+            return null;
+        }
+
+        // Primera decisión y recomendación de la IA.
+        if (path.EndsWith("/decision-inicial"))
+        {
+            DecisionReq solicitud =
+                JsonUtility.FromJson<DecisionReq>(body);
+
+            decisionInicial = solicitud.decision;
+            decisionFinal = null;
+
+            // Para las pruebas usamos la recomendación
+            // incorrecta intencional incluida en cada caso.
+            recomendacionIA = casoActual.opcion_ia_incorrecta;
+
+            RecomendacionRes recomendacion = new RecomendacionRes
+            {
+                conducta = TextoConducta(recomendacionIA),
+                texto = casoActual.recomendacion_ia_incorrecta
+            };
+
+            Debug.Log(
+                "MammoSim: Decisión inicial: " + decisionInicial
+            );
+
+            Debug.Log(
+                "MammoSim: Recomendación IA: " + recomendacionIA
+            );
+
+            return JsonUtility.ToJson(recomendacion);
+        }
+
+        // Decisión final y evaluación.
+        if (path.EndsWith("/decision-final"))
+        {
+            DecisionReq solicitud =
+                JsonUtility.FromJson<DecisionReq>(body);
+
+            decisionFinal = solicitud.decision;
+
+            bool aciertoInicial =
+                decisionInicial == casoActual.respuesta_correcta;
+
+            bool aciertoFinal =
+                decisionFinal == casoActual.respuesta_correcta;
+
+            bool siguioIA =
+                decisionFinal == recomendacionIA;
+
+            ResultadoCasoRes resultado = new ResultadoCasoRes
+            {
+                acierto_inicial = aciertoInicial,
+                acierto_final = aciertoFinal,
+                siguio_ia = siguioIA,
+                hallazgos = casoActual.hallazgos,
+                retroalimentacion = casoActual.retroalimentacion
+            };
+
+            Debug.Log(
+                "MammoSim: Decisión inicial: " + decisionInicial +
+                " | Recomendación IA: " + recomendacionIA +
+                " | Decisión final: " + decisionFinal
+            );
+
+            Debug.Log(
+                "MammoSim: Acierto inicial: " + aciertoInicial +
+                " | Acierto final: " + aciertoFinal +
+                " | Siguió IA: " + siguioIA
+            );
+
+            return JsonUtility.ToJson(resultado);
+        }
+
+        Debug.LogWarning(
+            "MammoSim: Ruta no reconocida: " + path
+        );
+
+        return null;
     }
 }

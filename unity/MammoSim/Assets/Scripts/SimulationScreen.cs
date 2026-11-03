@@ -18,7 +18,19 @@ public class SimulationScreen : MonoBehaviour
         gameObject.SetActive(true);                 // aquí se suscriben las vistas (OnEnable)
         GameManager.Instance.IniciarCaso(casoId);
     }
+    // Permite iniciar un caso desde React mediante Unity WebGL.
+    public void AbrirDesdeReact(string casoId)
+{
+    if (string.IsNullOrWhiteSpace(casoId))
+    {
+        Debug.LogWarning("[MammoSim] React no envió un caso válido.");
+        return;
+    }
 
+    Debug.Log("[MammoSim] Caso recibido desde React: " + casoId);
+
+    Abrir(casoId);
+}
     void OnEnable() => SimulationEvents.OnSimulacionFinalizada += Cerrar;
     void OnDisable() => SimulationEvents.OnSimulacionFinalizada -= Cerrar;
 
