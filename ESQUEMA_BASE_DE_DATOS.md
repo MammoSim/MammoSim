@@ -97,7 +97,25 @@ id_sesion, id_usuario, id_caso, decision, acierto, fecha. Se crean una sola vez.
 Los mismos campos más **opcion_ia** (lo que mostró la IA), **ia_correcta** (si era la correcta) y **siguio_ia** (si el estudiante eligió lo que dijo la IA). Se crean una sola vez.
 
 ### resultados  (ID: igual al de la sesión)
-id_usuario, id_curso, total_casos, aciertos_iniciales, aciertos_finales, preguntas_acertadas, veces_siguio_ia, siguio_ia_correcta, siguio_ia_incorrecta, **puntuacion** (number, sobre 10; fórmula por definir con el backend), fecha_calculo.
+id_usuario, id_curso, total_casos, aciertos_iniciales, aciertos_finales, preguntas_acertadas, veces_siguio_ia, siguio_ia_correcta, siguio_ia_incorrecta, **puntuacion** (number, sobre 10; ver «Cómo se calcula la puntuación»), fecha_calculo.
+
+## Cómo se calcula la puntuación
+Cada caso vale 8 puntos de 1,25 cada uno (8 × 1,25 = 10): 7 preguntas técnicas y la decisión. La decisión vale 1,25 repartido en dos mitades: inicial 0,625 y final 0,625.
+
+| Decisión inicial | Decisión final | Puntos de la decisión |
+|---|---|---|
+| Buena | Buena | 1,25 |
+| Buena | Mala (la cambió por la IA) | 0,625 |
+| Mala | Buena (la IA la corrigió) | 0,625 |
+| Mala | Mala | 0 |
+
+La nota de cada caso se calcula al vuelo con sus `respuestas` y sus decisiones (no se guarda) y se muestra al terminar el caso. La de la sesión es el promedio de los casos y se guarda en `resultados.puntuacion`:
+
+```
+puntuacion = (preguntas_acertadas + 0.5 × aciertos_iniciales + 0.5 × aciertos_finales) / (8 × total_casos) × 10
+```
+
+Ejemplo: 3 casos, 18 preguntas acertadas, 2 decisiones iniciales y 2 finales correctas → (18 + 1 + 1) / 24 × 10 = 8,33. Siempre se guardan las dos decisiones (inicial y final), aunque el estudiante no cambie de opinión.
 
 ## Valores permitidos de decision
 biopsiar, seguimiento, ignorar, estudio_adicional.
