@@ -2,7 +2,8 @@ export type clinicalCase = {
     id: string;
     title: string; 
     imgUrl:string;
-    difficulty: "baja" | "media" | "alta";
+    dificultad: "baja" | "media" | "alta";
     pacientAge: number;
+    descripcion_breve: string;
     imagingStudy: string;
 };

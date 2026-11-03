@@ -6,8 +6,10 @@ import { CircleChevronLeft, CircleChevronRight } from "lucide-react";
 
 type CaseCatalogProps = {
   cases: clinicalCase[];
+  onSelectCase: (selectedCase: clinicalCase) => void;
 };
-export default function CaseCatalog({ cases }: CaseCatalogProps) {
+
+export default function CaseCatalog({ cases, onSelectCase }: CaseCatalogProps) {
   const [currentCase, setCurrentCase] = useState(0);
   const totalCases = Math.ceil(cases.length / 3);
 
@@ -25,7 +27,11 @@ export default function CaseCatalog({ cases }: CaseCatalogProps) {
     <div className="catalog_container">
       <div className="cases_catalog">
         {visibleCases.map((clinicalCase) => (
-          <CaseCard key={clinicalCase.id} clinicalCase={clinicalCase} />
+          <CaseCard
+            key={clinicalCase.id}
+            clinicalCase={clinicalCase}
+            onSelect={onSelectCase}
+          />
         ))}
       </div>
       <div className="catalog_buttons">
@@ -36,7 +42,7 @@ export default function CaseCatalog({ cases }: CaseCatalogProps) {
           onClick={previousPage}
           disabled={totalCases <= 1}
         >
-          <CircleChevronLeft aria-hidden="true"/>
+          <CircleChevronLeft aria-hidden="true" />
         </button>
         <div className="carousel">
           {Array.from({ length: totalCases }, (_, index) => (
@@ -56,7 +62,7 @@ export default function CaseCatalog({ cases }: CaseCatalogProps) {
           onClick={nextPage}
           disabled={totalCases <= 1}
         >
-          <CircleChevronRight aria-hidden="true"/>
+          <CircleChevronRight aria-hidden="true" />
         </button>
       </div>
     </div>

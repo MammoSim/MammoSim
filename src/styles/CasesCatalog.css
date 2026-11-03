@@ -1,13 +1,16 @@
+/*Cases Page*/
 .content {
     padding: 24px;
     min-width: 0;
     color: #000000;
     justify-items: center;
 }
+
+/*Cases Catalog*/
 .catalog_container {
     width: 100%;
     max-width: 750px;
-    margin-inline: auto;
+    min-width: 0;
 }
 
 .cases_catalog {
@@ -19,20 +22,38 @@
     font-size: small;
 }
 
+/*Cases Card*/
 .card {
     padding: 15px;
     border: 1px solid #ffffff;
     border-radius: 6px;
     scroll-snap-align: center;
     background-color: #0B1230;
-    width: 200px;
-    height: 350px;
+    width: auto;
+    height: auto;
 }
+
+.card:hover {
+    transform: translateY(-8px);
+}
+
 .card img {
     display: flex;
     justify-self: center;
 }
 
+.detail_button{
+    display: flex;
+    justify-self: center;
+    color: #ffffff;
+    background-color: #e6397e;
+    border: 1px solid #FFC1DA;
+    border-radius: 12px;
+    padding: 8px 15px;
+    cursor: pointer;
+}
+
+/*Case Catalog*/
 .carousel {
     display: flex;
     align-items: center;
