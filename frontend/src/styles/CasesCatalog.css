@@ -1,9 +1,9 @@
 /*Cases Page*/
 .content {
-    padding: 24px;
+    flex: 1;
+    padding: 0;
     min-width: 0;
     color: #000000;
-    justify-items: center;
 }
 
 /*Cases Catalog*/
@@ -106,4 +106,17 @@
 .buttons_left_right:focus-visible{
     outline: 2px solid #0B1230;
     outline-offset: 4px;
+}
+
+/*Ajuste de pantalla*/
+@media (max-width: 900px) {
+  .cases_catalog {
+    display: block;
+    grid-template-columns: 1fr;
+  }
+
+  .card img {
+    max-width: 100%;
+    height: auto;
+  }
 }
