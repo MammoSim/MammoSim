@@ -5,20 +5,25 @@ import "../styles/CasesCatalog.css";
 import "../styles/CaseDetails.css";
 import CaseDetails from "../components/cases/CaseDetails";
 import type { clinicalCase } from "../types/ClinicalCase";
+import Sidebar from "../components/layout/Sidebar";
+import "../styles/Sidebar.css";
 
 export default function CasesPage() {
   const cases = mockCases;
   const [selectedCase, setSelectedCase] = useState<clinicalCase | null>(null);
   return (
-    <main className="content">
-      {cases.length === 0 ? (
-        <p>No hay casos disponibles en el momento</p>
-      ) : (
-        <div className="cases_container">
-          <CaseCatalog cases={mockCases} onSelectCase={setSelectedCase} />
-          {selectedCase && <CaseDetails clinicalCase={selectedCase} />}{" "}
-        </div>
-      )}
-    </main>
+    <div className="sidebar_container">
+      <Sidebar />
+      <main className="content">
+        {cases.length === 0 ? (
+          <p>No hay casos disponibles en el momento</p>
+        ) : (
+          <div className="cases_container">
+            <CaseCatalog cases={mockCases} onSelectCase={setSelectedCase} />
+            {selectedCase && <CaseDetails clinicalCase={selectedCase} />}{" "}
+          </div>
+        )}
+      </main>
+    </div>
   );
 }
