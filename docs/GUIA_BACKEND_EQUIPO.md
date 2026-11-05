@@ -10,7 +10,8 @@ Resumen de lo que se ha hecho en la base de datos y el backend, cómo trabajar s
 | Esqueleto de FastAPI con los 21 endpoints declarados, autenticación por token, roles, lógica del Agente Tutor y fórmula de puntuación | Hecho, mergeado | PR #17, carpeta `backend/` |
 | `GET /usuarios/me` y `GET /casos` | Funcionando | `backend/app/routers/` |
 | `POST /auth/registro` | Programado, en revisión | PR #21, Issue #20 |
-| Los otros 17 endpoints | Pendientes (responden 501 con TODOs) | `backend/app/routers/` |
+| `POST /cursos` y `GET /cursos/mio` | Programados y probados, pendientes de merge | Issue #22, rama `feature/endpoint-cursos` |
+| Los otros 16 endpoints | Pendientes (responden 501 con TODOs) | `backend/app/routers/` |
 
 ## 2. Cómo se conecta todo
 
