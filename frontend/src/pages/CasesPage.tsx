@@ -7,6 +7,7 @@ import CaseDetails from "../components/cases/CaseDetails";
 import type { clinicalCase } from "../types/ClinicalCase";
 import Sidebar from "../components/layout/Sidebar";
 import "../styles/Sidebar.css";
+import PageHeader from "../components/layout/PageHeader";
 
 export default function CasesPage() {
   const cases = mockCases;
@@ -15,6 +16,7 @@ export default function CasesPage() {
     <div className="sidebar_container">
       <Sidebar />
       <main className="content">
+      <PageHeader/>
         {cases.length === 0 ? (
           <p>No hay casos disponibles en el momento</p>
         ) : (

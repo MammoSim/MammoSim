@@ -1,13 +1,16 @@
 .sidebar_container{
     display: flex;
-    padding: 24px;
-    gap: 24px;
+    padding: 0;
+    gap: 0;
     min-height: 100vh;
     align-items: flex-start;
 }
 
 .sidebar {
+    position: sticky;
+    top: 0;
     flex: 0 0 14rem;
+    height: 100vh;
     min-height: calc(100vh - 48px);
     background-color: #0B1230;
     display: flex;
