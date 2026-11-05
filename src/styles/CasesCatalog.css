@@ -4,6 +4,7 @@
     padding: 0;
     min-width: 0;
     color: #000000;
+    margin: 10px;
 }
 
 /*Cases Catalog*/
@@ -118,5 +119,11 @@
   .card img {
     max-width: 100%;
     height: auto;
+  }
+}
+
+@media (max-width: 1200px) {
+  .cases_container {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
