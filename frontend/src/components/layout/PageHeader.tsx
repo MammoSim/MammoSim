@@ -12,7 +12,7 @@ export default function PageHeader() {
         </p>
       </div>
       <div className="profile_container">
-        <UserProfileSummary name="Zaira Ramírez Mejía" carrera="Ingeniería de Sistemas" avatarColor="#FFC1DA" />
+        <UserProfileSummary name="Zaira Ramírez Mejía " carrera="Ingeniería de Sistemas" avatarColor="#FFC1DA" />
       </div>
     </header>
   );
