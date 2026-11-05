@@ -17,15 +17,16 @@
     padding: 20px;
     color: #fFFFFF;
     align-items: center;
+    background-color: #0B1230;
 }
 
 .auth_welcome h1{
     color: #E6397E;
     justify-self: center;
+    
 }
 
 .auth_page_panel {
-    background-color: #fFFFFF;
     padding: 5px;
     display: grid;
     place-items: center;
