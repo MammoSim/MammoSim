@@ -16,6 +16,9 @@ export default function CaseDetails({ clinicalCase }: CaseDetailsProps) {
           {clinicalCase.descripcion_breve}
         </p>
         <p>Objetivos de aprendizaje</p>
+        <button type="button" className="start_sim" disabled>
+          <span>Iniciar Simulación</span>
+        </button>
     </aside>
   );
 }
