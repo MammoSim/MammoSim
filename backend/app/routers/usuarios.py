@@ -38,6 +38,10 @@ def registrar(
     es_docente = docente.exists and docente.to_dict().get("activo") is True
     rol = "docente" if es_docente else "estudiante"
 
+    # Los estudiantes deben indicar su semestre (los docentes no lo tienen).
+    if rol == "estudiante" and datos.semestre is None:
+        raise HTTPException(422, "Los estudiantes deben indicar su semestre")
+
     aviso = None
     if rol == "estudiante" and correo.endswith("@usc.edu.co"):
         aviso = (
