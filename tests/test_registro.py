@@ -94,3 +94,34 @@ def test_token_sin_correo_da_422(registro):
     c, db, token = registro
     token.pop("email")
     assert c.post("/auth/registro", json=CUERPO).status_code == 422
+
+
+@pytest.mark.parametrize("campo,valor", [
+    ("nombre_completo", "   "),
+    ("carrera", ""),
+    ("carrera", "   "),
+    ("semestre", 0),
+    ("semestre", 15),
+])
+def test_datos_invalidos_dan_422_y_no_guardan(registro, campo, valor):
+    c, db, _ = registro
+    r = c.post("/auth/registro", json={**CUERPO, campo: valor})
+    assert r.status_code == 422
+    assert guardado(db, "nuevo_1") is None
+
+
+def test_estudiante_sin_semestre_da_422_y_no_guarda(registro):
+    c, db, _ = registro
+    r = c.post("/auth/registro", json={**CUERPO, "semestre": None})
+    assert r.status_code == 422
+    assert "semestre" in r.json()["detail"]
+    assert guardado(db, "nuevo_1") is None
+
+
+def test_docente_puede_registrarse_sin_semestre(registro):
+    c, db, token = registro
+    token["email"] = "profe@usc.edu.co"
+    r = c.post("/auth/registro", json={**CUERPO, "semestre": None})
+    assert r.status_code == 201
+    assert r.json()["usuario"]["rol"] == "docente"
+    assert r.json()["usuario"]["semestre"] is None
