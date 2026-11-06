@@ -56,6 +56,16 @@ def test_casos_devuelve_los_7_ordenados_y_sin_repetir(cliente):
     assert ids == [f"caso_00{n}" for n in range(1, 8)]
 
 
+def test_casos_usuario_sin_registrar_responde_403(cliente):
+    c, _ = cliente
+    app.dependency_overrides[get_usuario_actual] = lambda: UsuarioActual(
+        uid="uid_sin_registro", correo="nadie@correo.com", rol=None
+    )
+    r = c.get("/casos")
+    assert r.status_code == 403
+    assert r.json()["detail"] == "Primero debes registrarte"
+
+
 def test_casos_un_campo_nuevo_en_firestore_no_se_filtra(casos):
     caso = {**casos["caso_001"], "campo_nuevo_secreto": "x"}
     assert "campo_nuevo_secreto" not in resumen_caso(caso)
