@@ -1,5 +1,5 @@
 export type clinicalCase = {
-    id: string;
+    clinical_id: string;
     title: string; 
     imgUrl:string;
     dificultad: "baja" | "media" | "alta";
