@@ -100,3 +100,37 @@
     font-size: 14px;
     line-height: 1.4;
 }
+
+
+/*Ajustar sidebar en pantallas*/
+@media (max-width: 500px) {
+  .sidebar_container {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0;
+    gap: 0;
+  }
+
+  .sidebar {
+    position: static;
+    flex: none;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+  }
+
+  .sidebar ul {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .sidebar li a {
+    margin-bottom: 0;
+  }
+
+  .sidebar_footer {
+    margin-top: 0;
+  }
+}

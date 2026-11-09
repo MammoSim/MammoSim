@@ -6,6 +6,6 @@ export default function LogoutButton() {
     <button type="button" className="sidebar_logout">
       <LogOut className="icons" aria-hidden="true"/>
       <span>Cerrar Sesión</span>
-    </button>
+    </button> 
   );
 }
