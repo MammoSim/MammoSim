@@ -7,3 +7,8 @@ export type clinicalCase = {
     descripcion_breve: string;
     imagingStudy: string;
 };
+
+export type birads = {
+    id: string;
+    descripcion: string;
+}
