@@ -1,0 +1,66 @@
+.account_info_container{
+    flex: 1;
+    min-width: 0;
+    width: 100%;
+    padding: clamp(16px, 3vw, 32px);
+    color: #ffffff;
+}
+
+.account_info_container h1 {
+    margin: 0 0 20px;
+    text-align: center;
+}
+
+.account_setting_form{
+    display: grid;
+    width: 100%;
+    max-width: 560px;
+    margin-inline: auto;
+    gap: 10px;
+    padding: 20px;
+    border-radius: 16px;
+    background: linear-gradient(125deg, #0B1230 10%, #223896 92%);
+}
+
+.account_setting_form h2 {
+    margin: 0 0 20px;
+    text-align: center;
+}
+
+.account_setting_form label{
+    font-weight: bolder;
+    margin-top: 10px;
+}
+
+.account_setting_form input {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    border-radius: 12px;
+    padding: 10px 12px;
+    background-color: #D6DCE3;
+}
+
+.button_container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.submit_form_setting {
+    display: flex;
+    padding: 12px;
+    justify-content: center;
+    min-width: 0;
+    border: none;
+    border-radius: 16px;
+    color: #ffffff;
+    font-weight: bold;
+    background: linear-gradient(125deg, #E8177B 10%, #820D45 96%);
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.submit_form_setting:hover {
+  filter: brightness(0.5);
+}
