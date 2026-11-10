@@ -1,42 +1,64 @@
 # Flujo de trabajo
 
-Los cambios del proyecto deben realizarse mediante ramas de trabajo y Pull Request
+MammoSim trabaja con un conjunto fijo de ramas. El equipo realiza cada cambio en la rama del componente correspondiente y lo integra mediante un pull request (PR). Las versiones aprobadas pasan de `develop` a `main` mediante un PR para despliegue.
 
-### Ramas
+## Ramas
 
-Seguirán una convencións según el tipo de trabajo 
+| Rama | Función |
+| --- | --- |
+| `main` | Rama protegida que recibe las versiones aprobadas para despliegue. |
+| `develop` | Rama de integración donde se prueban juntos los cambios de los componentes. |
+| `frontend` | Interfaz web desarrollada en React. |
+| `backend` | API, base de datos, agente tutor y gestión de casos clínicos. |
+| `simulacion` | Simulador en Unity y visualización de los modelos 3D. |
+| `documentacion` | Requisitos, guías y documentación técnica. |
+| `test` | Pruebas funcionales, de integración y de regresión. |
 
-- `feature/` - Nuevas funcionalidades
-- `fix/` - Correcciones
-- `docs/` - Documentación
-- `test/` - Pruebas
-- `experiment/` - Experimentos con la IA
+## Pull requests
 
-### Pull Request
+1. Sube el cambio a la rama correspondiente y abre un PR hacia `develop`.
+2. Revisa **Files changed** antes de solicitar revisión. El PR incluye todos los cambios de la rama de origen que aún están pendientes de integrar en `develop`.
+3. Integra el PR después de la revisión y valida los cambios en `develop`.
+4. Cuando la versión esté lista para despliegue, abre un PR de `develop` a `main` y cumple las reglas de la rama protegida.
 
-Los cambios destinados a `main` deberán realizarse mediante Pull Request.
+En los PR de trabajo, usa el prefijo que corresponda al cambio principal.
 
-Antes de realizar el merge validar que: 
-- El cambio corresponda a una tarea o Issue
-- Las pruebas correspondientes fueron ejecutadas
-- La documentación necesaria fue actualizada
-- El Pull Request fue revisado
+| Prefijo | Ejemplo de título |
+| --- | --- |
+| `feature/` | `feature/ Mostrar el modelo 3D del caso` |
+| `fix/` | `fix/ Corregir la recomendación del tutor` |
+| `docs/` | `docs/ Actualizar los requisitos del simulador` |
+| `test/` | `test/ Verificar el registro de la decisión inicial` |
+| `experiment/` | `experiment/ Evaluar una variante del agente tutor` |
 
-### Commits
+Antes de fusionar un PR, verifica que:
 
-Los mensajes de los commits deben describir claramente el cambio realizado y siguiendo una estructura convencional: 
- - <tipo>(<alcance opcional>): <descripción clara>
+- El PR esté vinculado a una tarea o issue.
+- Las pruebas aplicables se hayan ejecutado y sus resultados estén registrados.
+- La documentación afectada esté actualizada.
+- El PR tenga la aprobación requerida y las observaciones estén resueltas.
 
-- [cuerpo opcional: explicación detallada de la razón del cambio y el 'por qué']
+## Commits
 
-- [pie de página opcional: referencias a tareas, issues o breaking changes]
+Usa `tipo(alcance): descripción breve`. El alcance es opcional. Si lo omites, usa `tipo: descripción breve`.
 
-### Tipos de commits 
-- feat: Una nueva funcionalidad (feature)
-- fix: Corrección de un error o bug
-- docs: Cambios exclusivamente en la documentación
-- style: Cambios que no afectan el significado del código como espacios, formato, comas faltantes, etc...
-- refactor: Cambio en el código que no corrige un bug ni añade una funcionalidad (reestructuración)
-- perf: Cambio en el código que mejora el rendimiento (performance)
-- test: Añadir pruebas faltantes o corregir pruebas existentes
-- chore: Tareas de mantenimiento, actualización de dependencias o configuración sin tocar código de producción
+Ejemplos:
+
+- `feat(simulacion): mostrar el modelo 3D del caso`
+- `fix(backend): mostrar la recomendación después de guardar la decisión inicial`
+- `docs: actualizar el flujo de trabajo del repositorio`
+
+Puedes añadir un cuerpo para explicar el motivo del cambio y un pie para referenciar tareas, issues o cambios incompatibles. Separa cada bloque con una línea en blanco.
+
+### Tipos de commits
+
+| Tipo | Uso |
+| --- | --- |
+| `feat` | Añadir una funcionalidad. |
+| `fix` | Corregir un error. |
+| `docs` | Modificar únicamente la documentación. |
+| `style` | Ajustar el formato del código sin cambiar su comportamiento. |
+| `refactor` | Reestructurar el código sin añadir funcionalidades ni corregir errores. |
+| `perf` | Mejorar el rendimiento. |
+| `test` | Añadir o corregir pruebas. |
+| `chore` | Realizar tareas de mantenimiento, dependencias o configuración. |
