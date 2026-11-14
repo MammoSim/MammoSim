@@ -37,7 +37,7 @@ MammoSim/
 ├── frontend/
 ├── backend/
 ├── ml/
-├── test/
+├── tests/
 ├── infra/
 ├── scripts/
 ├── unity/
