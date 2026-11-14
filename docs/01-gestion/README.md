@@ -5,7 +5,7 @@ En este directorio se encuentra la documentación formal del proyecto, teniendo 
 ## Índice de Documentación
 
 - [Acta de Constitución] *(Realizada)*
-- [Plan para la Dirección del Proyecto] *(En proceso)*
+- [Plan para la Dirección del Proyecto] *(Realizado)*
 - [Gestión del Alcance] *(Realizada)*
 - [Matriz de requisitos] *(Realizada)*
 - [Estructura de Desglose del Trabajo WBS] *(Realizada)*
