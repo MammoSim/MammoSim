@@ -5,10 +5,10 @@ Simulador web de carácter académico y experimental para el entrenamiento y eva
 En desarrollo 
 
 # Objetivo
-Desarrollar un simulador web (MammoSim) de carácter académico y experimental, mediante casos clínicos e imágenes de cáncer de mama con retroalimentación de un agente tutor inteligente, aplicando las guías PMBOK y TSP, para la evaluación del desempeño del usuario en la toma de decisiones, su capacidad de identificación de errores de la IA y su independencia frente a las recomendaciones de esta, sin sustituir el criterio del profesional clínico.
+Desarrollar un simulador web (MammoSim) de carácter académico y experimental, mediante casos clínicos y modelos 3D de mama con retroalimentación de un agente tutor inteligente, aplicando las guías PMBOK y TSP, para la evaluación del desempeño del usuario en la toma de decisiones, su capacidad de identificación de errores de la IA y su independencia frente a las recomendaciones de esta, sin sustituir el criterio del profesional clínico.
 
 # Alcance del proyecto
-Simulador web: donde el usuario se registrará, seleccionará el caso, consultará la información del caso, visualizará la imagen médica correspondiente y tomará las decisiones frente al caso. 
+Simulador web: donde el usuario se registrará, seleccionará el caso, consultará la información del caso, visualizará el modelo 3D de mama asociado al caso y tomará las decisiones frente al caso. 
 
 Agente tutor: se desarrollará para el proyecto con el fin de generar recomendaciones y retroalimentaciones durante la simulación. En ciertas secciones de los escenarios, se proporcionarán decisiones incorrectas de forma que se evalúe la capacidad del usuario de identificar las falencias de la IA y cuestionar, aceptar o rechazar las recomendaciones de este. 
 
@@ -22,7 +22,8 @@ Historial y visualización de resultados: el usuario podrá consultar el histori
 
 Pruebas y validación: se realizarán diferentes tipos de pruebas como funcionales de integración y usabilidad para verificar el funcionamiento del simulador. 
 
-Casos clínicos e imágenes médicas: los datos presentados en cada caso serán públicos anonimizados. 
+Casos clínicos y modelos 3D. Cada caso clínico tiene asociado un modelo 3D de mama que el estudiante puede explorar en el visor Unity WebGL. Los modelos se organizan en la carpeta [`data/`](./data/) del repositorio.
+
 
 # Uso académico
 
@@ -37,11 +38,8 @@ MammoSim/
 ├── frontend/
 ├── backend/
 ├── ml/
-├── tests/
+├── test/
 ├── infra/
 ├── scripts/
-├── unity/
 ├── .gitignore
-├── CONTIBUTING.md
 └── README.md
-
