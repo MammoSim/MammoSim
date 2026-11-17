@@ -28,7 +28,7 @@ export default function CaseCatalog({ cases, onSelectCase }: CaseCatalogProps) {
       <div className="cases_catalog">
         {visibleCases.map((clinicalCase) => (
           <CaseCard
-            key={clinicalCase.id}
+            key={clinicalCase.clinical_id}
             clinicalCase={clinicalCase}
             onSelect={onSelectCase}
           />

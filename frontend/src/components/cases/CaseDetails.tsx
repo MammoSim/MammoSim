@@ -8,9 +8,20 @@ type CaseDetailsProps = {
 export default function CaseDetails({ clinicalCase }: CaseDetailsProps) {
   return (
     <aside className="detail_container">
-        <h2>{clinicalCase.id}</h2>
+        <h2>{clinicalCase.clinical_id}</h2>
         <h4>{clinicalCase.title}</h4>
-        <img src={clinicalCase.imgUrl} alt="mamografía" width={250} />
+        {clinicalCase.imgUrl && (
+        <img
+          src={clinicalCase.imgUrl}
+          alt={`Vista previa de ${clinicalCase.imgUrl}`}
+          width={250}
+        />
+      )}
+      {clinicalCase.pacientAge !== undefined && (
+        <p>
+          Edad simulada: <br /> {clinicalCase.pacientAge} años
+        </p>
+      )}
         <h4>Descripción del caso</h4>
         <p>
           {clinicalCase.descripcion_breve}
