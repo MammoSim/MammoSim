@@ -3,13 +3,16 @@ import LoginForm from "../components/auth/LoginForm";
 import "../styles/AuthPage.css";
 import Logo from "../assets/Logo-bg.png";
 import SimulationModeDialog from "../components/courses/SimulationModeDialog";
+import { useLocation } from "react-router-dom";
 
 export type UserType = "estudiante" | "docente";
 
 export default function LoginPage() {
   const [userType, setUserType] = useState<UserType>("estudiante");
   const [isModeOpen, setIsModeOpen] = useState(false);
+  const location = useLocation();
 
+  const registrationMessage = typeof location.state?.registrationMessage === "string" ? location.state.registrationMessage : null; 
   return (
     <main className="auth_page">
       <section className="auth_welcome">
@@ -25,6 +28,7 @@ export default function LoginPage() {
         </h4>
       </section>
       <section className="auth_page_panel">
+        {registrationMessage && <p role="status">{registrationMessage}</p>}
         <LoginForm
           userType={userType}
           onUserTypeChange={setUserType}
