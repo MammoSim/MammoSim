@@ -2,7 +2,7 @@ import { useState } from "react";
 import RegisterForm from "../components/auth/RegisterForm";
 import "../styles/AuthPage.css";
 import Logo from "../assets/Logo-bg.png";
-import SimulationModeDialog from "../components/courses/SimulationModeDialog";
+import SimulationModeDialog from "../components/mode/SimulationModeDialog";
 
 export type UserType = "estudiante" | "docente";
 

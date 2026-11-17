@@ -2,8 +2,9 @@ import { useState } from "react";
 import LoginForm from "../components/auth/LoginForm";
 import "../styles/AuthPage.css";
 import Logo from "../assets/Logo-bg.png";
-import SimulationModeDialog from "../components/courses/SimulationModeDialog";
+import SimulationModeDialog from "../components/mode/SimulationModeDialog";
 import { useLocation } from "react-router-dom";
+import { loginUser } from "../services/authServices";
 
 export type UserType = "estudiante" | "docente";
 
@@ -32,15 +33,11 @@ export default function LoginPage() {
         <LoginForm
           userType={userType}
           onUserTypeChange={setUserType}
+          authenticate={loginUser}
           onAuthenticated={(role) => {
             if (role === "estudiante") setIsModeOpen(true);
           }}
         />
-        {import.meta.env.DEV && (
-          <button type="button" onClick={() => setIsModeOpen(true)}>
-            Probar diálogo
-          </button>
-        )}
         <SimulationModeDialog
           isOpen={isModeOpen}
           onClose={() => setIsModeOpen(false)}

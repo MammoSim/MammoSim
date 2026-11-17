@@ -68,22 +68,48 @@ export async function registerUser(
   const response = await fetch(`${API_URL}/auth/registro`, {
     method: "POST",
     headers: {
-        "Content-Type": "application/json", 
-        Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify({
-        nombre_completo: datos.nombre_completo,
-        carrera: datos.carrera,
-        semestre: datos.semestre,
-        acepto_terminos: datos.acepto_terminos,
+      nombre_completo: datos.nombre_completo,
+      carrera: datos.carrera,
+      semestre: datos.semestre,
+      acepto_terminos: datos.acepto_terminos,
     }),
   });
 
   if (!response.ok) {
     throw new Error(
-        response.status === 409 ? "Esta cuenta ya tiene un perfil asociado. Inicie sesión" : "No fue posible guardar el perfil. Reintente con los mismo datos.",
+      response.status === 409
+        ? "Esta cuenta ya tiene un perfil asociado. Inicie sesión"
+        : "No fue posible guardar el perfil. Reintente con los mismo datos.",
     );
   }
 
   return response.json();
 }
+
+export async function loginUser(
+  email: string,
+  password: string,
+): Promise<Usuario["rol"]> {
+    const credential = await signInWithEmailAndPassword(auth, email.trim(), password,);
+
+    const token = await credential.user.getIdToken();
+
+    const response = await fetch(`${API_URL}/usuarios/me`, {
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+
+    if(!response.ok){
+        throw new Error(response.status === 404 ? "Tu cuenta aún no tiene un perfil registrado. Regístrate" : "No fue posible consultar tu perfil.");
+    }
+    const usuario: Usuario = await response.json();
+
+    return usuario.rol;
+}
+
+

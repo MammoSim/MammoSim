@@ -2,6 +2,7 @@ import { UserGroupIcon, UserIcon } from "lucide-react";
 import { useEffect, useRef } from "react";
 import "../../styles/ModeDialog.css";
 import Logo from "../../assets/Logo-bg.png";
+import {useNavigate } from "react-router-dom";
 
 type SimulationModeDialogProps = {
   isOpen: boolean;
@@ -13,6 +14,7 @@ export default function SimulationModeDialog({
   onClose,
 }: SimulationModeDialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -72,7 +74,18 @@ export default function SimulationModeDialog({
           </div>
 
           <div className="no_code_button_container">
-            <button type="button">Iniciar</button>
+            <button
+              type="button"
+              onClick={() => {
+                onClose();
+                navigate("/cases", {
+                  replace: true,
+                  state: { id_curso: null },
+                });
+              }}
+            >
+              Iniciar
+            </button>
           </div>
         </div>
       </section>

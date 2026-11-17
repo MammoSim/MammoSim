@@ -39,8 +39,8 @@ export default function LoginForm({
     try {
       const confirmedRole = await authenticate(email, password);
       onAuthenticated(confirmedRole);
-    } catch {
-      setLoginError("No se pudo iniciar sesión. Inténtalo de nuevo.");
+    } catch (error){
+      setLoginError(error instanceof Error ? error.message : "No se pudo iniciar sesión. Inténtalo de nuevo.",);
     } finally {
       setIsSubmitting(false);
     }
