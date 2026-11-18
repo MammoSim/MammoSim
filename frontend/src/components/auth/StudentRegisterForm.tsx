@@ -42,7 +42,7 @@ export default function StudentForm() {
         email: String(fields.get("email") ?? ""),
         password: String(fields.get("password") ?? ""),
         nombre_completo: String(fields.get("name") ?? "").trim(),
-        carrera: String(fields.get("facultad") ?? ""),
+        carrera: String(fields.get("carrera") ?? ""),
         semestre,
         acepto_terminos: fields.get("aceptoTerminos") === "on",
       });
@@ -88,14 +88,14 @@ export default function StudentForm() {
           required
         />
 
-        <label htmlFor="facultad">Facultad</label>
-        <select id="facultad" name="facultad" defaultValue="" required>
+        <label htmlFor="carrera">Facultad</label>
+        <select id="carrera" name="carrera" defaultValue="" required>
           <option value="" disabled>
-            Seleccione su facultad
+            Seleccione su Facultad
           </option>
-          {Facultades.map((facultad) => (
-            <option key={facultad} value={facultad}>
-              {facultad}
+          {Facultades.map((carrera) => (
+            <option key={carrera} value={carrera}>
+              {carrera}
             </option>
           ))}
         </select>

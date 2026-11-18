@@ -35,7 +35,7 @@ export default function LoginPage() {
           onUserTypeChange={setUserType}
           authenticate={loginUser}
           onAuthenticated={(role) => {
-            if (role === "estudiante") setIsModeOpen(true);
+            if (role === "estudiante") {setIsModeOpen(true)} else {window.alert("Inicio docente correcto")};
           }}
         />
         <SimulationModeDialog
