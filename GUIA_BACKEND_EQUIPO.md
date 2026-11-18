@@ -8,10 +8,8 @@ Resumen de lo que se ha hecho en la base de datos y el backend, cómo trabajar s
 | --- | --- | --- |
 | Base de datos Firestore (esquema, 7 casos clínicos cargados, lista de docentes) | Hecho, mergeado | PR #15, `docs/ESQUEMA_BASE_DE_DATOS.md`, `scripts/` |
 | Esqueleto de FastAPI con los 21 endpoints declarados, autenticación por token, roles, lógica del Agente Tutor y fórmula de puntuación | Hecho, mergeado | PR #17, carpeta `backend/` |
-| `GET /usuarios/me` y `GET /casos` | Funcionando | `backend/app/routers/` |
-| `POST /auth/registro` | Programado, en revisión | PR #21, Issue #20 |
-| `POST /cursos` y `GET /cursos/mio` | Programados y probados, pendientes de merge | Issue #22, rama `feature/endpoint-cursos` |
-| Los otros 16 endpoints | Pendientes (responden 501 con TODOs) | `backend/app/routers/` |
+| Los 21 endpoints (registro, perfil, cursos, inscripciones, casos, sesiones, respuestas, decisiones, retroalimentación, resultado y vista del docente) | Hecho: 21 de 21, con 157 pruebas | Rama `backend` del repositorio `MammoSim/MammoSim` |
+| Prueba con Firestore real y con la web | Pendiente (las pruebas actuales usan una base falsa) | Marlin y Zaira |
 
 ## 2. Cómo se conecta todo
 
@@ -24,18 +22,18 @@ Unity → React → FastAPI → Firestore
 
 ## 3. Cómo correrlo en tu computador
 
-1. Clonar el repositorio `zrm23/MammoSim` y cambiar a `develop` (`git checkout develop`, `git pull origin develop`).
+1. Clonar el repositorio `MammoSim/MammoSim` y cambiar a la rama del área: `git switch backend` y `git pull origin backend`.
 2. En la carpeta `backend`: `python -m venv .venv`, activar el entorno (`.venv\Scripts\Activate.ps1` en Windows) e instalar con `pip install -r requirements.txt`.
-3. Pruebas: `python -m pytest`. Deben pasar todas (hoy son 43).
+3. Pruebas: `python -m pytest`. Deben pasar todas (hoy son 157).
 4. Levantar la API: `uvicorn app.main:app --reload` y abrir http://localhost:8000/docs.
 5. No hace falta la llave de Firebase para las pruebas: usan una base de datos falsa (`FakeDb`). La llave real **nunca** se sube al repositorio.
 
 ## 4. Flujo de trabajo con Git (acordado por el equipo)
 
 1. Crear un **Issue** que describa el trabajo.
-2. Crear una rama desde `develop`, con prefijo `feature/` o `fix/` (por ejemplo `feature/endpoint-cursos`).
+2. Trabajar en la rama de su área (`backend`, `frontend`, `simulacion`, `documentacion`...) del repositorio `MammoSim/MammoSim`; ya no se crean más ramas.
 3. Commits con el formato `tipo(alcance): descripción`, por ejemplo `feat(backend): agrega endpoint de registro de usuarios`.
-4. Abrir un **Pull Request hacia `develop`** que cierre el Issue ("Closes #N"). Lo revisa Zaira.
+4. Subir los commits (`git push origin <rama del área>`). Zaira revisa el trabajo de cada rama.
 
 ## 5. Cómo se programa un endpoint
 
@@ -72,43 +70,43 @@ La lógica del Agente Tutor está en `backend/app/services/tutor.py` y la fórmu
 
 | # | Método y ruta | Estado |
 | --- | --- | --- |
-| 1 | `POST /auth/registro` | En revisión (PR #21) |
+| 1 | `POST /auth/registro` | Hecho |
 | 2 | `GET /usuarios/me` | Hecho |
-| 3 | `POST /cursos` | Programado, pendiente de merge (Issue #22) |
-| 4 | `GET /cursos/mio` | Programado, pendiente de merge (Issue #22) |
-| 5 | `POST /inscripciones` | Pendiente |
-| 6 | `DELETE /inscripciones/{id_curso}` | Pendiente |
-| 7 | `GET /inscripciones/mias` | Pendiente |
+| 3 | `POST /cursos` | Hecho |
+| 4 | `GET /cursos/mio` | Hecho |
+| 5 | `POST /inscripciones` | Hecho |
+| 6 | `DELETE /inscripciones/{id_curso}` | Hecho |
+| 7 | `GET /inscripciones/mias` | Hecho |
 | 8 | `GET /casos` | Hecho |
-| 9 | `GET /casos/{id_caso}` | Pendiente (depende de las sesiones) |
-| 10 | `POST /sesiones` | Pendiente |
-| 11 | `GET /sesiones/mias` | Pendiente |
-| 12 | `GET /sesiones/activa` | Pendiente |
-| 13 | `POST /sesiones/{id_sesion}/cerrar` | Pendiente |
-| 14 | `GET /sesiones/{id_sesion}/resultado` | Pendiente |
-| 15 | `POST /sesiones/{id_sesion}/casos/{id_caso}/respuestas` | Pendiente |
-| 16 | `POST /sesiones/{id_sesion}/casos/{id_caso}/decision-inicial` | Pendiente |
-| 17 | `GET /sesiones/{id_sesion}/casos/{id_caso}/recomendacion-ia` | Pendiente |
-| 18 | `POST /sesiones/{id_sesion}/casos/{id_caso}/decision-final` | Pendiente |
-| 19 | `GET /sesiones/{id_sesion}/casos/{id_caso}/retroalimentacion` | Pendiente |
-| 20 | `GET /cursos/mio/sesiones` | Pendiente |
-| 21 | `GET /cursos/mio/sesiones/{id_sesion}` | Pendiente |
+| 9 | `GET /casos/{id_caso}` | Hecho |
+| 10 | `POST /sesiones` | Hecho |
+| 11 | `GET /sesiones/mias` | Hecho |
+| 12 | `GET /sesiones/activa` | Hecho |
+| 13 | `POST /sesiones/{id_sesion}/cerrar` | Hecho |
+| 14 | `GET /sesiones/{id_sesion}/resultado` | Hecho |
+| 15 | `POST /sesiones/{id_sesion}/casos/{id_caso}/respuestas` | Hecho |
+| 16 | `POST /sesiones/{id_sesion}/casos/{id_caso}/decision-inicial` | Hecho |
+| 17 | `GET /sesiones/{id_sesion}/casos/{id_caso}/recomendacion-ia` | Hecho |
+| 18 | `POST /sesiones/{id_sesion}/casos/{id_caso}/decision-final` | Hecho |
+| 19 | `GET /sesiones/{id_sesion}/casos/{id_caso}/retroalimentacion` | Hecho |
+| 20 | `GET /cursos/mio/sesiones` | Hecho |
+| 21 | `GET /cursos/mio/sesiones/{id_sesion}` | Hecho |
 
-Cada endpoint pendiente tiene en su archivo un comentario `TODO` con lo que debe hacer.
+Los 21 están programados y probados en la rama `backend`.
 
 ## 8. En qué puede ayudar Alejandro
 
 Por su rol de análisis y calidad, lo más útil es:
 
-1. **Pruebas.** Escribir pruebas de pytest para los endpoints ya hechos (registro, perfil, casos) y para los que se vayan programando: casos borde, errores 401/403/404/409/422 y que no se filtren respuestas correctas.
+1. **Pruebas.** Revisar las pruebas de seguridad de los endpoints nuevos (inscripciones, ver caso, respuestas y decisiones, cierre de sesión y vista del docente) y agregar casos borde: errores 401/403/404/409/422 y que no se filtren respuestas correctas.
 2. **Revisión de PRs.** Leer cada PR del backend contra el documento de endpoints y las reglas de la sección 6, antes de que lo revise Zaira.
 3. **Consistencia de casos.** Comparar el JSON de casos de Unity (`casos_mammosim.json`) con `scripts/casos_clinicos.json`, que es el que está en Firestore. Deben coincidir en preguntas, opciones y respuestas.
-4. **Endpoints sencillos.** Programar alguno de los pendientes más simples (cursos e inscripciones), coordinando antes con Marlin para no duplicar trabajo: cada uno con su Issue y su rama.
+4. **Prueba de punta a punta.** Con Zaira y Marlin, probar el flujo completo con Firestore real y la web conectada.
 5. **Documentación.** Mantener al día esta guía y el documento de endpoints cuando algo cambie.
 
 ## 9. Prompt sugerido para trabajar con Claude
 
-> Estoy en el proyecto MammoSim (simulador de mamografías con Unity, React, FastAPI y Firestore). Voy a ayudar con el backend en `backend/` del repositorio `zrm23/MammoSim`, rama `develop`. Lee primero `docs/ESQUEMA_BASE_DE_DATOS.md`, `backend/GUIA_BACKEND.md` y los routers en `backend/app/routers/`. El endpoint `POST /auth/registro` en `usuarios.py` es el modelo de cómo se escribe un endpoint. Reglas: uid y correo salen del token, el rol lo decide el servidor, ningún caso revela respuestas antes de tiempo, las pruebas usan `FakeDb` sin conexión a Firebase, y todo cambio va con Issue, rama desde `develop` y PR. Quiero \[escribir pruebas para el endpoint X / revisar el PR #N / programar el endpoint X\]. Explícame primero el enfoque y luego propón el código.
+> Estoy en el proyecto MammoSim (simulador de mamografías con Unity, React, FastAPI y Firestore). Voy a ayudar con el backend en `backend/` del repositorio `MammoSim/MammoSim`, rama `backend`. Lee primero `docs/ESQUEMA_BASE_DE_DATOS.md`, `backend/GUIA_BACKEND.md` y los routers en `backend/app/routers/`. El endpoint `POST /auth/registro` en `usuarios.py` es el modelo de cómo se escribe un endpoint. Reglas: uid y correo salen del token, el rol lo decide el servidor, ningún caso revela respuestas antes de tiempo, las pruebas usan `FakeDb` sin conexión a Firebase, y los cambios se suben a la rama del área. Quiero \[escribir pruebas para el endpoint X / revisar el PR #N / programar el endpoint X\]. Explícame primero el enfoque y luego propón el código.
 
 ## 10. Documentos de referencia
 

@@ -26,7 +26,7 @@ El registro crea el documento de `usuarios` y decide el rol; después el cliente
 
 | # | Endpoint | Rol | Qué recibe | Qué hace y responde |
 | --- | --- | --- | --- | --- |
-| 1 | `POST /auth/registro` | Cualquiera con token nuevo | `nombre_completo`, `carrera`, `semestre` (o `null`), `acepto_terminos` (debe ser `true`) | Toma `uid` y correo del token. Si el correo está en `docentes_autorizados` con `activo: true`, el rol es `docente`; si no, `estudiante` (con aviso si el correo es institucional). Crea `usuarios/{uid}` con `fecha_aceptacion` y `fecha_registro`. Responde 201 con el perfil y el aviso. Errores: 409 si ya está registrado, 422 si no aceptó los términos. |
+| 1 | `POST /auth/registro` | Cualquiera con token nuevo | `nombre_completo`, `carrera`, `semestre` (obligatorio para estudiantes; los docentes lo dejan en `null`), `acepto_terminos` (debe ser `true`) | Toma `uid` y correo del token. Si el correo está en `docentes_autorizados` con `activo: true`, el rol es `docente`; si no, `estudiante` (con aviso si el correo es institucional). Crea `usuarios/{uid}` con `fecha_aceptacion` y `fecha_registro`. Responde 201 con el perfil y el aviso. Errores: 409 si ya está registrado, 422 si no aceptó los términos o si es estudiante y no indicó su semestre. |
 | 2 | `GET /usuarios/me` | Cualquiera registrado | Nada | Devuelve el perfil del usuario que inició sesión. 404 si todavía no se registró. |
 
 ## 2. Cursos e inscripciones
@@ -59,7 +59,7 @@ Una sesión es cada vez que un estudiante practica; puede pertenecer a un curso 
 | 10 | `POST /sesiones` | Estudiante | `id_curso` (o `null` si practica solo) y casos (lista de id_caso elegidos, mínimo 1) | Si trae `id_curso`, comprueba que la inscripción esté activa (403 si no). Crea `sesiones/{id}` con `estado: en_curso`, `casos_asignados` (los que elija el estudiante) y `fecha_inicio`. Responde 201 con la sesión. 409 si ya tiene una sesión en curso. |
 | 11 | `GET /sesiones/mias` | Estudiante | Opcional: `id_curso` | Historial del estudiante, de la más reciente a la más antigua (usa el índice compuesto `id_usuario` + `fecha_inicio`). Incluye las prácticas libres. |
 | 12 | `POST /sesiones/{id}/cerrar` | Estudiante dueño | Nada | Pasa `estado` a `completada`, guarda `fecha_fin`, calcula y crea `resultados/{id_sesion}` (aciertos, uso de la IA y `puntuacion`). 403 si la sesión no es suya, 409 si ya estaba completada o si aún falta terminar algún caso (no se puede cerrar a medias). |
-| 21 | GET /sesiones/activa | Estudiante | Nada | Devuelve la sesión en_curso del estudiante, con los casos ya terminados y el caso donde va, para continuar la misma si cerró la ventana. 404 si no tiene una. |
+| 21 | `GET /sesiones/activa` | Estudiante | Nada | Devuelve la sesión en_curso del estudiante, con los casos ya terminados y el caso donde va, para continuar la misma si cerró la ventana. 404 si no tiene una. |
 
 ## 5. Dentro de un caso
 
@@ -80,5 +80,5 @@ El docente solo ve las sesiones cuyo `id_curso` es el de su curso; lo hecho ante
 | # | Endpoint | Rol | Qué recibe | Qué hace y responde |
 | --- | --- | --- | --- | --- |
 | 18 | `GET /sesiones/{id}/resultado` | Estudiante dueño | Nada | Devuelve `resultados/{id}`: totales, aciertos iniciales y finales, uso de la IA y `puntuacion`. 409 si la sesión aún no está completada. |
-| 19 | `GET /cursos/mio/sesiones` | Docente | Opcional: página y filtro por estudiante | Lista las sesiones de su curso (`id_curso` = el suyo) con nombre del estudiante, `estado`, `fecha_inicio` y `puntuacion`. Puede pedir un índice compuesto en `sesiones` (`id_curso` + `fecha_inicio`); Firebase muestra el enlace para crearlo. |
+| 19 | `GET /cursos/mio/sesiones` | Docente | Opcional: `id_usuario` (filtra por estudiante) | Lista, sin paginación, las sesiones de su curso (`id_curso` = el suyo) con nombre del estudiante, `estado`, `fecha_inicio` y `puntuacion` (esta última solo si la sesión está completada), de la más reciente a la más antigua. |
 | 20 | `GET /cursos/mio/sesiones/{id}` | Docente | Nada | Detalle de una sesión de su curso: respuestas, decisiones inicial y final, `siguio_ia` y nota de cada caso. 404 si la sesión no es de su curso. |
