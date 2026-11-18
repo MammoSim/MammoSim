@@ -70,15 +70,40 @@ def mi_curso(docente: UsuarioActual = Depends(requiere_docente), db=Depends(get_
     return _a_curso_out(doc)
 
 
+def _inscripcion(db, uid, id_curso):
+    """Referencia a inscripciones/{uid}_{id_curso}: un documento por estudiante y curso."""
+    return db.collection("inscripciones").document(f"{uid}_{id_curso}")
+
+
 @router.post("/inscripciones", response_model=CursoOut)
 def unirse_a_curso(
     datos: InscripcionIn,
     estudiante: UsuarioActual = Depends(requiere_estudiante),
     db=Depends(get_db),
 ):
-    """5. TODO: buscar el curso por codigo (404); crear o reactivar
-    inscripciones/{uid}_{id_curso} con activo=True."""
-    pendiente()
+    """5. Se une a un curso con su código; si ya había estado, la reactiva."""
+    codigo = datos.codigo.strip().upper()
+    consulta = db.collection("cursos").where(filter=FieldFilter("codigo", "==", codigo))
+    encontrados = list(consulta.limit(1).stream())
+    if not encontrados:
+        raise HTTPException(404, "No existe un curso con ese código")
+    curso = encontrados[0]
+
+    ref = _inscripcion(db, estudiante.uid, curso.id)
+    anterior = ref.get()
+    if anterior.exists:
+        # Ya había estado: se reactiva y se conserva la fecha original.
+        inscripcion = anterior.to_dict()
+        inscripcion["activo"] = True
+    else:
+        inscripcion = {
+            "id_usuario": estudiante.uid,  # sale del token, no del cuerpo
+            "id_curso": curso.id,
+            "activo": True,
+            "fecha_union": datetime.now(timezone.utc),
+        }
+    ref.set(inscripcion)
+    return _a_curso_out(curso)
 
 
 @router.delete("/inscripciones/{id_curso}", status_code=204)
@@ -87,16 +112,32 @@ def salirse_del_curso(
     estudiante: UsuarioActual = Depends(requiere_estudiante),
     db=Depends(get_db),
 ):
-    """6. TODO: activo=False (el historial se conserva); 404 si no estaba inscrito."""
-    pendiente()
+    """6. Se sale del curso: activo pasa a False y el historial se conserva."""
+    ref = _inscripcion(db, estudiante.uid, id_curso)
+    actual = ref.get()
+    if not actual.exists or actual.to_dict().get("activo") is not True:
+        raise HTTPException(404, "No estás inscrito en ese curso")
+    inscripcion = actual.to_dict()
+    inscripcion["activo"] = False
+    ref.set(inscripcion)
 
 
 @router.get("/inscripciones/mias", response_model=list[CursoOut])
 def mis_cursos(
     estudiante: UsuarioActual = Depends(requiere_estudiante), db=Depends(get_db)
 ):
-    """7. TODO: cursos donde la inscripción esté activa."""
-    pendiente()
+    """7. Los cursos donde el estudiante tiene la inscripción activa."""
+    consulta = (
+        db.collection("inscripciones")
+        .where(filter=FieldFilter("id_usuario", "==", estudiante.uid))
+        .where(filter=FieldFilter("activo", "==", True))
+    )
+    cursos = []
+    for inscripcion in consulta.stream():
+        curso = db.collection("cursos").document(inscripcion.to_dict()["id_curso"]).get()
+        if curso.exists:
+            cursos.append(_a_curso_out(curso))
+    return sorted(cursos, key=lambda c: c["nombre"])
 
 
 @router.get("/cursos/mio/sesiones")
