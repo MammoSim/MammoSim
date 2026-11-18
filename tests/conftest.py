@@ -8,8 +8,7 @@ from app.auth import UsuarioActual, get_token_data, get_usuario_actual
 from app.firebase import get_db
 from app.main import app
 
-CASOS = Path(__file__).resolve().parents[2] / "scripts" / "casos_clinicos.json"
-
+CASOS = Path(__file__).resolve().parents[1] / "scripts" / "casos_clinicos.json"
 
 @pytest.fixture(scope="session")
 def casos() -> dict:
