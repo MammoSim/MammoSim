@@ -137,3 +137,52 @@ class ResultadoOut(BaseModel):
     siguio_ia_correcta: int
     siguio_ia_incorrecta: int
     puntuacion: float = Field(ge=0, le=10)
+
+
+# ---------- Vista del docente ----------
+class SesionDocenteOut(BaseModel):
+    id_sesion: str
+    id_usuario: str
+    nombre_estudiante: str | None = None
+    estado: EstadoSesion
+    fecha_inicio: datetime
+    puntuacion: float | None = None  # solo cuando la sesión está completada
+
+
+class RespuestaDetalle(BaseModel):
+    numero_pregunta: int
+    opcion_elegida: Opcion
+    correcta: bool
+
+
+class DecisionInicialDetalle(BaseModel):
+    decision: Decision
+    acierto: bool
+
+
+class DecisionFinalDetalle(BaseModel):
+    decision: Decision
+    acierto: bool
+    opcion_ia: Decision
+    ia_correcta: bool
+    siguio_ia: bool
+
+
+class CasoDetalle(BaseModel):
+    id_caso: str
+    titulo: str | None = None
+    respuestas: list[RespuestaDetalle]
+    decision_inicial: DecisionInicialDetalle | None = None
+    decision_final: DecisionFinalDetalle | None = None
+    nota_caso: float | None = None  # solo cuando el caso ya está terminado
+
+
+class SesionDetalleOut(BaseModel):
+    id_sesion: str
+    id_usuario: str
+    nombre_estudiante: str | None = None
+    estado: EstadoSesion
+    fecha_inicio: datetime
+    fecha_fin: datetime | None = None
+    puntuacion: float | None = None
+    casos: list[CasoDetalle]

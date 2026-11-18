@@ -12,7 +12,7 @@ from google.cloud.firestore_v1.base_query import FieldFilter
 from app.auth import UsuarioActual, requiere_estudiante
 from app.firebase import get_db
 from app.schemas import ResultadoOut, SesionActivaOut, SesionIn, SesionOut
-from app.utils import pendiente
+from app.services.puntuacion import puntuacion_sesion
 
 router = APIRouter(tags=["sesiones"])
 
@@ -119,18 +119,70 @@ def sesion_activa(
     return sesion
 
 
+def _sesion_propia(db, id_sesion: str, uid: str) -> dict:
+    """La sesión, o corta con 404 (no existe) o 403 (es de otro estudiante)."""
+    doc = db.collection("sesiones").document(id_sesion).get()
+    if not doc.exists:
+        raise HTTPException(404, "La sesión no existe")
+    sesion = doc.to_dict()
+    if sesion["id_usuario"] != uid:
+        raise HTTPException(403, "Esa sesión no es tuya")
+    return sesion
+
+
 @router.post("/sesiones/{id_sesion}/cerrar", response_model=ResultadoOut)
 def cerrar_sesion(
     id_sesion: str,
     estudiante: UsuarioActual = Depends(requiere_estudiante),
     db=Depends(get_db),
 ):
-    """12. TODO:
-    - 403 si la sesión no es suya.
-    - 409 si ya está completada o si falta terminar algún caso.
-    - estado='completada', fecha_fin; crear resultados/{id_sesion} usando
-      services.puntuacion.puntuacion_sesion."""
-    pendiente()
+    """12. Cierra la sesión y calcula su resultado. No se puede cerrar a medias."""
+    sesion = _sesion_propia(db, id_sesion, estudiante.uid)
+    if sesion["estado"] != "en_curso":
+        raise HTTPException(409, "La sesión ya estaba completada")
+
+    casos = sesion["casos_asignados"]
+    iniciales, finales = [], []
+    for id_caso in casos:
+        final = db.collection("decisiones_finales").document(f"{id_sesion}_{id_caso}").get()
+        inicial = db.collection("decisiones_iniciales").document(f"{id_sesion}_{id_caso}").get()
+        if not final.exists or not inicial.exists:
+            raise HTTPException(409, "Todavía falta terminar algún caso de la sesión")
+        iniciales.append(inicial.to_dict())
+        finales.append(final.to_dict())
+
+    respuestas = (
+        db.collection("respuestas")
+        .where(filter=FieldFilter("id_sesion", "==", id_sesion))
+        .stream()
+    )
+    preguntas_acertadas = sum(1 for r in respuestas if r.to_dict()["correcta"])
+    aciertos_iniciales = sum(1 for d in iniciales if d["acierto"])
+    aciertos_finales = sum(1 for d in finales if d["acierto"])
+    siguio = [d for d in finales if d["siguio_ia"]]
+
+    resultado = {
+        "id_usuario": estudiante.uid,
+        "id_curso": sesion["id_curso"],
+        "total_casos": len(casos),
+        "aciertos_iniciales": aciertos_iniciales,
+        "aciertos_finales": aciertos_finales,
+        "preguntas_acertadas": preguntas_acertadas,
+        "veces_siguio_ia": len(siguio),
+        "siguio_ia_correcta": sum(1 for d in siguio if d["ia_correcta"]),
+        "siguio_ia_incorrecta": sum(1 for d in siguio if not d["ia_correcta"]),
+        "puntuacion": puntuacion_sesion(
+            preguntas_acertadas, aciertos_iniciales, aciertos_finales, len(casos)
+        ),
+    }
+    # Primero el resultado y luego se cierra: si algo falla en medio, la sesión
+    # sigue en_curso y se puede volver a intentar sin dejar nada a medias.
+    ahora = datetime.now(timezone.utc)
+    db.collection("resultados").document(id_sesion).set({**resultado, "fecha_calculo": ahora})
+    db.collection("sesiones").document(id_sesion).set(
+        {**sesion, "estado": "completada", "fecha_fin": ahora}
+    )
+    return resultado
 
 
 @router.get("/sesiones/{id_sesion}/resultado", response_model=ResultadoOut)
@@ -139,5 +191,11 @@ def ver_resultado(
     estudiante: UsuarioActual = Depends(requiere_estudiante),
     db=Depends(get_db),
 ):
-    """18. TODO: resultados/{id_sesion}; 409 si la sesión no está completada."""
-    pendiente()
+    """18. El resultado de una sesión ya completada."""
+    sesion = _sesion_propia(db, id_sesion, estudiante.uid)
+    if sesion["estado"] != "completada":
+        raise HTTPException(409, "La sesión todavía no está completada")
+    doc = db.collection("resultados").document(id_sesion).get()
+    if not doc.exists:
+        raise HTTPException(404, "Esa sesión no tiene resultado")
+    return doc.to_dict()
