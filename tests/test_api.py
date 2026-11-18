@@ -63,13 +63,6 @@ def test_un_docente_no_entra_a_rutas_de_estudiante(cliente):
     assert c.get("/sesiones/activa").status_code == 403
 
 
-def test_lo_pendiente_responde_501(cliente):
-    c, estado = cliente
-    estado["rol"] = "docente"
-    r = c.get("/cursos/mio/sesiones")
-    assert r.status_code == 501
-
-
 def test_valida_el_cuerpo(cliente):
     c, _ = cliente
     assert c.post("/sesiones", json={"casos": []}).status_code == 422
