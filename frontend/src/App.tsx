@@ -6,6 +6,7 @@ import CasesPage from './pages/CasesPage'
 import HistorialPage from './pages/HistorialPage'
 import GuidePage from './pages/GuidePage'
 import SettingPage from './pages/SettingPage'
+import SimulationPage from './pages/SimulationPage'
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
       <Route path='/historial' element={<HistorialPage/>}/>
       <Route path='/guide' element={<GuidePage/>}/>
       <Route path='/setting' element={<SettingPage/>}/>
+      <Route path='/simulation/:caseId' element={<SimulationPage/>}/>
     </Routes>
   )
 }

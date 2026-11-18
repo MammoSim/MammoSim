@@ -1,0 +1,38 @@
+.simulation_page_container{
+    color: #ffffff;
+}
+
+.simulation_page_container button {
+    background-color: #FFC1DA;
+    border: none;
+    padding: 10px;
+    border-radius: 16px;
+    box-shadow: 0 2px 3px #ffffff;
+    cursor: pointer;
+}
+
+.simulation_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 10px 14px;
+    box-sizing: border-box;
+    gap: 12px;
+    background-color: #E8177B;
+}
+
+.simulation_page_container section{
+    width: 100%;
+    padding: 24px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.unity_canvas {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background-color: #000000;
+}
