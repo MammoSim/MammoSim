@@ -1,11 +1,11 @@
 """Endpoints 8 y 9: casos clínicos."""
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 
-from app.auth import UsuarioActual, get_usuario_actual, requiere_registrado
+from app.auth import UsuarioActual, requiere_registrado
 from app.firebase import get_db
+from app.routers.sesiones import _sesion_en_curso
 from app.schemas import CasoResumen
-from app.services.casos import resumen_caso
-from app.utils import pendiente
+from app.services.casos import caso_para_resolver, resumen_caso
 
 router = APIRouter(tags=["casos"])
 
@@ -24,10 +24,18 @@ def listar_casos(
 @router.get("/casos/{id_caso}")
 def ver_caso(
     id_caso: str,
-    usuario: UsuarioActual = Depends(get_usuario_actual),
+    usuario: UsuarioActual = Depends(requiere_registrado),
     db=Depends(get_db),
 ):
-    """9. TODO: devolver caso_para_resolver(caso) SOLO si el caso está en una
-    sesión en_curso del estudiante (403 si no); 404 si no existe.
-    Sin esa comprobación se podrían leer las preguntas fuera del examen."""
-    pendiente()
+    """9. El caso para resolverlo, sin respuestas ni explicaciones.
+    Solo se entrega si el caso está en la sesión en_curso del estudiante
+    (403 si no); sin esa comprobación se podrían leer las preguntas fuera del examen."""
+    doc = db.collection("casos_clinicos").document(id_caso).get()
+    if not doc.exists:
+        raise HTTPException(404, "El caso no existe")
+
+    sesion = _sesion_en_curso(db, usuario.uid)
+    if sesion is None or id_caso not in sesion.to_dict()["casos_asignados"]:
+        raise HTTPException(403, "Ese caso no está en tu sesión en curso")
+
+    return caso_para_resolver(doc.to_dict())  # lista blanca: solo sale lo permitido
