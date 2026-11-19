@@ -1,8 +1,9 @@
 import { UserGroupIcon, UserIcon } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import "../../styles/ModeDialog.css";
 import Logo from "../../assets/Logo-bg.png";
-import {useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { joinCourse } from "../../services/coursesServices";
 
 type SimulationModeDialogProps = {
   isOpen: boolean;
@@ -15,6 +16,46 @@ export default function SimulationModeDialog({
 }: SimulationModeDialogProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const navigate = useNavigate();
+  const [code, setCode] = useState("");
+  const [joining, setJoining] = useState(false);
+  const [joinError, setJoinError] = useState("");
+
+  async function handleJoin(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (joining) return;
+
+    const codigo = code.trim();
+
+    if (!codigo) {
+      setJoinError("Ingresa el código de la clase a la que quiere unirte");
+      return;
+    }
+    setJoining(true);
+    setJoinError("");
+
+    try {
+      const course = await joinCourse(codigo);
+
+      onClose();
+
+      navigate("/cases", {
+        replace: true,
+        state: {
+          id_course: course.id_curso,
+          nombre_curso: course.nombre,
+        },
+      });
+    } catch (error) {
+      setJoinError(
+        error instanceof Error
+          ? error.message
+          : "No fue posible ingresar a la clase",
+      );
+    } finally {
+      setJoining(false);
+    }
+  }
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -23,7 +64,7 @@ export default function SimulationModeDialog({
 
     if (isOpen && !dialog.open) dialog.showModal();
     if (!isOpen && dialog.open) dialog.close();
-  });
+  }, [isOpen]);
   return (
     <dialog
       ref={dialogRef}
@@ -55,10 +96,20 @@ export default function SimulationModeDialog({
               Ingresa el código proporcionado por tu docente para que pueda
               realizar el siguimiento y evaluar tu historial de simulación.
             </p>
-            <div className="code_container">
-              <input placeholder="Ingresa el código de clase (Token)" />
-              <button type="submit">Ingresar</button>
-            </div>
+            <form className="code_container" onSubmit={handleJoin}>
+              <label htmlFor="class-code">Código de la clase</label>
+              <input
+                id="class-code"
+                name="codigo"
+                value={code}
+                onChange={(event) => setCode(event.target.value)}
+                placeholder="Ingresa el código de clase"
+                disabled={joining}
+                required
+              />
+              <button type="submit" disabled={joining}>{joining ? "Ingresando...": "Ingresar"}</button>
+            </form>
+            {joinError && <p role="alert">{joinError}</p>}
           </div>
         </div>
 

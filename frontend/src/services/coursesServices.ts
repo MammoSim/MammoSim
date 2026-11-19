@@ -23,6 +23,7 @@ function waitForUser(): Promise<User | null> {
   });
 }
 
+{/* Aviso de que no puede visualizar la información sin iniciar sesión */}
 async function getHeaders(): Promise<Record<string, string>> {
   const user = await waitForUser();
 
@@ -38,15 +39,19 @@ async function getHeaders(): Promise<Record<string, string>> {
   };
 }
 
+{/* Error de solicitud */}
+
 async function responseError(response: Response): Promise<Error> {
   const body = await response.json().catch(() => null);
 
   return new Error(
     typeof body?.detail === "string"
       ? body.detail
-      : `No se pudo completar la solicitu ${response.status}`,
+      : `No se pudo completar la solicitud ${response.status}`,
   );
 }
+
+{/* el docente ve el curso */}
 
 export async function getMyCourse(
   signal?: AbortSignal,
@@ -62,6 +67,8 @@ export async function getMyCourse(
   return response.json();
 }
 
+
+{/* el docente crea el curso */}
 export async function createCourse(nombre: string): Promise<Course>{
     const response = await fetch(`${API_URL}/cursos`, {
         method: "POST",
@@ -73,4 +80,22 @@ export async function createCourse(nombre: string): Promise<Course>{
     if(!response.ok) throw await responseError(response);
 
     return response.json();
+}
+
+
+{/*Unirse a la clase con el código*/}
+
+export async function joinCourse(codigo: string): Promise<Course>{
+  const response = await fetch(`${API_URL}/inscripciones`, {
+    method: "POST",
+    headers: await getHeaders(),
+    body: JSON.stringify({
+      codigo: codigo.trim().toUpperCase(),
+    }),
+  });
+
+  if(!response.ok){
+    throw await responseError(response);
+  }
+   return response.json();
 }
