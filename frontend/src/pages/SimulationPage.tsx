@@ -1,13 +1,19 @@
 import { Unity, useUnityContext } from "react-unity-webgl";
 import { useEffect, useRef, useState } from "react";
 import "../styles/Simulation.css";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 export default function SimulationPage() {
   const [closing, setClosing] = useState(false);
   const navigate = useNavigate();
   const {caseId} = useParams<{caseId: string}>();
   const startedCase = useRef<string | null>(null);
+  const location = useLocation();
+
+  const idCurso =
+    typeof location.state?.id_curso === "string"
+      ? location.state.id_curso
+      : null;
 
   const {
     unityProvider,
@@ -40,7 +46,7 @@ export default function SimulationPage() {
       if (isLoaded) {
         await unload();
       }
-      navigate("/cases", {replace: true});
+      navigate("/cases", {replace: true, state: {id_curso: idCurso}});
     } catch (error) {
       console.error("Error al cerrar Unity:", error);
       setClosing(false);
@@ -50,12 +56,11 @@ export default function SimulationPage() {
   return (
     <main
       className="simulation_page_container"
-      role="dialog"
-      aria-modal="true"
       aria-label="Simulación MammoSim"
     >
       <div className="simulation_header">
         <h2>MammoSim - Simulación clínica {caseId}</h2>
+        <p>Modalidad: {idCurso ? "Clase dirigida" : "Práctica individual"}</p>
 
         <button
           type="button"

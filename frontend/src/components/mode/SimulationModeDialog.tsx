@@ -42,7 +42,7 @@ export default function SimulationModeDialog({
       navigate("/cases", {
         replace: true,
         state: {
-          id_course: course.id_curso,
+          id_curso: course.id_curso,
           nombre_curso: course.nombre,
         },
       });
@@ -107,7 +107,9 @@ export default function SimulationModeDialog({
                 disabled={joining}
                 required
               />
-              <button type="submit" disabled={joining}>{joining ? "Ingresando...": "Ingresar"}</button>
+              <button type="submit" disabled={joining}>
+                {joining ? "Ingresando..." : "Ingresar"}
+              </button>
             </form>
             {joinError && <p role="alert">{joinError}</p>}
           </div>
@@ -127,6 +129,7 @@ export default function SimulationModeDialog({
           <div className="no_code_button_container">
             <button
               type="button"
+              disabled={joining}
               onClick={() => {
                 onClose();
                 navigate("/cases", {

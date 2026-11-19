@@ -1,6 +1,6 @@
 import type { clinicalCase } from "../../types/ClinicalCase";
 import "../../styles/CaseDetails.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type CaseDetailsProps = {
   clinicalCase: clinicalCase;
@@ -8,6 +8,13 @@ type CaseDetailsProps = {
 
 export default function CaseDetails({ clinicalCase }: CaseDetailsProps) {
   const navigate = useNavigate();
+
+  const location = useLocation();
+
+  const idCurso =
+    typeof location.state?.id_curso === "string"
+      ? location.state.id_curso
+      : null;
 
   return (
     <aside className="detail_container">
@@ -34,6 +41,7 @@ export default function CaseDetails({ clinicalCase }: CaseDetailsProps) {
         onClick={() =>
           navigate(
             `/simulation/${encodeURIComponent(clinicalCase.clinical_id)}`,
+            { state: { id_curso: idCurso } },
           )
         }
       >
