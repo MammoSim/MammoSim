@@ -52,64 +52,60 @@ export async function registerUser(
       error instanceof FirebaseError &&
       error.code === "auth/email-already-in-use"
     ) {
-      const credential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        datos.password,
+      throw new Error(
+        "Este correo ya está registrado. Inicia sesión con tu cuenta existente.",
       );
-      user = credential.user;
-    } else {
-      throw error;
     }
-  }
+    throw error;
+}
 
-  const token = await user.getIdToken();
+const token = await user.getIdToken();
 
-  const response = await fetch(`${API_URL}/auth/registro`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({
-      nombre_completo: datos.nombre_completo,
-      carrera: datos.carrera,
-      semestre: datos.semestre,
-      acepto_terminos: datos.acepto_terminos,
-    }),
-  });
+const response = await fetch(`${API_URL}/auth/registro`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  },
+  body: JSON.stringify({
+    nombre_completo: datos.nombre_completo,
+    carrera: datos.carrera,
+    semestre: datos.semestre,
+    acepto_terminos: datos.acepto_terminos,
+  }),
+});
 
-  if (!response.ok) {
-    throw new Error(
-      response.status === 409
-        ? "Esta cuenta ya tiene un perfil asociado. Inicie sesión"
-        : "No fue posible guardar el perfil. Reintente con los mismo datos.",
-    );
-  }
+if (!response.ok) {
+  throw new Error(
+    response.status === 409
+      ? "Esta cuenta ya tiene un perfil asociado. Inicie sesión"
+      : "No fue posible guardar el perfil. Reintente con los mismo datos.",
+  );
+}
 
-  return response.json();
+return response.json();
 }
 
 export async function loginUser(
   email: string,
   password: string,
 ): Promise<Usuario["rol"]> {
-    const credential = await signInWithEmailAndPassword(auth, email.trim(), password,);
+  const credential = await signInWithEmailAndPassword(auth, email.trim(), password,);
 
-    const token = await credential.user.getIdToken();
+  const token = await credential.user.getIdToken();
 
-    const response = await fetch(`${API_URL}/usuarios/me`, {
-        headers: {
-            Authorization: `Bearer ${token}`,
-        },
-    });
+  const response = await fetch(`${API_URL}/usuarios/me`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
-    if(!response.ok){
-        throw new Error(response.status === 404 ? "Tu cuenta aún no tiene un perfil registrado. Regístrate" : "No fue posible consultar tu perfil.");
-    }
-    const usuario: Usuario = await response.json();
+  if (!response.ok) {
+    throw new Error(response.status === 404 ? "Tu cuenta aún no tiene un perfil registrado. Regístrate" : "No fue posible consultar tu perfil.");
+  }
+  const usuario: Usuario = await response.json();
 
-    return usuario.rol;
+  return usuario.rol;
 }
 
 
