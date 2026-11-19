@@ -1,7 +1,9 @@
 import { FirebaseError } from "firebase/app";
 import {
   createUserWithEmailAndPassword,
+  onAuthStateChanged,
   signInWithEmailAndPassword,
+  type User,
 } from "firebase/auth";
 
 import { auth } from "../config/firebase";
@@ -17,7 +19,7 @@ type RegistrationInput = {
   acepto_terminos: boolean;
 };
 
-type Usuario = {
+export type Usuario = {
   id_usuario: string;
   nombre_completo: string;
   correo: string;
@@ -53,44 +55,48 @@ export async function registerUser(
       error.code === "auth/email-already-in-use"
     ) {
       throw new Error(
-        "Este correo ya está registrado. Inicia sesión con tu cuenta existente.",
+        "Este correo ya está registrado. Inicia sesión con tu cuenta existente.", {cause: error}
       );
     }
     throw error;
-}
+  }
 
-const token = await user.getIdToken();
+  const token = await user.getIdToken();
 
-const response = await fetch(`${API_URL}/auth/registro`, {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${token}`,
-  },
-  body: JSON.stringify({
-    nombre_completo: datos.nombre_completo,
-    carrera: datos.carrera,
-    semestre: datos.semestre,
-    acepto_terminos: datos.acepto_terminos,
-  }),
-});
+  const response = await fetch(`${API_URL}/auth/registro`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      nombre_completo: datos.nombre_completo,
+      carrera: datos.carrera,
+      semestre: datos.semestre,
+      acepto_terminos: datos.acepto_terminos,
+    }),
+  });
 
-if (!response.ok) {
-  throw new Error(
-    response.status === 409
-      ? "Esta cuenta ya tiene un perfil asociado. Inicie sesión"
-      : "No fue posible guardar el perfil. Reintente con los mismo datos.",
-  );
-}
+  if (!response.ok) {
+    throw new Error(
+      response.status === 409
+        ? "Esta cuenta ya tiene un perfil asociado. Inicie sesión"
+        : "No fue posible guardar el perfil. Reintente con los mismo datos.",
+    );
+  }
 
-return response.json();
+  return response.json();
 }
 
 export async function loginUser(
   email: string,
   password: string,
 ): Promise<Usuario["rol"]> {
-  const credential = await signInWithEmailAndPassword(auth, email.trim(), password,);
+  const credential = await signInWithEmailAndPassword(
+    auth,
+    email.trim(),
+    password,
+  );
 
   const token = await credential.user.getIdToken();
 
@@ -101,11 +107,43 @@ export async function loginUser(
   });
 
   if (!response.ok) {
-    throw new Error(response.status === 404 ? "Tu cuenta aún no tiene un perfil registrado. Regístrate" : "No fue posible consultar tu perfil.");
+    throw new Error(
+      response.status === 404
+        ? "Tu cuenta aún no tiene un perfil registrado. Regístrate"
+        : "No fue posible consultar tu perfil.",
+    );
   }
   const usuario: Usuario = await response.json();
 
   return usuario.rol;
 }
 
+export async function getMyProfile(signal?: AbortSignal): Promise<Usuario> {
+  const user = await new Promise<User | null>((resolve, reject) => {
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (currentUser) => {
+        unsubscribe();
+        resolve(currentUser);
+      },
+      reject,
+    );
+  });
 
+  if (!user) {
+    throw new Error("Debe iniciar sesión");
+  }
+  const token = await user.getIdToken();
+  const response = await fetch(`${API_URL}/usuarios/me`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    }, signal, 
+  });
+
+
+  if (!response.ok) {
+    throw new Error( response.status === 404 ? "Tu cuenta aún no tiene un perfil registrado":`No fue posible consultar tu perfil ${response.statusText}`,);
+  }
+
+  return response.json();
+}

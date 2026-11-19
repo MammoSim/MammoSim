@@ -1,18 +1,33 @@
 import UserProfileSummary from "./UserProfileSummary";
 import "../../styles/Header.css";
 
-export default function PageHeader() {
+type PageHeaderProps = {
+  title: string;
+  description?: string;
+  name: string;
+  carrera: string;
+  avatarColor?: string;
+};
+
+export default function PageHeader({
+  title,
+  description,
+  name,
+  carrera,
+  avatarColor = "#FFC1DA",
+}: PageHeaderProps) {
   return (
     <header className="header_container">
       <div style={{ flex: 1, minWidth: 0 }}>
-        <h1>Selecciona un caso clínico</h1>
-        <p>
-          Cada caso presenta una situación clinica diferente para desarrollar
-          tus habilidades de análisis, decisión y uso de la IA
-        </p>
+        <h1>{title}</h1>
+        {description && <p>{description}</p>}
       </div>
       <div className="profile_container">
-        <UserProfileSummary name="Zaira Ramírez Mejía " carrera="Ingeniería de Sistemas" avatarColor="#FFC1DA" />
+        <UserProfileSummary
+          name={name}
+          carrera={carrera}
+          avatarColor={avatarColor}
+        />
       </div>
     </header>
   );

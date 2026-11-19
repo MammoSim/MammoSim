@@ -3,12 +3,13 @@ import LoginForm from "../components/auth/LoginForm";
 import "../styles/AuthPage.css";
 import Logo from "../assets/Logo-bg.png";
 import SimulationModeDialog from "../components/mode/SimulationModeDialog";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { loginUser } from "../services/authServices";
 
 export type UserType = "estudiante" | "docente";
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   const [userType, setUserType] = useState<UserType>("estudiante");
   const [isModeOpen, setIsModeOpen] = useState(false);
   const location = useLocation();
@@ -35,7 +36,7 @@ export default function LoginPage() {
           onUserTypeChange={setUserType}
           authenticate={loginUser}
           onAuthenticated={(role) => {
-            if (role === "estudiante") {setIsModeOpen(true)} else {window.alert("Inicio docente correcto")};
+            if (role === "estudiante") {setIsModeOpen(true)} else {navigate("/docente", {replace: true})};
           }}
         />
         <SimulationModeDialog

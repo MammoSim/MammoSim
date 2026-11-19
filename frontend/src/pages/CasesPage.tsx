@@ -8,12 +8,18 @@ import Sidebar from "../components/layout/Sidebar";
 import "../styles/Sidebar.css";
 import PageHeader from "../components/layout/PageHeader";
 import { getCases } from "../services/casesServices";
+import { useProfile } from "../hooks/useProfile";
 
 export default function CasesPage() {
   const [cases, setCases] = useState<clinicalCase[]>([]);
   const [selectedCase, setSelectedCase] = useState<clinicalCase | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const {
+    usuario,
+    loading: profileLoading,
+    error: profileError,
+  } = useProfile();
 
   useEffect(() => {
     const controller = new AbortController();
@@ -49,7 +55,22 @@ export default function CasesPage() {
     <div className="sidebar_container">
       <Sidebar />
       <main className="content">
-        <PageHeader />
+
+        {/* Cargar la información del perfil */}
+        {profileLoading ? (
+          <p role="status">Cargando perfil...</p>
+        ) : profileError ? (
+          <p role="alert">{profileError}</p>
+        ): usuario ? (
+          <PageHeader
+            title="Selecciona un caso clínico"
+            description="Cada caso presenta una situación clínica diferente para desarrollar tus habilidades de análisis y decisión."
+            name={usuario.nombre_completo}
+            carrera={usuario.carrera}
+          />
+        ) : null}
+
+        {/* Cargar los casos*/}
         {isLoading ? (
           <p role="status">Cargando casos...</p>
         ) : error ? (

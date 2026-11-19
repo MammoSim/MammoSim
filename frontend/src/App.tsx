@@ -7,6 +7,7 @@ import HistorialPage from './pages/HistorialPage'
 import GuidePage from './pages/GuidePage'
 import SettingPage from './pages/SettingPage'
 import SimulationPage from './pages/SimulationPage'
+import ProfessorPage from './pages/ProfessorPage'
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
       <Route path='/guide' element={<GuidePage/>}/>
       <Route path='/setting' element={<SettingPage/>}/>
       <Route path='/simulation/:caseId' element={<SimulationPage/>}/>
+      <Route path='/docente' element={<ProfessorPage/>}/>
     </Routes>
   )
 }
