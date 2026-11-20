@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import "../../styles/AuthPage.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { registerUser } from "../../services/authServices";
 
 const Facultades = [
   "Salud",
@@ -14,34 +15,68 @@ const Facultades = [
   "No aplica",
 ];
 
-const Semestres = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, "No aplica"
-]
+const Semestres = Array.from({ length: 14 }, (_, index) => index + 1);
 
 export default function StudentForm() {
-  const [email, setEmail] = useState("");
   const [aceptado, setAceptado] = useState(false);
-  const [facultad, setFacultad] = useState("");
-  const [semester, setSemester] = useState("");
 
+  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [registrationError, setRegistrationError] = useState("");
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setRegistrationError("");
+    const fields = new FormData(event.currentTarget);
+    const semestre = Number(fields.get("semestre"));
+
+    if (!Number.isInteger(semestre) || semestre < 1 || semestre > 14) {
+      setRegistrationError("Selecciona un semestre entre 1 y 14");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const result = await registerUser({
+        email: String(fields.get("email") ?? ""),
+        password: String(fields.get("password") ?? ""),
+        nombre_completo: String(fields.get("name") ?? "").trim(),
+        carrera: String(fields.get("carrera") ?? ""),
+        semestre,
+        acepto_terminos: fields.get("aceptoTerminos") === "on",
+      });
+
+      navigate("/login", {
+        replace: true,
+        state: {
+          registrationMessage:
+            result.aviso ?? "Cuenta registrada. Ya puedes inciar sesión",
+        },
+      });
+    } catch (error) {
+      setRegistrationError(
+        error instanceof Error
+          ? error.message
+          : "No se pudo completar el registro.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
   return (
     <section className="auth">
       <h1>Crea tu cuenta</h1>
       <p>Registrate para comenzar a practicar</p>
 
-      <form
-        className="form_auth"
-        onSubmit={(e) => {
-          e.preventDefault();
-        }}
-      >
+      <form className="form_auth" onSubmit={handleSubmit}>
         <label htmlFor="name">Nombre completo</label>
         <input
-            id="name"
-            name="name"
-            type="text"
-            placeholder="Nombre y Apellido"
-            required 
+          id="name"
+          name="name"
+          type="text"
+          placeholder="Nombre y Apellido"
+          required
         />
 
         <label htmlFor="email">Correo electrónico</label>
@@ -49,50 +84,48 @@ export default function StudentForm() {
           id="email"
           name="email"
           type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
           placeholder="nombre@correo.com"
           required
         />
 
-        <label htmlFor="facultad">Facultad</label>
-        <select
-          id="facultad"
-          value={facultad}
-          onChange={(e) => setFacultad(e.target.value)}
-          required
-        >
-          <option value="" disabled>Seleccione su facultad</option>
-          {Facultades.map((facultad) => (
-            <option key={facultad} value={facultad}>{facultad}</option>
+        <label htmlFor="carrera">Facultad</label>
+        <select id="carrera" name="carrera" defaultValue="" required>
+          <option value="" disabled>
+            Seleccione su Facultad
+          </option>
+          {Facultades.map((carrera) => (
+            <option key={carrera} value={carrera}>
+              {carrera}
+            </option>
           ))}
         </select>
 
         <label>Semestre</label>
-        <select
-          id="semestre"
-          value={semester}
-          onChange={(e) => setSemester(e.target.value)}
-          required
-        >
-          <option value="" disabled>Seleccione su semestre</option>
+        <select id="semestre" name="semestre" defaultValue="" required>
+          <option value="" disabled>
+            Seleccione su semestre
+          </option>
           {Semestres.map((semestre) => (
-            <option key={semestre} value={semestre}>{semestre}</option>
+            <option key={semestre} value={semestre}>
+              {semestre}
+            </option>
           ))}
         </select>
+
         <label htmlFor="password">Contraseña</label>
         <input
           id="password"
           type="password"
           name="password"
-          placeholder="******"
-          autoComplete="current-password"
+          autoComplete="new-password"
           required
         />
 
         <label>
           <input
             type="checkbox"
+            name="aceptoTerminos"
+            required
             checked={aceptado}
             onChange={(e) => setAceptado(e.target.checked)}
           />
@@ -101,9 +134,10 @@ export default function StudentForm() {
             academico de la Universidad Santiago de Cali.
           </span>
         </label>
+
         <button
           type="submit"
-          disabled={!aceptado}
+          disabled={!aceptado || isSubmitting}
           style={{
             width: "100%",
             borderRadius: 12,
@@ -115,10 +149,13 @@ export default function StudentForm() {
             cursor: aceptado ? "pointer" : "not-allowed",
           }}
         >
-          Iniciar
+          {isSubmitting ? "Creando cuenta..." : "Crear cuenta"}
         </button>
+        {registrationError && <p role="alert">{registrationError}</p>}
 
-        <p className="auth_link">¿Ya tienes una cuenta? <Link to="/login">Inicia Sesión</Link></p>
+        <p className="auth_link">
+          ¿No tienes una cuenta? <Link to="/login">Inicia Sesión</Link>
+        </p>
       </form>
     </section>
   );

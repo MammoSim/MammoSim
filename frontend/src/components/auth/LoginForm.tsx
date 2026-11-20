@@ -1,20 +1,50 @@
 import TypeUserButton from "../ButtonUser";
 import "../../styles/AuthPage.css";
-import { useState } from "react";
+import {useState, type FormEvent } from "react";
 import { Link } from "react-router-dom";
 import type { UserType } from "../../pages/LoginPage";
 
 type LoginFormProps = {
   userType: UserType;
   onUserTypeChange: (type: UserType) => void;
+  authenticate?: (email: string, password: string) => Promise<UserType>;
+  onAuthenticated: (role: UserType) => void;
 };
 
 export default function LoginForm({
   userType,
   onUserTypeChange,
+  authenticate,
+  onAuthenticated,
 }: LoginFormProps) {
   const isProfessor = userType === "docente";
   const [aceptado, setAceptado] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [loginError, setLoginError] = useState("");
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setLoginError("");
+
+    if (!authenticate) {
+      setLoginError("El inicio de sesión todavía no está conectado.");
+      return;
+    }
+
+    const fields = new FormData(event.currentTarget);
+    const email = String(fields.get("email") ?? "").trim();
+    const password = String(fields.get("password") ?? "");
+
+    setIsSubmitting(true);
+    try {
+      const confirmedRole = await authenticate(email, password);
+      onAuthenticated(confirmedRole);
+    } catch (error){
+      setLoginError(error instanceof Error ? error.message : "No se pudo iniciar sesión. Inténtalo de nuevo.",);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
   return (
     <div className="auth_access">
@@ -25,7 +55,7 @@ export default function LoginForm({
       </section>
 
       <section className="auth_page_panel">
-        <form className="form_auth">
+        <form className="form_auth" onSubmit={handleSubmit}>
           <label>
             {isProfessor
               ? "Correo electrónico institucional"
@@ -35,7 +65,14 @@ export default function LoginForm({
             id="email"
             name="email"
             type="email"
-            placeholder="nombre@correo.com"
+            autoComplete="username"
+            placeholder={
+              isProfessor ? "nombre@usc.edu.co" : "nombre@correo.com"
+            }
+            pattern={isProfessor ? "[^@\\s]+@usc\\.edu\\.co" : undefined}
+            title={
+              isProfessor ? "Usa un correo terminado en @usc.edu.co" : undefined
+            }
             required
           />
           <label>Contraseña</label>
@@ -43,7 +80,7 @@ export default function LoginForm({
             id="password"
             name="password"
             type="password"
-            placeholder="*******"
+            autoComplete="current-password"
             required
           />
           <label>
@@ -51,6 +88,7 @@ export default function LoginForm({
               type="checkbox"
               checked={aceptado}
               onChange={(e) => setAceptado(e.target.checked)}
+              required
             />
             <span>
               Acepto el tratamiento de mis datos personales y los terminos de
@@ -59,7 +97,7 @@ export default function LoginForm({
           </label>
           <button
             type="submit"
-            disabled={!aceptado}
+            disabled={isSubmitting}
             style={{
               width: "100%",
               borderRadius: 12,
@@ -71,8 +109,9 @@ export default function LoginForm({
               cursor: aceptado ? "pointer" : "not-allowed",
             }}
           >
-            Iniciar
+            {isSubmitting ? "Iniciando sesión..." : "Iniciar sesión"}
           </button>
+          {loginError && <p role="alert">{loginError}</p>}
           <p className="auth_link">
             ¿Ya tienes una cuenta?<Link to="/register"> Registrate </Link>
           </p>

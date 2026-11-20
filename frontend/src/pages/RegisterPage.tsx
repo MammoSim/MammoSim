@@ -2,11 +2,13 @@ import { useState } from "react";
 import RegisterForm from "../components/auth/RegisterForm";
 import "../styles/AuthPage.css";
 import Logo from "../assets/Logo-bg.png";
+import SimulationModeDialog from "../components/mode/SimulationModeDialog";
 
 export type UserType = "estudiante" | "docente";
 
 export default function RegisterPage() {
   const [userType, setUserType] = useState<UserType>("estudiante");
+  const [isModeOpen, setIsModeOpen] = useState(false);
 
   return (
     <main className="auth_page">
@@ -24,7 +26,8 @@ export default function RegisterPage() {
         </h4>
       </section>
       <section className="auth_page_panel">
-        <RegisterForm userType={userType} onUserTypeChange={setUserType} />
+        <RegisterForm userType={userType} onUserTypeChange={setUserType} onRegistered = {(role) => {if(role === "estudiante") setIsModeOpen(true)}}/>
+          <SimulationModeDialog isOpen={isModeOpen} onClose={() => setIsModeOpen(false)}/>
       </section>
     </main>
   );

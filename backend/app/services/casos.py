@@ -17,13 +17,59 @@ def resumen_caso(caso: dict) -> dict:
     return {k: caso[k] for k in CAMPOS_RESUMEN if k in caso}
 
 
+
 def caso_para_resolver(caso: dict) -> dict:
-    """Caso sin respuesta_correcta, explicacion, IA, hallazgos ni retroalimentación."""
-    salida = {k: caso[k] for k in CAMPOS_CASO if k in caso}
-    salida["preguntas"] = [
-        {"numero": p["numero"], "enunciado": p["enunciado"], "opciones": p["opciones"]}
-        for p in caso["preguntas"]
+    """Prepara el caso para Unity sin revelar las respuestas.
+
+    Convierte las 7 preguntas técnicas y agrega la
+    decisión diagnóstica como pregunta número 8.
+    """
+
+    # Datos generales permitidos.
+    salida = {
+        k: caso[k]
+        for k in CAMPOS_CASO
+        if k in caso
+    }
+
+    preguntas_unity = []
+
+    # 1. Siete preguntas técnicas.
+    for p in caso["preguntas"]:
+        opciones = [
+            {
+                "id": letra,
+                "texto": texto
+            }
+            for letra, texto in p["opciones"].items()
+        ]
+
+        preguntas_unity.append({
+            "numero": p["numero"],
+            "tipo": "tecnica",
+            "enunciado": p["enunciado"],
+            "opciones": opciones
+        })
+
+    # 2. Pregunta diagnóstica número 8.
+    opciones_decision = [
+        {
+            "id": opcion["valor"],
+            "texto": opcion["texto"]
+        }
+        for opcion in caso["opciones_decision"]
     ]
+
+    preguntas_unity.append({
+        "numero": 8,
+        "tipo": "diagnostica",
+        "enunciado": caso["enunciado_decision"],
+        "opciones": opciones_decision
+    })
+
+    # 3. Entregar las ocho etapas a Unity.
+    salida["preguntas"] = preguntas_unity
+
     return salida
 
 

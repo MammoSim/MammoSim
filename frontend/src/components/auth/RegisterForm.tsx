@@ -7,6 +7,7 @@ import ProfessorForm from "./ProfessorRegisterForm";
 
 type RegisterFormProps = {
   userType: UserType;
+  onRegistered:(role: UserType) => void; 
   onUserTypeChange: (type: UserType) => void; 
 };
 
