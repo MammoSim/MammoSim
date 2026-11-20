@@ -1,5 +1,6 @@
 import { onAuthStateChanged, type User } from "firebase/auth";
 import { auth } from "../config/firebase";
+import type { ProfessorSession, ProfessorSessionDetail } from "../types/ProfessorHistorial";
 
 export type Course = {
   id_curso: string;
@@ -98,4 +99,35 @@ export async function joinCourse(codigo: string): Promise<Course>{
     throw await responseError(response);
   }
    return response.json();
+}
+
+{/*Sesiones de los cursos*/}
+
+export async function getCourseSessions(signal?: AbortSignal,) : Promise<ProfessorSession[]>{
+  const response = await fetch(`${API_URL}/cursos/mio/sesiones`, {
+    headers: await getHeaders(),
+    signal,
+  });
+
+  if (!response.ok){
+    throw await responseError(response);
+  }
+
+  return response.json();
+}
+
+
+{/*Detalle de las sesiones respectivas del curso */}
+
+export async function getCourseSessionsDetail(sessionId: string, signal?: AbortSignal,): Promise<ProfessorSessionDetail> {
+  const response = await fetch(`${API_URL}/cursos/mio/sesiones/${encodeURIComponent(sessionId)}`,
+{
+  headers: await getHeaders(),
+  signal,
+},);
+  if(!response.ok){
+    throw await responseError(response);
+  }
+
+  return response.json();
 }
