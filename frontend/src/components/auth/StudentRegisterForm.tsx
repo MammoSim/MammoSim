@@ -154,7 +154,7 @@ export default function StudentForm() {
         {registrationError && <p role="alert">{registrationError}</p>}
 
         <p className="auth_link">
-          ¿Ya tienes una cuenta? <Link to="/login">Inicia Sesión</Link>
+          ¿No tienes una cuenta? <Link to="/login">Inicia Sesión</Link>
         </p>
       </form>
     </section>

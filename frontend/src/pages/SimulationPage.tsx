@@ -7,6 +7,7 @@ import {
   useNavigate,
   useParams,
 } from "react-router-dom";
+import { useSimulationMode } from "../hooks/useSimulationMode";
 import { getAuth, onIdTokenChanged } from "firebase/auth";
 
 export default function SimulationPage() {
@@ -17,6 +18,8 @@ export default function SimulationPage() {
   const { caseId } = useParams<{ caseId: string }>();
   const startedCase = useRef<string | null>(null);
   const location = useLocation();
+  const {mode} = useSimulationMode();
+
 
   const idCurso =
     typeof location.state?.id_curso === "string"

@@ -13,25 +13,25 @@ export default function SidebarProfessor() {
       </div>
       <ul>
         <li>
-          <NavLink to="/docente">
+          <NavLink to="/docente" end>
             <UserCircle />
             Panel docente
           </NavLink>
         </li>
         <li>
-            <NavLink to="/cases_aviable">
+            <NavLink to="/docente/cases">
                 <Folder/>
                 Casos clínicos
             </NavLink>
         </li>
         <li>
-          <NavLink to="/history">
+          <NavLink to="/docente/historial">
             <StickyNotes />
             Historial
           </NavLink>
         </li>
         <li>
-          <NavLink to="/settings">
+          <NavLink to="/setting">
             <Settings />
             Ajustes
           </NavLink>
