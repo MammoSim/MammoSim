@@ -20,17 +20,36 @@ class UsuarioActual(BaseModel):
     rol: str | None  # None = tiene cuenta en Firebase pero aún no se registró
 
 
+
 def get_token_data(
     cred: HTTPAuthorizationCredentials | None = Depends(bearer),
 ) -> dict:
-    """Verifica el token. Úsalo solo en el registro (el usuario aún no existe)."""
+    """Verifica el token de Firebase."""
     if cred is None:
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Falta el token")
+        raise HTTPException(
+            status.HTTP_401_UNAUTHORIZED,
+            "Falta el token"
+        )
+
+    etapa = "inicializar Firebase"
+
     try:
         init_firebase()
+
+        etapa = "verificar el token"
         return fb_auth.verify_id_token(cred.credentials)
-    except Exception:
-        raise HTTPException(status.HTTP_401_UNAUTHORIZED, "Token inválido o vencido")
+
+    except Exception as exc:
+        print(
+            f"Firebase: error al {etapa} "
+            f"({type(exc).__name__}): {exc}",
+            flush=True
+        )
+
+        raise HTTPException(
+            status.HTTP_401_UNAUTHORIZED,
+            "Token inválido o vencido"
+        ) from None
 
 
 def get_usuario_actual(

@@ -36,3 +36,33 @@
     aspect-ratio: 16 / 9;
     background-color: #000000;
 }
+
+/* Pantalla completa de simulación */
+.simulation_page_container {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Encabezado de MammoSim */
+.simulation_header {
+  flex: 0 0 auto;
+}
+
+/* Espacio disponible para Unity */
+.unity_content {
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Canvas adaptable al navegador */
+.unity_canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
