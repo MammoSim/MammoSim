@@ -10,6 +10,7 @@ licenciado bajo CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/).
  
 MODIFICACIONES COMUNES A TODOS LOS ARCHIVOS
 - Se conserva el modelo completo (piel, conductos, glándulas, músculos), dividido en una versión de mama izquierda y una de mama derecha.
+- Se recortó la piel del torso para dejar visible solo la zona del pecho (sin cabeza, cuello, brazos ni abdomen). El mismo recorte se aplicó a los 7 archivos.
 - Escala corregida a tamaño real (torso de aprox. 0,68 m).
 - Optimización de peso: eliminación de datos duplicados, texturas de color en JPEG (calidad 90) y cuantización de la geometría (KHR_mesh_quantization). Sin reducción de polígonos.
 - Se agregó una lesión sintética modelada en Blender según el caso clínico.
