@@ -19,7 +19,7 @@ export default function SidebarProfessor() {
           </NavLink>
         </li>
         <li>
-            <NavLink to="/cases_aviable">
+            <NavLink to="/docente/cases">
                 <Folder/>
                 Casos clínicos
             </NavLink>

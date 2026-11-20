@@ -4,9 +4,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 
 type CaseDetailsProps = {
   clinicalCase: clinicalCase;
+  canStartSimulation?: boolean;
 };
 
-export default function CaseDetails({ clinicalCase }: CaseDetailsProps) {
+export default function CaseDetails({
+  clinicalCase,
+  canStartSimulation = true,
+}: CaseDetailsProps) {
   const navigate = useNavigate();
 
   const location = useLocation();
@@ -35,18 +39,20 @@ export default function CaseDetails({ clinicalCase }: CaseDetailsProps) {
       <h4>Descripción del caso</h4>
       <p>{clinicalCase.descripcion_breve}</p>
       <p>Objetivos de aprendizaje</p>
-      <button
-        type="button"
-        className="start_sim"
-        onClick={() =>
-          navigate(
-            `/simulation/${encodeURIComponent(clinicalCase.clinical_id)}`,
-            { state: { id_curso: idCurso } },
-          )
-        }
-      >
-        <span>Iniciar Simulación</span>
-      </button>
+      { canStartSimulation && (
+        <button
+          type="button"
+          className="start_sim"
+          onClick={() =>
+            navigate(
+              `/simulation/${encodeURIComponent(clinicalCase.clinical_id)}`,
+              { state: { id_curso: idCurso } },
+            )
+          }
+        >
+          <span>Iniciar Simulación</span>
+        </button>
+      )}
     </aside>
   );
 }

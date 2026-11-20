@@ -11,6 +11,7 @@ import ProfessorPage from "./pages/ProfessorPage";
 import ProfessorHistorialPage from "./pages/docente/history/ProfessorHistorialPage";
 
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import CasesProfessorPage from "./pages/docente/cases/CasesProfessorPage";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
       <Route element={<ProtectedRoute allowedRoles={["docente"]} />}>
         <Route path="/docente" element={<ProfessorPage />} />
         <Route path="/docente/historial" element={<ProfessorHistorialPage />} />
+        <Route path="/docente/cases" element={<CasesProfessorPage/>}/>
       </Route>
 
       {/* Páginas a la que acceden ambos roles */}
