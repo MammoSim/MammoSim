@@ -12,39 +12,44 @@ import ProfessorHistorialPage from "./pages/docente/history/ProfessorHistorialPa
 
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import CasesProfessorPage from "./pages/docente/cases/CasesProfessorPage";
+import { SimulationModeProvider } from "./context/SimulationModeContext";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Navigate to="/login" replace />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
+    <SimulationModeProvider>
+      <Routes>
+        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
 
-      {/* Páginas a las que accede el estudiante */}
-      <Route element={<ProtectedRoute allowedRoles={["estudiante"]} />}>
-        <Route path="/cases" element={<CasesPage />} />
-        <Route path="/historial" element={<HistorialPage />} />
-        <Route path="/guide" element={<GuidePage />} />
-        <Route path="/simulation/:caseId" element={<SimulationPage />} />
-      </Route>
+        {/* Páginas a las que accede el estudiante */}
+        <Route element={<ProtectedRoute allowedRoles={["estudiante"]} />}>
+          <Route path="/cases" element={<CasesPage />} />
+          <Route path="/historial" element={<HistorialPage />} />
+          <Route path="/guide" element={<GuidePage />} />
+          <Route path="/simulation/:caseId" element={<SimulationPage />} />
+        </Route>
 
-      {/* Páginas a las que accede el docente */}
-      <Route element={<ProtectedRoute allowedRoles={["docente"]} />}>
-        <Route path="/docente" element={<ProfessorPage />} />
-        <Route path="/docente/historial" element={<ProfessorHistorialPage />} />
-        <Route path="/docente/cases" element={<CasesProfessorPage/>}/>
-      </Route>
+        {/* Páginas a las que accede el docente */}
+        <Route element={<ProtectedRoute allowedRoles={["docente"]} />}>
+          <Route path="/docente" element={<ProfessorPage />} />
+          <Route
+            path="/docente/historial"
+            element={<ProfessorHistorialPage />}
+          />
+          <Route path="/docente/cases" element={<CasesProfessorPage />} />
+        </Route>
 
-      {/* Páginas a la que acceden ambos roles */}
-      <Route
-        element={<ProtectedRoute allowedRoles={["estudiante", "docente"]} />}
-      >
-        <Route path="/setting" element={<SettingPage />} />
-      </Route>
+        {/* Páginas a la que acceden ambos roles */}
+        <Route
+          element={<ProtectedRoute allowedRoles={["estudiante", "docente"]} />}
+        >
+          <Route path="/setting" element={<SettingPage />} />
+        </Route>
 
-      <Route path="*" element={<Navigate to="/login" replace />}>
-      </Route>
-    </Routes>
+        <Route path="*" element={<Navigate to="/login" replace />}></Route>
+      </Routes>
+    </SimulationModeProvider>
   );
 }
 

@@ -2,6 +2,7 @@ import { Unity, useUnityContext } from "react-unity-webgl";
 import { useEffect, useRef, useState } from "react";
 import "../styles/Simulation.css";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useSimulationMode } from "../hooks/useSimulationMode";
 
 export default function SimulationPage() {
   const [closing, setClosing] = useState(false);
@@ -9,6 +10,8 @@ export default function SimulationPage() {
   const {caseId} = useParams<{caseId: string}>();
   const startedCase = useRef<string | null>(null);
   const location = useLocation();
+  const {mode} = useSimulationMode();
+
 
   const idCurso =
     typeof location.state?.id_curso === "string"
@@ -60,7 +63,8 @@ export default function SimulationPage() {
     >
       <div className="simulation_header">
         <h2>MammoSim - Simulación clínica {caseId}</h2>
-        <p>Modalidad: {idCurso ? "Clase dirigida" : "Práctica individual"}</p>
+        <p>Modalidad: {" "} {
+          mode?.tipo === "clase" ? "Clase dirigida" : mode?.tipo === "individual" ? "Práctica individual" : "Sin seleccionar"}</p>
 
         <button
           type="button"

@@ -4,6 +4,7 @@ import "../../styles/ModeDialog.css";
 import Logo from "../../assets/Logo-bg.png";
 import { useNavigate } from "react-router-dom";
 import { joinCourse } from "../../services/coursesServices";
+import { useSimulationMode } from "../../hooks/useSimulationMode";
 
 type SimulationModeDialogProps = {
   isOpen: boolean;
@@ -19,6 +20,7 @@ export default function SimulationModeDialog({
   const [code, setCode] = useState("");
   const [joining, setJoining] = useState(false);
   const [joinError, setJoinError] = useState("");
+  const { selectCourse, selectIndividual } = useSimulationMode();
 
   async function handleJoin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -37,15 +39,9 @@ export default function SimulationModeDialog({
     try {
       const course = await joinCourse(codigo);
 
+      selectCourse(course.id_curso);
       onClose();
-
-      navigate("/cases", {
-        replace: true,
-        state: {
-          id_curso: course.id_curso,
-          nombre_curso: course.nombre,
-        },
-      });
+      navigate("/cases", { replace: true });
     } catch (error) {
       setJoinError(
         error instanceof Error
@@ -131,10 +127,10 @@ export default function SimulationModeDialog({
               type="button"
               disabled={joining}
               onClick={() => {
+                selectIndividual(); 
                 onClose();
                 navigate("/cases", {
                   replace: true,
-                  state: { id_curso: null },
                 });
               }}
             >
