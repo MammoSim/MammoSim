@@ -31,7 +31,7 @@ export default function SidebarProfessor() {
           </NavLink>
         </li>
         <li>
-          <NavLink to="/settings">
+          <NavLink to="/setting">
             <Settings />
             Ajustes
           </NavLink>

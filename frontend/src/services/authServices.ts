@@ -1,8 +1,11 @@
 import { FirebaseError } from "firebase/app";
 import {
   createUserWithEmailAndPassword,
+  EmailAuthProvider,
   onAuthStateChanged,
+  reauthenticateWithCredential,
   signInWithEmailAndPassword,
+  updatePassword,
   type User,
 } from "firebase/auth";
 
@@ -146,4 +149,22 @@ export async function getMyProfile(signal?: AbortSignal): Promise<Usuario> {
   }
 
   return response.json();
+}
+
+
+{/*Cambio de contraseña*/}
+export async function changePassword(currentPassword: string, newPassword: string): Promise<void>{
+  const user = auth.currentUser;
+
+  if(!user?.email){
+    throw new Error("Debes iniciar sesión para cmabiar la contraseña");
+  }
+
+  const credential = EmailAuthProvider.credential(
+    user.email,
+    currentPassword,
+  );
+
+  await reauthenticateWithCredential(user, credential);
+  await updatePassword(user, newPassword);
 }
