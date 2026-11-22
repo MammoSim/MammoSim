@@ -31,17 +31,11 @@ def test_acertar_una_pregunta_mas_nunca_baja_la_nota():
     assert notas == sorted(notas) and len(set(notas)) == 8
 
 
-@pytest.mark.xfail(strict=True, reason=(
-    "DEFECTO: puntuacion_sesion no valida el rango superior; "
-    "puntuacion_sesion(99, 5, 5, 1) devuelve 130.0 en una escala de 0 a 10"))
 def test_mas_aciertos_de_los_posibles_lanza_error():
     with pytest.raises(ValueError):
         puntuacion_sesion(99, 5, 5, 1)
 
 
-@pytest.mark.xfail(strict=True, reason=(
-    "DEFECTO: puntuacion_sesion acepta cantidades negativas; "
-    "puntuacion_sesion(-5, 0, 0, 1) devuelve -6.25"))
 def test_aciertos_negativos_lanzan_error():
     with pytest.raises(ValueError):
         puntuacion_sesion(-5, 0, 0, 1)

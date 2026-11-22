@@ -26,9 +26,6 @@ def test_un_nombre_de_dos_caracteres_se_acepta(cliente):
     assert c.post("/cursos", json={"nombre": "AB"}).status_code == 201
 
 
-@pytest.mark.xfail(strict=True, reason=(
-    "DEFECTO: CursoIn no recorta los espacios antes de validar el largo; "
-    "un nombre de solo espacios responde 201 y se guarda vacío"))
 def test_un_nombre_de_solo_espacios_da_422(cliente):
     c, estado = cliente
     como_docente(estado)

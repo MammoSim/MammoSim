@@ -28,5 +28,13 @@ def puntuacion_sesion(
     """Se guarda en resultados.puntuacion."""
     if total_casos <= 0:
         raise ValueError("total_casos debe ser mayor que 0")
+    if min(preguntas_acertadas, aciertos_iniciales, aciertos_finales) < 0:
+        raise ValueError("los aciertos no pueden ser negativos")
+    if (
+        preguntas_acertadas > TOTAL_PREGUNTAS * total_casos
+        or aciertos_iniciales > total_casos
+        or aciertos_finales > total_casos
+    ):
+        raise ValueError("hay más aciertos que los posibles para esos casos")
     puntos = preguntas_acertadas + 0.5 * aciertos_iniciales + 0.5 * aciertos_finales
     return round(puntos / (PUNTOS_POR_CASO * total_casos) * 10, 2)
