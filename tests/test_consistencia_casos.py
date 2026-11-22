@@ -1,6 +1,7 @@
 """Consistencia entre los casos de Unity y los de Firestore.
 
-Compara  unity/MammoSim/Assets/Resources/Casos/casos_mammosim.json  (lo que usa MockApi)
+Compara  SimulacionUnity/Assets/Resources/Casos/casos_mammosim.json  (lo que usa MockApi; si esa
+carpeta aun no existe se usa unity/MammoSim/..., el proyecto anterior)
 con  backend/scripts/casos_clinicos.json  (lo que sirve el backend; fixture `casos`).
 Va en tests/ de la raíz porque necesita ver backend/ y unity/ a la vez.
 Se ejecuta desde la raíz del repo:  python -m pytest tests
@@ -12,10 +13,20 @@ from pathlib import Path
 
 import pytest
 
-UNITY = (
-    Path(__file__).resolve().parents[1]
-    / "unity" / "MammoSim" / "Assets" / "Resources" / "Casos" / "casos_mammosim.json"
+RAIZ = Path(__file__).resolve().parents[1]
+_RUTAS_UNITY = (
+    RAIZ / "SimulacionUnity" / "Assets" / "Resources" / "Casos" / "casos_mammosim.json",
+    RAIZ / "unity" / "MammoSim" / "Assets" / "Resources" / "Casos" / "casos_mammosim.json",
 )
+UNITY = next((r for r in _RUTAS_UNITY if r.exists()), _RUTAS_UNITY[0])
+
+
+def _dificultad_vacia_en_unity() -> bool:
+    """True si algun caso del JSON de Unity trae la dificultad vacia (defecto conocido)."""
+    if not UNITY.exists():
+        return False
+    datos = json.loads(UNITY.read_text(encoding="utf-8"))
+    return any(not c.get("dificultad") for c in datos["casos"])
 
 # Campos que deben ser idénticos en ambos archivos.
 CAMPOS_IGUALES = (
@@ -83,14 +94,21 @@ def test_decision_igual_en_texto_orden_y_respuesta(casos, unity):
 
 
 def test_datos_estudio_igual(casos, unity):
-    # Backend: lista de líneas; Unity: una cadena con saltos de línea.
+    # Backend: lista de líneas. Unity: lista (JSON nuevo) o una cadena con saltos de línea (JSON anterior).
     for cid, backend in casos.items():
-        assert "\n".join(backend["datos_estudio"]) == unity[cid]["datos_estudio"], cid
+        datos = unity[cid]["datos_estudio"]
+        if isinstance(datos, list):
+            datos = "\n".join(datos)
+        assert "\n".join(backend["datos_estudio"]) == datos, cid
 
 
 # ---- DEFECTO CONOCIDO: en casos_mammosim.json todos los casos traen "dificultad": "" ----
-# xfail estricto: la suite sigue en verde y esta prueba avisa (XPASS) cuando se corrija el JSON de Unity.
-@pytest.mark.xfail(strict=True, reason="casos_mammosim.json trae dificultad vacia en los 7 casos")
+# xfail estricto SOLO mientras el JSON de Unity tenga la dificultad vacia: cuando se corrige, la prueba
+# pasa sola (en el proyecto SimulacionUnity ya esta corregido).
+@pytest.mark.xfail(
+    condition=_dificultad_vacia_en_unity(), strict=True,
+    reason="casos_mammosim.json trae dificultad vacia en los casos",
+)
 def test_dificultad_igual_y_no_vacia(casos, unity):
     vacios = [c for c in unity if not unity[c]["dificultad"]]
     assert not vacios, f"dificultad vacía en {vacios}"
