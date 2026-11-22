@@ -14,20 +14,35 @@ export default function CaseCard({ clinicalCase, onSelect }: CaseCardProps) {
         ? "#F5B301"
         : "#EF4444";
 
-  
   return (
     <article className="card">
-      <h2>{clinicalCase.id}</h2>
-      <img src={clinicalCase.imgUrl} alt="mamografía" width={100} />
+      <h2>{clinicalCase.clinical_id}</h2>
+      {clinicalCase.imgUrl && (
+        <img
+          src={clinicalCase.imgUrl}
+          alt={`Vista previa de ${clinicalCase.imgUrl}`}
+          width={100}
+        />
+      )}
+
       <p style={{ color: dificultad }}>Dificultad: {clinicalCase.dificultad}</p>
       <h3>{clinicalCase.title} </h3>
-      <p>
-        Edad estimada del paciente: <br /> {clinicalCase.pacientAge}
-      </p>
+      {clinicalCase.pacientAge !== undefined && (
+        <p>
+          Edad simulada: <br /> {clinicalCase.pacientAge} años
+        </p>
+      )}
+
       <p>
         Tipo de estudio: <br /> {clinicalCase.imagingStudy}
       </p>
-      <button type="button" className="detail_button" onClick={() => onSelect(clinicalCase)}>Ver detalle</button>
+      <button
+        type="button"
+        className="detail_button"
+        onClick={() => onSelect(clinicalCase)}
+      >
+        Ver detalle
+      </button>
     </article>
   );
 }

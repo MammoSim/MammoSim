@@ -1,11 +1,12 @@
 export type clinicalCase = {
     clinical_id: string;
     title: string; 
-    imgUrl:string;
+    imgUrl?:string;
     dificultad: "baja" | "media" | "alta";
-    pacientAge: number;
+    pacientAge?: number;
     descripcion_breve: string;
     imagingStudy: string;
+    modeRef?: string;
 };
 
 export type birads = {

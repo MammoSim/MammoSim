@@ -201,3 +201,55 @@ def retroalimentacion(
         "siguio_ia": final["siguio_ia"],
         "nota_caso": nota_caso(acertadas, inicial["acierto"], final["acierto"]),
     }
+
+@router.get("/progreso")
+def progreso_caso(
+    id_sesion: str,
+    id_caso: str,
+    estudiante: UsuarioActual = Depends(requiere_estudiante),
+    db=Depends(get_db),
+):
+    """Consulta el progreso sin revelar respuestas correctas."""
+
+    _, id_doc = _contexto(
+        db, id_sesion, id_caso, estudiante.uid
+    )
+
+    respuestas = _respuestas_del_caso(
+        db, id_sesion, id_caso
+    )
+
+    numeros = sorted({
+        r["numero_pregunta"] for r in respuestas
+    })
+
+    inicial = _decision(
+        db, "decisiones_iniciales", id_doc
+    )
+
+    final = _decision(
+        db, "decisiones_finales", id_doc
+    )
+
+    pendientes = [
+        n for n in range(1, 8)
+        if n not in numeros
+    ]
+
+    
+    return {
+        "id_caso": id_caso,
+        "preguntas_respondidas": numeros,
+        "siguiente_pregunta": (
+            pendientes[0] if pendientes else None
+        ),
+        "decision_inicial_guardada": inicial is not None,
+        "decision_final_guardada": final is not None,
+        "decision_inicial": (
+            inicial["decision"] if inicial else None
+        ),
+        "decision_final": (
+            final["decision"] if final else None
+        ),
+    }
+
