@@ -11,8 +11,9 @@ from google.cloud.firestore_v1.base_query import FieldFilter
 
 from app.auth import UsuarioActual, requiere_estudiante
 from app.firebase import get_db
-from app.schemas import ResultadoOut, SesionActivaOut, SesionIn, SesionOut
+from app.schemas import ResultadoOut, SesionActivaOut, SesionIn, SesionOut, SesionRevisionOut
 from app.services.puntuacion import puntuacion_sesion
+from app.services.revision import detalle_caso
 
 router = APIRouter(tags=["sesiones"])
 
@@ -199,3 +200,51 @@ def ver_resultado(
     if not doc.exists:
         raise HTTPException(404, "Esa sesión no tiene resultado")
     return doc.to_dict()
+
+
+@router.get("/sesiones/{id_sesion}/detalle", response_model=SesionRevisionOut)
+def ver_detalle(
+    id_sesion: str,
+    estudiante: UsuarioActual = Depends(requiere_estudiante),
+    db=Depends(get_db),
+):
+    """23. Repaso de una sesión COMPLETADA: por caso, cada pregunta con sus
+    opciones, lo que eligió, la correcta y la explicación; las decisiones, la
+    recomendación del tutor y la retroalimentación. 403 si la sesión es de otro,
+    409 si todavía no está completada (así no se adelantan respuestas)."""
+    sesion = _sesion_propia(db, id_sesion, estudiante.uid)
+    if sesion["estado"] != "completada":
+        raise HTTPException(409, "La sesión todavía no está completada")
+
+    respuestas = [
+        d.to_dict()
+        for d in db.collection("respuestas")
+        .where(filter=FieldFilter("id_sesion", "==", id_sesion))
+        .stream()
+    ]
+    casos = []
+    for id_caso in sesion["casos_asignados"]:
+        caso = db.collection("casos_clinicos").document(id_caso).get()
+        if not caso.exists:
+            continue
+        id_doc = f"{id_sesion}_{id_caso}"
+        inicial = db.collection("decisiones_iniciales").document(id_doc).get()
+        final = db.collection("decisiones_finales").document(id_doc).get()
+        casos.append(
+            detalle_caso(
+                caso.to_dict(),
+                [r for r in respuestas if r["id_caso"] == id_caso],
+                inicial.to_dict() if inicial.exists else None,
+                final.to_dict() if final.exists else None,
+            )
+        )
+
+    resultado = db.collection("resultados").document(id_sesion).get()
+    return {
+        "id_sesion": id_sesion,
+        "estado": sesion["estado"],
+        "fecha_inicio": sesion["fecha_inicio"],
+        "fecha_fin": sesion.get("fecha_fin"),
+        "puntuacion": resultado.to_dict()["puntuacion"] if resultado.exists else None,
+        "casos": casos,
+    }

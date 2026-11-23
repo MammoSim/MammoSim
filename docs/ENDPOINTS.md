@@ -1,6 +1,6 @@
 # MammoSim — Endpoints del backend (FastAPI)
 
-La API tiene 22 endpoints que cubren todo el recorrido del estudiante y la vista del docente; el cliente (Unity WebGL y la web) solo habla con FastAPI, y FastAPI es lo único que toca Firestore.
+La API tiene 23 endpoints que cubren todo el recorrido del estudiante y la vista del docente; el cliente (Unity WebGL y la web) solo habla con FastAPI, y FastAPI es lo único que toca Firestore.
 
 ## Resumen y convenciones
 
@@ -81,5 +81,6 @@ El docente solo ve las sesiones cuyo `id_curso` es el de su curso; lo hecho ante
 | # | Endpoint | Rol | Qué recibe | Qué hace y responde |
 | --- | --- | --- | --- | --- |
 | 18 | `GET /sesiones/{id}/resultado` | Estudiante dueño | Nada | Devuelve `resultados/{id}`: totales, aciertos iniciales y finales, uso de la IA y `puntuacion`. 409 si la sesión aún no está completada. |
+| 23 | `GET /sesiones/{id}/detalle` | Estudiante dueño | Nada | Repaso de una sesión **completada**, para mostrar el detalle de la interacción. Por caso devuelve: `titulo`, `nota_caso`, las 7 `preguntas` (con `enunciado`, `opciones`, `opcion_elegida`, `respuesta_correcta`, `correcta` y `explicacion`), la pregunta de decisión con sus opciones, `decision_inicial`, `recomendacion_ia` (`opcion_ia`, `texto`, `ia_correcta`, `siguio_ia`), `decision_final`, `hallazgos` y `retroalimentacion`; arriba, `puntuacion` de la sesión. 403 si la sesión es de otro estudiante, 404 si no existe, 409 si todavía no está completada (así no se adelantan respuestas). |
 | 19 | `GET /cursos/mio/sesiones` | Docente | Opcional: página y filtro por estudiante | Lista las sesiones de su curso (`id_curso` = el suyo) con nombre del estudiante, `estado`, `fecha_inicio` y `puntuacion`. Puede pedir un índice compuesto en `sesiones` (`id_curso` + `fecha_inicio`); Firebase muestra el enlace para crearlo. |
 | 20 | `GET /cursos/mio/sesiones/{id}` | Docente | Nada | Detalle de una sesión de su curso: respuestas, decisiones inicial y final, `siguio_ia` y nota de cada caso. 404 si la sesión no es de su curso. |
