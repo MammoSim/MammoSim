@@ -26,6 +26,7 @@ def test_caso_para_resolver_no_filtra_nada_secreto(casos):
 
 
 def test_caso_para_resolver_conserva_lo_necesario(casos):
+    # Formato de Unity: 7 técnicas + la decisión diagnóstica como pregunta 8.
     c = caso_para_resolver(casos["caso_001"])
     # 7 técnicas + la decisión diagnóstica como pregunta 8 (formato de Unity)
     assert len(c["preguntas"]) == 8
