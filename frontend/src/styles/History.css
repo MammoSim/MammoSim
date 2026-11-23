@@ -108,6 +108,7 @@
 .history_details {
   display: flex;
   flex-direction: column;
+  justify-self: end;
   gap: 20px;
   min-width: 0;
 }

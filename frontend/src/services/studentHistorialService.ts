@@ -1,6 +1,6 @@
 import { onAuthStateChanged, type User } from "firebase/auth";
 import { auth } from "../config/firebase";
-import type { StudentResult, StudentSession } from "../types/StudentHistorial";
+import { type StudentSessionDetail, type StudentResult, type StudentSession } from "../types/StudentHistorial";
 
 const API_URL = "http://localhost:8000";
 
@@ -46,9 +46,20 @@ export function getMySessions(signal?: AbortSignal) {
   return request<StudentSession[]>("/sesiones/mias", signal);
 }
 
+
+/* Obtener los resultados de la interacción */
 export function getSessionResult(sessionId: string, signal?: AbortSignal) {
   return request<StudentResult>(
     `/sesiones/${encodeURIComponent(sessionId)}/resultado`,
+    signal,
+  );
+}
+
+
+/* Obtener el detalle de la sesión */
+export function getSessionDetails(sessionId: string, signal?: AbortSignal){
+  return request<StudentSessionDetail>(
+    `/sesiones/${encodeURIComponent(sessionId)}/detalle`,
     signal,
   );
 }
