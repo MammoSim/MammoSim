@@ -38,6 +38,9 @@ class RegistroOut(BaseModel):
 
 # ---------- Cursos ----------
 class CursoIn(BaseModel):
+    # Se recortan los espacios antes de validar: "   " cuenta como vacío (422).
+    model_config = ConfigDict(str_strip_whitespace=True)
+
     nombre: str = Field(min_length=2)
 
 
