@@ -5,7 +5,7 @@ from fastapi.testclient import TestClient
 
 from app.main import app
 
-# (método, ruta) de los 21 endpoints
+# (método, ruta) de los 22 endpoints
 RUTAS = {
     ("POST", "/auth/registro"), ("GET", "/usuarios/me"),
     ("POST", "/cursos"), ("GET", "/cursos/mio"), ("POST", "/inscripciones"),
