@@ -40,9 +40,10 @@ def get_token_data(
         return fb_auth.verify_id_token(cred.credentials)
 
     except Exception as exc:
+        # Solo la etapa y el tipo de error: el texto del error puede traer
+        # pedazos del token y no debe quedar en los registros del servidor.
         print(
-            f"Firebase: error al {etapa} "
-            f"({type(exc).__name__}): {exc}",
+            f"Firebase: error al {etapa} ({type(exc).__name__})",
             flush=True
         )
 

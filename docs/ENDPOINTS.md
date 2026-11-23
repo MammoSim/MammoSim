@@ -1,6 +1,6 @@
 # MammoSim — Endpoints del backend (FastAPI)
 
-La API tiene 21 endpoints que cubren todo el recorrido del estudiante y la vista del docente; el cliente (Unity WebGL y la web) solo habla con FastAPI, y FastAPI es lo único que toca Firestore.
+La API tiene 22 endpoints que cubren todo el recorrido del estudiante y la vista del docente; el cliente (Unity WebGL y la web) solo habla con FastAPI, y FastAPI es lo único que toca Firestore.
 
 ## Resumen y convenciones
 
@@ -48,7 +48,7 @@ Los casos son contenido fijo; el servidor los entrega sin ningún campo que reve
 | # | Endpoint | Rol | Qué recibe | Qué hace y responde |
 | --- | --- | --- | --- | --- |
 | 8 | `GET /casos` | Cualquiera registrado | Nada | Lista los 7 casos con `id_caso`, `titulo`, `descripcion_breve`, `lado`, `vistas`, `dificultad` y `modelo_3d_ref`. |
-| 9 | `GET /casos/{id_caso}` | Cualquiera registrado | Nada | Devuelve el caso para resolverlo: `datos_estudio`, `edad_simulada`, las 7 `preguntas` (solo `numero`, `enunciado` y `opciones`), `enunciado_decision` y `opciones_decision`. Se quitan `respuesta_correcta` (del caso y de cada pregunta), `explicacion`, `opcion_ia_incorrecta`, las recomendaciones de la IA, `hallazgos` y `retroalimentacion`. Solo se entrega si el caso está en una sesión en_curso del estudiante (403 si no). 404 si no existe. |
+| 9 | `GET /casos/{id_caso}` | Cualquiera registrado | Nada | Devuelve el caso para resolverlo: `datos_estudio`, `edad_simulada`, las 8 `preguntas` (las 7 técnicas y la decisión diagnóstica como pregunta 8; cada una con solo `numero`, `tipo` (`tecnica` o `diagnostica`), `enunciado` y `opciones`, una lista de `{id, texto}`), `enunciado_decision` y `opciones_decision`. Se quitan `respuesta_correcta` (del caso y de cada pregunta), `explicacion`, `opcion_ia_incorrecta`, las recomendaciones de la IA, `hallazgos` y `retroalimentacion`. Solo se entrega si el caso está en una sesión en_curso del estudiante (403 si no). 404 si no existe. |
 
 ## 4. Sesiones
 
@@ -72,6 +72,7 @@ Todas las rutas cuelgan de `/sesiones/{id}/casos/{id_caso}`, exigen que la sesi�
 | 15 | `GET .../recomendacion-ia` | Nada | Solo después de la decisión inicial (409 si no existe). Si la inicial fue buena, devuelve `la opcion_ia (la incorrecta fija)` con `recomendacion_ia_incorrecta`; si fue mala, devuelve la opción correcta con `recomendacion_ia_correcta`. Es determinista y no escribe nada; nunca dice si la recomendación es la correcta. |
 | 16 | `POST .../decision-final` | `decision` | Exige la decisión inicial (409 si no). Recalcula en el servidor qué recomendó la IA y crea `decisiones_finales/{id_sesion}_{id_caso}` con `decision`, `acierto`, `opcion_ia`, `ia_correcta` y `siguio_ia`. Se guarda siempre, aunque no cambie de opinión. Responde 201 `{guardada: true}`. |
 | 17 | `GET .../retroalimentacion` | Nada | Solo después de la decisión final (409 si no). Devuelve `hallazgos`, `retroalimentacion`, la `respuesta_correcta` del caso, por cada pregunta si acertó (la explicación ya se mostró al contestarla), si la recomendación de la IA era correcta y la **nota del caso** (0 a 10) con su desglose. La nota se calcula al vuelo y no se guarda. |
+| 22 | `GET .../progreso` | Nada | Dice cómo va el estudiante dentro del caso: `preguntas_respondidas`, `siguiente_pregunta` (o `null` si ya contestó las 7), `decision_inicial_guardada`, `decision_final_guardada` y las decisiones que eligió. Sirve para retomar el caso donde lo dejó. No revela aciertos ni respuestas correctas. |
 
 ## 6. Resultados y vista del docente
 
