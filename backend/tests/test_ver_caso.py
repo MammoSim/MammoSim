@@ -36,8 +36,9 @@ def test_entrega_el_caso_dentro_de_la_sesion_en_curso(cliente):
     assert r.status_code == 200
     caso = r.json()
     assert caso["id_caso"] == "caso_001"
-    assert len(caso["preguntas"]) == 7
-    assert set(caso["preguntas"][0]) == {"numero", "enunciado", "opciones"}
+    assert len(caso["preguntas"]) == 8
+    assert set(caso["preguntas"][0]) == {"numero", "tipo", "enunciado", "opciones"}
+    assert caso["preguntas"][7]["tipo"] == "diagnostica"
     assert caso["enunciado_decision"] and len(caso["opciones_decision"]) == 4
     assert caso["datos_estudio"] and caso["edad_simulada"]
 
