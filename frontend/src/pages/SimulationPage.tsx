@@ -2,11 +2,7 @@
 import { Unity, useUnityContext } from "react-unity-webgl";
 import { useEffect, useRef, useState } from "react";
 import "../styles/Simulation.css";
-import {
-  useLocation,
-  useNavigate,
-  useParams,
-} from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSimulationMode } from "../hooks/useSimulationMode";
 import { getAuth, onIdTokenChanged } from "firebase/auth";
 
@@ -17,14 +13,11 @@ export default function SimulationPage() {
   const navigate = useNavigate();
   const { caseId } = useParams<{ caseId: string }>();
   const startedCase = useRef<string | null>(null);
-  const location = useLocation();
   const {mode} = useSimulationMode();
 
 
   const idCurso =
-    typeof location.state?.id_curso === "string"
-      ? location.state.id_curso
-      : null;
+  mode?.tipo === "clase" ? mode.id_curso : null;
 
   // Configuración del build WebGL.
   const {
@@ -65,13 +58,20 @@ export default function SimulationPage() {
 
           if (cancelled) return;
 
+          
           // Primero autenticamos Unity.
           sendMessage("ApiClient", "SetToken", token);
 
           setAuthError("");
 
-          // Después iniciamos el caso una sola vez.
+          // Configuramos el curso antes de iniciar el caso.
           if (startedCase.current !== caseId) {
+            sendMessage(
+              "GameManager",
+              "SetCurso",
+              idCurso ?? ""
+            );
+
             startedCase.current = caseId;
 
             sendMessage(
@@ -80,6 +80,7 @@ export default function SimulationPage() {
               caseId
             );
           }
+
         } catch (error) {
           if (cancelled) return;
 

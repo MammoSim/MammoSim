@@ -1,6 +1,7 @@
+import { useSimulationMode } from "../../hooks/useSimulationMode";
 import type { clinicalCase } from "../../types/ClinicalCase";
 import "../../styles/CaseDetails.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 type CaseDetailsProps = {
   clinicalCase: clinicalCase;
@@ -13,13 +14,12 @@ export default function CaseDetails({
 }: CaseDetailsProps) {
   const navigate = useNavigate();
 
-  const location = useLocation();
+const { mode } = useSimulationMode();
 
-  const idCurso =
-    typeof location.state?.id_curso === "string"
-      ? location.state.id_curso
-      : null;
-
+const idCurso =
+  mode?.tipo === "clase" ? mode.id_curso : null;
+  // Agrega esta línea para comprobar el curso
+console.log("CaseDetails - idCurso:", idCurso);
   return (
     <aside className="detail_container">
       <h2>{clinicalCase.clinical_id}</h2>
