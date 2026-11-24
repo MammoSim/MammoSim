@@ -20,10 +20,12 @@ export default function SimulationPage() {
   // Configuración del build WebGL.
   const { unityProvider, isLoaded, loadingProgression, sendMessage, unload } =
     useUnityContext({
-      loaderUrl: "/Build/MammoSim-WebGL.loader.js",
-      dataUrl: "/Build/MammoSim-WebGL.data",
-      frameworkUrl: "/Build/MammoSim-WebGL.framework.js",
-      codeUrl: "/Build/MammoSim-WebGL.wasm",
+
+loaderUrl: "/build/MammoSim-WebGL.loader.js",
+dataUrl: "/build/MammoSim-WebGL.data",
+frameworkUrl: "/build/MammoSim-WebGL.framework.js",
+codeUrl: "/build/MammoSim-WebGL.wasm",
+
     });
 
   // Enviar el token de Firebase antes de iniciar el caso
