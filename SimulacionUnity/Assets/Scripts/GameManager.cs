@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public CaseModel CasoActual { get; private set; }
 
     string _sesionId;
+    string _idCurso;
     string[] _casosSesion;
     string _recomendacionIA;
     bool _recuperandoSesion;
@@ -44,6 +45,23 @@ public class GameManager : MonoBehaviour
     // ==============================================
     // ENTRADA DESDE REACT
     // ==============================================
+
+    // React debe llamar a SetCurso antes de IniciarCaso.
+    // Valor vacío = práctica individual; id válido = clase dirigida.
+    public void SetCurso(string idCurso)
+    {
+        if (!string.IsNullOrEmpty(_sesionId) || _enviando)
+        {
+            Debug.LogWarning(
+                "[MammoSim] La sesión ya está iniciada o se está iniciando; no se cambia su curso."
+            );
+            return;
+        }
+
+        _idCurso = string.IsNullOrWhiteSpace(idCurso)
+            ? null
+            : idCurso.Trim();
+    }
 
     public void RecibirCasoDesdeReact(string casoId)
     {
@@ -150,13 +168,9 @@ public class GameManager : MonoBehaviour
     {
         if (!string.IsNullOrEmpty(_sesionId))
         {
-            if (_casosSesion != null &&
-                !_casosSesion.Contains(casoId))
+            if (_casosSesion != null && !_casosSesion.Contains(casoId))
             {
-                Fallo(
-                    "El caso seleccionado no pertenece a " +
-                    "la sesión actual."
-                );
+                Fallo("El caso seleccionado no pertenece a la sesión actual.");
                 return;
             }
 
@@ -164,61 +178,100 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // Comprobar si existe una sesión anterior.
+        // El backend permite una sola sesión en_curso por estudiante.
         StartCoroutine(api.Get<SesionActivaRes>(
             "/sesiones/activa",
             activa =>
             {
-                if (activa == null ||
-                    string.IsNullOrEmpty(activa.id_sesion))
+                if (activa == null || string.IsNullOrEmpty(activa.id_sesion))
                 {
                     CrearSesion(casoId, alTenerla);
                     return;
                 }
 
                 if (activa.casos_asignados == null ||
-                    !activa.casos_asignados.Contains(casoId))
+                    activa.casos_asignados.Length == 0)
                 {
-                    Fallo(
-                        "Tienes una sesión pendiente con " +
-                        "otro caso. Debes continuarla primero."
-                    );
+                    Fallo("La sesión activa no tiene casos asignados.");
+                    return;
+                }
+
+                // Puede suceder que el último caso se haya terminado, pero
+                // el usuario cerrara la página antes de pulsar Terminar.
+                // En ese caso cerramos la sesión COMPLETA, nunca una parcial.
+                bool todosTerminados = activa.casos_terminados != null &&
+                    activa.casos_asignados.All(id =>
+                        activa.casos_terminados.Contains(id));
+
+                if (todosTerminados)
+                {
+                    CerrarSesionCompletada(activa.id_sesion, () =>
+                        CrearSesion(casoId, alTenerla));
+                    return;
+                }
+
+                // Nunca recuperar una sesión individual como sesión de clase,
+                // ni una sesión perteneciente a un curso diferente.
+                string cursoActivo = string.IsNullOrWhiteSpace(activa.id_curso)
+                    ? null
+                    : activa.id_curso.Trim();
+
+                if (!string.Equals(cursoActivo, _idCurso,
+                    StringComparison.Ordinal))
+                {
+                    Fallo("Hay una sesión pendiente de otra modalidad o curso. " +
+                          "Debes terminar sus casos antes de iniciar esta práctica.");
+                    return;
+                }
+
+                if (!activa.casos_asignados.Contains(casoId))
+                {
+                    Fallo("Tienes una sesión pendiente con otro caso. " +
+                          "Debes continuarla primero" +
+                          (string.IsNullOrEmpty(activa.caso_actual)
+                              ? "."
+                              : ": " + activa.caso_actual + "."));
                     return;
                 }
 
                 if (activa.casos_terminados != null &&
                     activa.casos_terminados.Contains(casoId))
                 {
-                    Fallo(
-                        "Este caso ya fue terminado " +
-                        "en la sesión activa."
-                    );
+                    Fallo("Este caso ya fue terminado en la sesión activa. " +
+                          "Continúa los demás casos pendientes.");
                     return;
                 }
 
-_sesionId = activa.id_sesion;
-_casosSesion = activa.casos_asignados;
-_recuperandoSesion = true;
+                _sesionId = activa.id_sesion;
+                _casosSesion = activa.casos_asignados;
+                _recuperandoSesion = true;
 
-Debug.Log(
-    "[MammoSim] Recuperando sesión: " + _sesionId
-);
-
-alTenerla();
+                Debug.Log("[MammoSim] Recuperando sesión: " + _sesionId);
+                alTenerla();
             },
             error =>
             {
-                // 404 significa que aún no existe sesión.
-                if (error.StartsWith("HTTP 404") ||
-                    error.StartsWith("Sin datos"))
-                {
+                if (error.StartsWith("HTTP 404"))
                     CrearSesion(casoId, alTenerla);
-                }
                 else
-                {
                     Fallo(error);
-                }
             }
+        ));
+    }
+
+    // Recuperación de una sesión cuyo último caso ya está terminado.
+    // No cierra sesiones parciales; FastAPI también valida esta condición.
+    void CerrarSesionCompletada(string sesionId, Action alCerrar)
+    {
+        StartCoroutine(api.Post<VacioReq, ResultadoSesionRes>(
+            $"/sesiones/{sesionId}/cerrar",
+            new VacioReq(),
+            resultado =>
+            {
+                Debug.Log("[MammoSim] Sesión anterior completada: " + sesionId);
+                alCerrar();
+            },
+            error => Fallo("No se pudo cerrar la sesión terminada: " + error)
         ));
     }
 
@@ -226,7 +279,7 @@ alTenerla();
     {
         var datos = new CrearSesionReq
         {
-            id_curso = null,
+            id_curso = _idCurso,
             casos = new[] { casoId }
         };
 

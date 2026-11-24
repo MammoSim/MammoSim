@@ -67,6 +67,7 @@ public class SesionRes
 public class SesionActivaRes
 {
     public string id_sesion;
+    public string id_curso;
     public string[] casos_asignados;
     public string[] casos_terminados;
     public string caso_actual;
