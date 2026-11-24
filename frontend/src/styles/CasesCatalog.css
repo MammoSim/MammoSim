@@ -3,7 +3,7 @@
     flex: 1;
     padding: 0;
     min-width: 0;
-    color: #000000;
+    color: #ffffff;
     margin: 10px;
 }
 
@@ -32,6 +32,7 @@
     background-color: #0B1230;
     width: auto;
     height: auto;
+    margin-top: 25%;
 }
 
 .card:hover {
@@ -67,12 +68,12 @@
     padding: 0;
     border: none;
     border-radius: 50%;
-    background-color: #0b123099;
+    background-color: #FFC1DA;
     cursor: pointer;
 }
 
 .carousel button[aria-pressed="true"]{
-    background-color: #0B1230;
+    background-color: #e86599cb;
 }
 
 .carousel button:focus-visible {

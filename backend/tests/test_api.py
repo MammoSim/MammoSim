@@ -5,7 +5,7 @@ from fastapi.testclient import TestClient
 
 from app.main import app
 
-# (método, ruta) de los 21 endpoints
+# (método, ruta) de los 23 endpoints
 RUTAS = {
     ("POST", "/auth/registro"), ("GET", "/usuarios/me"),
     ("POST", "/cursos"), ("GET", "/cursos/mio"), ("POST", "/inscripciones"),
@@ -18,18 +18,20 @@ RUTAS = {
     ("GET", "/sesiones/{id_sesion}/casos/{id_caso}/recomendacion-ia"),
     ("POST", "/sesiones/{id_sesion}/casos/{id_caso}/decision-final"),
     ("GET", "/sesiones/{id_sesion}/casos/{id_caso}/retroalimentacion"),
+    ("GET", "/sesiones/{id_sesion}/casos/{id_caso}/progreso"),
+    ("GET", "/sesiones/{id_sesion}/detalle"),
     ("GET", "/cursos/mio/sesiones"), ("GET", "/cursos/mio/sesiones/{id_sesion}"),
 }
 
 
-def test_estan_los_21_endpoints():
+def test_estan_los_23_endpoints():
     publicados = {
         (metodo.upper(), ruta)
         for ruta, metodos in app.openapi()["paths"].items()
         for metodo in metodos
         if ruta != "/salud"
     }
-    assert publicados == RUTAS and len(RUTAS) == 21
+    assert publicados == RUTAS and len(RUTAS) == 23
 
 
 def test_salud():

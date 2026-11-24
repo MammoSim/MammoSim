@@ -38,6 +38,9 @@ class RegistroOut(BaseModel):
 
 # ---------- Cursos ----------
 class CursoIn(BaseModel):
+    # Se recortan los espacios antes de validar: "   " cuenta como vacío (422).
+    model_config = ConfigDict(str_strip_whitespace=True)
+
     nombre: str = Field(min_length=2)
 
 
@@ -186,3 +189,55 @@ class SesionDetalleOut(BaseModel):
     fecha_fin: datetime | None = None
     puntuacion: float | None = None
     casos: list[CasoDetalle]
+
+
+# ---------- Detalle de una sesión completada (vista del estudiante) ----------
+class OpcionTexto(BaseModel):
+    id: str
+    texto: str
+
+
+class PreguntaRevision(BaseModel):
+    numero: int
+    enunciado: str
+    opciones: list[OpcionTexto]
+    opcion_elegida: Opcion | None = None
+    respuesta_correcta: Opcion
+    correcta: bool | None = None
+    explicacion: str
+
+
+class DecisionRevision(BaseModel):
+    decision: Decision
+    acierto: bool
+
+
+class RecomendacionRevision(BaseModel):
+    opcion_ia: Decision
+    texto: str
+    ia_correcta: bool
+    siguio_ia: bool | None = None  # None si todavía no hay decisión final
+
+
+class CasoRevision(BaseModel):
+    id_caso: str
+    titulo: str | None = None
+    nota_caso: float | None = None
+    preguntas: list[PreguntaRevision]
+    enunciado_decision: str
+    opciones_decision: list[OpcionTexto]
+    respuesta_correcta: Decision
+    decision_inicial: DecisionRevision | None = None
+    recomendacion_ia: RecomendacionRevision | None = None
+    decision_final: DecisionRevision | None = None
+    hallazgos: str
+    retroalimentacion: str
+
+
+class SesionRevisionOut(BaseModel):
+    id_sesion: str
+    estado: EstadoSesion
+    fecha_inicio: datetime
+    fecha_fin: datetime | None = None
+    puntuacion: float | None = None
+    casos: list[CasoRevision]

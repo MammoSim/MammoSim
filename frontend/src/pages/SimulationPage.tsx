@@ -1,4 +1,3 @@
-
 import { Unity, useUnityContext } from "react-unity-webgl";
 import { useEffect, useRef, useState } from "react";
 import "../styles/Simulation.css";
@@ -13,48 +12,38 @@ export default function SimulationPage() {
   const navigate = useNavigate();
   const { caseId } = useParams<{ caseId: string }>();
   const startedCase = useRef<string | null>(null);
-  const {mode} = useSimulationMode();
-
+  const { mode, ready } = useSimulationMode();
 
   const idCurso =
   mode?.tipo === "clase" ? mode.id_curso : null;
 
   // Configuración del build WebGL.
-  const {
-    unityProvider,
-    isLoaded,
-    loadingProgression,
-    sendMessage,
-    unload,
-  } = useUnityContext({
-    loaderUrl: "/build/MammoSim-WebGL.loader.js",
-    dataUrl: "/build/MammoSim-WebGL.data",
-    frameworkUrl: "/build/MammoSim-WebGL.framework.js",
-    codeUrl: "/build/MammoSim-WebGL.wasm",
-  });
+  const { unityProvider, isLoaded, loadingProgression, sendMessage, unload } =
+    useUnityContext({
+      loaderUrl: "/Build/MammoSim-WebGL.loader.js",
+      dataUrl: "/Build/MammoSim-WebGL.data",
+      frameworkUrl: "/Build/MammoSim-WebGL.framework.js",
+      codeUrl: "/Build/MammoSim-WebGL.wasm",
+    });
 
-  // Enviar el token de Firebase antes de iniciar el caso.
+  // Enviar el token de Firebase antes de iniciar el caso
   useEffect(() => {
-    if (!isLoaded || !caseId) return;
+    if (!isLoaded || !caseId || !ready || !mode) return;
 
     let cancelled = false;
 
     const auth = getAuth();
 
-    const unsubscribe = onIdTokenChanged(
-      auth,
-      async (user) => {
-        if (cancelled) return;
+    const unsubscribe = onIdTokenChanged(auth, async (user) => {
+      if (cancelled) return;
 
-        if (!user) {
-          setAuthError(
-            "Debes iniciar sesión para utilizar el simulador."
-          );
-          return;
-        }
+      if (!user) {
+        setAuthError("Debes iniciar sesión para utilizar el simulador.");
+        return;
+      }
 
-        try {
-          const token = await user.getIdToken();
+      try {
+        const token = await user.getIdToken();
 
           if (cancelled) return;
 
@@ -62,7 +51,7 @@ export default function SimulationPage() {
           // Primero autenticamos Unity.
           sendMessage("ApiClient", "SetToken", token);
 
-          setAuthError("");
+        setAuthError("");
 
           // Configuramos el curso antes de iniciar el caso.
           if (startedCase.current !== caseId) {
@@ -84,25 +73,19 @@ export default function SimulationPage() {
         } catch (error) {
           if (cancelled) return;
 
-          console.error(
-            "Error al obtener el token:",
-            error
-          );
+        console.error("Error al obtener el token:", error);
 
-          setAuthError(
-            "No se pudo verificar tu sesión."
-          );
-        }
+        setAuthError("No se pudo verificar tu sesión.");
       }
-    );
+    });
 
     return () => {
       cancelled = true;
       unsubscribe();
     };
-  }, [isLoaded, caseId, sendMessage]);
+  }, [isLoaded, caseId, ready, mode, sendMessage]);
 
-  // Cerrar Unity y regresar a la lista de casos.
+  // Cerrar Unity y regresar a la lista de casos
   const handleClose = async () => {
     if (closing) return;
 
@@ -129,39 +112,31 @@ export default function SimulationPage() {
       aria-label="Simulación MammoSim"
     >
       <div className="simulation_header">
-        <h2>
-          MammoSim - Simulación clínica {caseId}
-        </h2>
+        <h2>MammoSim - Simulación clínica {caseId}</h2>
 
         <p>
           Modalidad:{" "}
-          {idCurso
-            ? "Clase dirigida"
-            : "Práctica individual"}
+          {!ready
+            ? "Cargando"
+            : mode?.tipo === "clase"
+              ? "Clase dirigida"
+              : mode?.tipo === "individual"
+                ? "Práctica individual"
+                : "Sin seleccionar"}
         </p>
 
-        <button
-          type="button"
-          onClick={handleClose}
-          disabled={closing}
-        >
-          {closing
-            ? "Cerrando..."
-            : "Cerrar simulación"}
+        <button type="button" onClick={handleClose} disabled={closing}>
+          {closing ? "Cerrando..." : "Cerrar simulación"}
         </button>
       </div>
 
       <div className="unity_content">
-        {authError && (
-          <p role="alert">{authError}</p>
-        )}
+        {authError && <p role="alert">{authError}</p>}
 
         {!isLoaded && (
           <p className="unity_loading">
             Cargando simulación...
-            {Math.round(
-              loadingProgression * 100
-            )}%
+            {Math.round(loadingProgression * 100)}%
           </p>
         )}
 
