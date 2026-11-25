@@ -190,12 +190,63 @@ def test_docente_sin_curso_no_ve_detalle(cliente):
     assert c.get("/cursos/mio/sesiones/s1").status_code == 404
 
 
-def test_el_detalle_no_trae_explicaciones_ni_hallazgos(cliente):
+CAMPOS_REPASO = (
+    "preguntas", "enunciado_decision", "opciones_decision", "respuesta_correcta",
+    "recomendacion_ia", "hallazgos", "retroalimentacion",
+)
+
+
+def test_sesion_en_curso_no_adelanta_explicaciones_ni_hallazgos(cliente):
+    """Mientras la sesión sigue en curso, el repaso completo sale vacío (null)."""
     c, estado = cliente
     como_docente(estado)
     db = estado["db"]
     sesion(db, "s1", "est_1")
     juega(db, "s1", "caso_001")
-    texto = c.get("/cursos/mio/sesiones/s1").text
-    for campo in ("explicacion", "hallazgos", "retroalimentacion", "recomendacion_ia"):
-        assert campo not in texto
+    r = c.get("/cursos/mio/sesiones/s1")
+    caso = r.json()["casos"][0]
+    assert all(caso[k] is None for k in CAMPOS_REPASO)
+    assert "explicacion" not in r.text and "enunciado" not in r.text.replace("enunciado_decision", "")
+
+
+def test_sesion_completada_trae_el_repaso_completo(cliente, casos):
+    c, estado = cliente
+    como_docente(estado)
+    db = estado["db"]
+    estudiante(db, "est_1", "Ana Pérez")
+    sesion(db, "s1", "est_1", estado="completada", puntuacion=7.0)
+    juega(db, "s1", "caso_001", buenas=5, inicial=True, final=False, siguio=True,
+          ia_correcta=False, opcion_ia=casos["caso_001"]["opcion_ia_incorrecta"])
+    r = c.get("/cursos/mio/sesiones/s1")
+    assert r.status_code == 200
+    d = r.json()
+    # se conserva lo que ya había
+    assert d["nombre_estudiante"] == "Ana Pérez" and d["estado"] == "completada"
+    assert d["puntuacion"] == 7.0 and d["fecha_inicio"] and d["fecha_fin"]
+    caso, real = d["casos"][0], casos["caso_001"]
+    assert len(caso["respuestas"]) == 7 and caso["nota_caso"] is not None
+    # y se agrega el repaso
+    assert len(caso["preguntas"]) == 7
+    p1 = caso["preguntas"][0]
+    assert p1["enunciado"] == real["preguntas"][0]["enunciado"]
+    assert p1["opciones"][0]["id"] == "A" and p1["opcion_elegida"] == "A"
+    assert p1["respuesta_correcta"] == real["preguntas"][0]["respuesta_correcta"]
+    assert p1["explicacion"] == real["preguntas"][0]["explicacion"]
+    assert caso["recomendacion_ia"] == {
+        "opcion_ia": real["opcion_ia_incorrecta"],
+        "texto": real["recomendacion_ia_incorrecta"],
+        "ia_correcta": False, "siguio_ia": True,
+    }
+    assert caso["hallazgos"] == real["hallazgos"]
+    assert caso["retroalimentacion"] == real["retroalimentacion"]
+    assert caso["respuesta_correcta"] == real["respuesta_correcta"]
+    assert len(caso["opciones_decision"]) == len(real["opciones_decision"])
+
+
+def test_el_repaso_del_docente_solo_es_de_su_curso(cliente):
+    c, estado = cliente
+    como_docente(estado)
+    db = estado["db"]
+    sesion(db, "s1", "est_1", estado="completada", id_curso="curso_otro")
+    juega(db, "s1", "caso_001")
+    assert c.get("/cursos/mio/sesiones/s1").status_code == 404
