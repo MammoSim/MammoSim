@@ -178,6 +178,14 @@ class CasoDetalle(BaseModel):
     decision_inicial: DecisionInicialDetalle | None = None
     decision_final: DecisionFinalDetalle | None = None
     nota_caso: float | None = None  # solo cuando el caso ya está terminado
+    # Solo con la sesión COMPLETADA (en curso salen en null para no adelantar respuestas):
+    preguntas: list["PreguntaRevision"] | None = None
+    enunciado_decision: str | None = None
+    opciones_decision: list["OpcionTexto"] | None = None
+    respuesta_correcta: Decision | None = None
+    recomendacion_ia: "RecomendacionRevision | None" = None
+    hallazgos: str | None = None
+    retroalimentacion: str | None = None
 
 
 class SesionDetalleOut(BaseModel):
@@ -241,3 +249,6 @@ class SesionRevisionOut(BaseModel):
     fecha_fin: datetime | None = None
     puntuacion: float | None = None
     casos: list[CasoRevision]
+
+CasoDetalle.model_rebuild()
+SesionDetalleOut.model_rebuild()
