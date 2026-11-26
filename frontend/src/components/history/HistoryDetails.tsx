@@ -5,15 +5,21 @@ import type {
   StudentSessionDetail,
 } from "../../types/StudentHistorial";
 import "../../styles/History.css";
+import AnalysisSummary from "./AnalysisSummary";
 
 type HistoryDetailsProps = {
   sessionId: string;
   onBack: () => void;
 };
 
-function CaseReview({ caso }: { caso: CasoRevision }) {
-  const [selectedNumber, setSelectedNumber] =
-    useState<number | null>(null);
+function CaseReview({
+  caso,
+  sesion,
+}: {
+  caso: CasoRevision;
+  sesion: StudentSessionDetail;
+}) {
+  const [selectedNumber, setSelectedNumber] = useState<number | null>(null);
   const [showDecision, setShowDecision] = useState(false);
 
   const question = caso.preguntas.find(
@@ -24,8 +30,8 @@ function CaseReview({ caso }: { caso: CasoRevision }) {
     if (!value) return "No registrada";
 
     return (
-      caso.opciones_decision.find((option) => option.id === value)
-        ?.texto ?? value
+      caso.opciones_decision.find((option) => option.id === value)?.texto ??
+      value
     );
   }
 
@@ -41,19 +47,13 @@ function CaseReview({ caso }: { caso: CasoRevision }) {
             <p>{decisionText(caso.decision_inicial?.decision)}</p>
 
             {caso.decision_inicial && (
-              <p>
-                {caso.decision_inicial.acierto
-                  ? "Correcta"
-                  : "Incorrecta"}
-              </p>
+              <p>{caso.decision_inicial.acierto ? "Correcta" : "Incorrecta"}</p>
             )}
 
             <h4>Recomendación del tutor</h4>
             {caso.recomendacion_ia ? (
               <>
-                <p>
-                  {decisionText(caso.recomendacion_ia.opcion_ia)}
-                </p>
+                <p>{decisionText(caso.recomendacion_ia.opcion_ia)}</p>
                 <p>{caso.recomendacion_ia.texto}</p>
                 <p>
                   Recomendación{" "}
@@ -70,19 +70,13 @@ function CaseReview({ caso }: { caso: CasoRevision }) {
             <p>{decisionText(caso.decision_final?.decision)}</p>
 
             {caso.decision_final && (
-              <p>
-                {caso.decision_final.acierto
-                  ? "Correcta"
-                  : "Incorrecta"}
-              </p>
+              <p>{caso.decision_final.acierto ? "Correcta" : "Incorrecta"}</p>
             )}
 
             {caso.recomendacion_ia?.siguio_ia != null && (
               <p>
                 Tu decisión final{" "}
-                {caso.recomendacion_ia.siguio_ia
-                  ? "coincidió"
-                  : "no coincidió"}{" "}
+                {caso.recomendacion_ia.siguio_ia ? "coincidió" : "no coincidió"}{" "}
                 con la recomendación del tutor.
               </p>
             )}
@@ -105,8 +99,7 @@ function CaseReview({ caso }: { caso: CasoRevision }) {
               {question.opciones.map((option) => (
                 <li key={option.id}>
                   {option.id}: {option.texto}
-                  {option.id === question.opcion_elegida &&
-                    " — Tu respuesta"}
+                  {option.id === question.opcion_elegida && " — Tu respuesta"}
                   {option.id === question.respuesta_correcta &&
                     " — Respuesta correcta"}
                 </li>
@@ -131,16 +124,7 @@ function CaseReview({ caso }: { caso: CasoRevision }) {
       </section>
 
       <div className="history_details_right">
-        <section className="summary_container">
-          <h3>{caso.titulo ?? caso.id_caso}</h3>
-          <p>
-            Nota del caso:{" "}
-            {caso.nota_caso === null
-              ? "No disponible"
-              : `${caso.nota_caso}/10`}
-          </p>
-        </section>
-
+        <AnalysisSummary caso={caso} sesion={sesion} />
         <section className="question_container">
           <div className="question_content">
             <h3>Preguntas del caso</h3>
@@ -150,9 +134,7 @@ function CaseReview({ caso }: { caso: CasoRevision }) {
                 key={item.numero}
                 type="button"
                 className="button_question"
-                aria-pressed={
-                  !showDecision && selectedNumber === item.numero
-                }
+                aria-pressed={!showDecision && selectedNumber === item.numero}
                 onClick={() => {
                   setSelectedNumber(item.numero);
                   setShowDecision(false);
@@ -184,10 +166,8 @@ export default function HistoryDetails({
   sessionId,
   onBack,
 }: HistoryDetailsProps) {
-  const [detail, setDetail] =
-    useState<StudentSessionDetail | null>(null);
-  const [selectedCaseId, setSelectedCaseId] =
-    useState<string | null>(null);
+  const [detail, setDetail] = useState<StudentSessionDetail | null>(null);
+  const [selectedCaseId, setSelectedCaseId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -196,10 +176,7 @@ export default function HistoryDetails({
 
     async function loadDetail() {
       try {
-        const data = await getSessionDetails(
-          sessionId,
-          controller.signal,
-        );
+        const data = await getSessionDetails(sessionId, controller.signal);
 
         if (!controller.signal.aborted) {
           setDetail(data);
@@ -230,39 +207,38 @@ export default function HistoryDetails({
 
   return (
     <section className="history_details">
-      <button type="button" onClick={onBack} className="back_button">
-        Volver al historial
-      </button>
-
       {loading ? (
         <p role="status">Cargando detalle...</p>
       ) : error ? (
         <p role="alert">{error}</p>
       ) : detail ? (
         <>
-          <h2>Detalle de la simulación</h2>
+          <div className="history_card">
+            <h2>Detalle de la simulación</h2>
+            <div>
+              <p>
+                Realizada el{" "}
+                {new Date(detail.fecha_inicio).toLocaleString("es-CO")}
+              </p>
 
-          <p>
-            Realizada el{" "}
-            {new Date(detail.fecha_inicio).toLocaleString("es-CO")}
-          </p>
-
-          <p>
-            Puntuación de la sesión:{" "}
-            {detail.puntuacion === null
-              ? "No disponible"
-              : `${detail.puntuacion}/10`}
-          </p>
-
+              <p>
+                Puntuación de la sesión:{" "}
+                {detail.puntuacion === null
+                  ? "No disponible"
+                  : `${detail.puntuacion}/10`}
+              </p>
+            </div>
+            <button type="button" onClick={onBack} className="back_button">
+              Volver al historial
+            </button>
+          </div>
           {detail.casos.length > 1 && (
             <>
               <label htmlFor="history-case">Caso analizado</label>
               <select
                 id="history-case"
                 value={selectedCase?.id_caso ?? ""}
-                onChange={(event) =>
-                  setSelectedCaseId(event.target.value)
-                }
+                onChange={(event) => setSelectedCaseId(event.target.value)}
               >
                 {detail.casos.map((caso) => (
                   <option key={caso.id_caso} value={caso.id_caso}>
@@ -277,6 +253,7 @@ export default function HistoryDetails({
             <CaseReview
               key={selectedCase.id_caso}
               caso={selectedCase}
+              sesion={detail}
             />
           ) : (
             <p>No hay casos disponibles en esta sesión.</p>

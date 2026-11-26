@@ -108,7 +108,7 @@ export default function HistorialPage() {
                           type="button"
                           onClick={() => setSelectedSession(session)}
                         >
-                          Ver resultado
+                          Ver detalle
                         </button>
                       ) : (
                         <p>

@@ -1,10 +1,11 @@
-import type { SimulationHistory } from "../../types/SimulationHistory";
+import type { CasoRevision, StudentSessionDetail } from "../../types/StudentHistorial";
 
 type AnalysisSummaryProps = {
-  simulacion: SimulationHistory;
+  caso: CasoRevision;
+  sesion: StudentSessionDetail;
 };
 
-export default function AnalysisSummary({ simulacion }: AnalysisSummaryProps) {
+export default function AnalysisSummary({ caso, sesion }: AnalysisSummaryProps) {
   return (
     <div className="summary_container">
       <h3>Resumen del análisis</h3>
@@ -13,23 +14,27 @@ export default function AnalysisSummary({ simulacion }: AnalysisSummaryProps) {
           <tbody>
             <tr>
               <th scope="row">Caso analizado</th>
-              <td>{simulacion.caseTitle}</td>
+              <td>{caso.titulo ?? caso.id_caso}</td>
             </tr>
             <tr>
               <th scope="row">Resultado</th>
-              <td>Descripción del resultado</td>
+              <td>{caso.retroalimentacion}</td>
             </tr>
             <tr>
               <th scope="row">Puntuación</th>
-              <td>{simulacion.score}/10</td>
+              <td>{sesion.puntuacion}/10</td>
             </tr>
             <tr>
               <th scope="row">Estado</th>
-              <td>Completado</td>
+              <td>{sesion.estado === "completada" ? "Competado" : "En curso"}</td>
             </tr>
             <tr>
               <th scope="row">Fecha y hora</th>
-              <td>{simulacion.completedAt}</td>
+              <td>{sesion.fecha_inicio}</td>
+            </tr>
+            <tr>
+              <th scope="row">Fecha y hora</th>
+              <td>{sesion.fecha_fin}</td>
             </tr>
           </tbody>
         </table>

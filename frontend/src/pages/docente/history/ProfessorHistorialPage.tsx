@@ -4,12 +4,13 @@ import { getCourseSessions } from "../../../services/coursesServices";
 import SidebarProfessor from "../../../components/layout/SidebarProfessor";
 import "../../../styles/Sidebar.css";
 import ProfessorHistorialDetails from "../../../components/history/ProfessorHistorialDetails";
+import "../../../styles/History.css";
 
 export default function ProfessorHistorialPage() {
   const [sessions, setSessions] = useState<ProfessorSession[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [selectedSessionId, setSSelectedSessionId] = useState<string | null>(
+  const [selectedSessionId, setSelectedSessionId] = useState<string | null>(
     null,
   );
 
@@ -44,12 +45,13 @@ export default function ProfessorHistorialPage() {
 
   if (selectedSessionId) {
     return (
-      <div>
+      <div className="sidebar_container">
         <SidebarProfessor />
-        <main>
+        <main className="history_container">
           <ProfessorHistorialDetails
+            key={selectedSessionId}
             sessionId={selectedSessionId}
-            onBack={() => setSSelectedSessionId(null)}
+            onBack={() => setSelectedSessionId(null)}
           />
         </main>
       </div>
@@ -59,7 +61,7 @@ export default function ProfessorHistorialPage() {
   return (
     <div className="sidebar_container">
       <SidebarProfessor />
-      <main>
+      <main className="history_container">
         <h2>Historial de mi clase</h2>
         <p>Aquí encontrarás las sesiones de simulación de tus estudiantes</p>
 
@@ -70,9 +72,9 @@ export default function ProfessorHistorialPage() {
         ) : sessions.length === 0 ? (
           <p>Aún no hay sesiones registradas de tu clase</p>
         ) : (
-          <div>
+          <div className="history_list">
             {sessions.map((session) => (
-              <article key={session.id_sesion}>
+              <article key={session.id_sesion} className="history_card">
                 <div>
                   <h2>{session.nombre_estudiante ?? "Nombre no disponible"}</h2>
                   <p>
@@ -94,6 +96,14 @@ export default function ProfessorHistorialPage() {
                       ? `${session.puntuacion}/10`
                       : "Aún no disponible"}
                   </p>
+                </div>
+                <div className="history_detail_case">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedSessionId(session.id_sesion)}
+                  >
+                    Ver detalle
+                  </button>
                 </div>
               </article>
             ))}

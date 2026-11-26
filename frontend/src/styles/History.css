@@ -19,8 +19,9 @@
 
 .history_card{
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 120px minmax(0,1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0,1fr) auto;
     align-items: center;
+    gap: 24px;
     padding: 16px;
     background-color: #101A3D;
     border-radius: 12px;
@@ -30,7 +31,9 @@
         font-size: 1.5rem;
     }
     p {
+        margin: 0;
         font-size: 0.8rem;
+        line-height: 2;
     }
 }
 
@@ -171,5 +174,16 @@
 @media (max-width: 1000px) {
   .history_details_columns {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 800px) {
+  .history_card {
+    grid-template-columns: minmax(0, 1fr);
+    text-align: left;
+  }
+
+  .history_card .back_button {
+    justify-self: center;
   }
 }
