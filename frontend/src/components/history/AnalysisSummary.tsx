@@ -2,7 +2,7 @@ import type { CasoRevision, StudentSessionDetail } from "../../types/StudentHist
 
 type AnalysisSummaryProps = {
   caso: CasoRevision;
-  sesion: StudentSessionDetail;
+  sesion: Pick< StudentSessionDetail, "estado" | "fecha_inicio" | "fecha_fin" | "puntuacion">;
 };
 
 export default function AnalysisSummary({ caso, sesion }: AnalysisSummaryProps) {
@@ -26,7 +26,7 @@ export default function AnalysisSummary({ caso, sesion }: AnalysisSummaryProps) 
             </tr>
             <tr>
               <th scope="row">Estado</th>
-              <td>{sesion.estado === "completada" ? "Competado" : "En curso"}</td>
+              <td>{sesion.estado === "completada" ? "Completado" : "En curso"}</td>
             </tr>
             <tr>
               <th scope="row">Fecha y hora</th>
