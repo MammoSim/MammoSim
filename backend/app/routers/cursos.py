@@ -15,6 +15,7 @@ from app.schemas import (
 )
 from app.services.cursos import generar_codigo
 from app.services.puntuacion import nota_caso
+from app.services.revision import detalle_caso
 
 router = APIRouter(tags=["cursos"])
 
@@ -233,16 +234,29 @@ def detalle_de_sesion(
             nota = nota_caso(
                 acertadas, inicial.to_dict()["acierto"], final.to_dict()["acierto"]
             )
-        casos.append(
-            {
-                "id_caso": id_caso,
-                "titulo": caso.to_dict().get("titulo") if caso.exists else None,
-                "respuestas": propias,
-                "decision_inicial": inicial.to_dict() if inicial.exists else None,
-                "decision_final": final.to_dict() if final.exists else None,
-                "nota_caso": nota,
-            }
-        )
+        item = {
+            "id_caso": id_caso,
+            "titulo": caso.to_dict().get("titulo") if caso.exists else None,
+            "respuestas": propias,
+            "decision_inicial": inicial.to_dict() if inicial.exists else None,
+            "decision_final": final.to_dict() if final.exists else None,
+            "nota_caso": nota,
+        }
+        # El repaso completo (enunciados, opciones, correctas, explicaciones, tutor,
+        # hallazgos) solo si la sesión ya terminó: en curso no se adelantan respuestas.
+        if sesion["estado"] == "completada" and caso.exists:
+            extra = detalle_caso(
+                caso.to_dict(),
+                propias,
+                inicial.to_dict() if inicial.exists else None,
+                final.to_dict() if final.exists else None,
+            )
+            for k in (
+                "preguntas", "enunciado_decision", "opciones_decision",
+                "respuesta_correcta", "recomendacion_ia", "hallazgos", "retroalimentacion",
+            ):
+                item[k] = extra[k]
+        casos.append(item)
 
     puntuacion = None
     if sesion["estado"] == "completada":
