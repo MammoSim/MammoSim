@@ -14,18 +14,15 @@ export default function SimulationPage() {
   const startedCase = useRef<string | null>(null);
   const { mode, ready } = useSimulationMode();
 
-  const idCurso =
-  mode?.tipo === "clase" ? mode.id_curso : null;
+  const idCurso = mode?.tipo === "clase" ? mode.id_curso : null;
 
   // Configuración del build WebGL.
   const { unityProvider, isLoaded, loadingProgression, sendMessage, unload } =
     useUnityContext({
-
-loaderUrl: "/build/MammoSim-WebGL.loader.js",
-dataUrl: "/build/MammoSim-WebGL.data",
-frameworkUrl: "/build/MammoSim-WebGL.framework.js",
-codeUrl: "/build/MammoSim-WebGL.wasm",
-
+      loaderUrl: "/build/MammoSim-WebGL.loader.js",
+      dataUrl: "/build/MammoSim-WebGL.data",
+      frameworkUrl: "/build/MammoSim-WebGL.framework.js",
+      codeUrl: "/build/MammoSim-WebGL.wasm",
     });
 
   // Enviar el token de Firebase antes de iniciar el caso
@@ -47,33 +44,23 @@ codeUrl: "/build/MammoSim-WebGL.wasm",
       try {
         const token = await user.getIdToken();
 
-          if (cancelled) return;
+        if (cancelled) return;
 
-          
-          // Primero autenticamos Unity.
-          sendMessage("ApiClient", "SetToken", token);
+        // Primero autenticamos Unity.
+        sendMessage("ApiClient", "SetToken", token);
 
         setAuthError("");
 
-          // Configuramos el curso antes de iniciar el caso.
-          if (startedCase.current !== caseId) {
-            sendMessage(
-              "GameManager",
-              "SetCurso",
-              idCurso ?? ""
-            );
+        // Configuramos el curso antes de iniciar el caso.
+        if (startedCase.current !== caseId) {
+          sendMessage("GameManager", "SetCurso", idCurso ?? "");
 
-            startedCase.current = caseId;
+          startedCase.current = caseId;
 
-            sendMessage(
-              "WebBridge",
-              "IniciarCaso",
-              caseId
-            );
-          }
-
-        } catch (error) {
-          if (cancelled) return;
+          sendMessage("WebBridge", "IniciarCaso", caseId);
+        }
+      } catch (error) {
+        if (cancelled) return;
 
         console.error("Error al obtener el token:", error);
 
