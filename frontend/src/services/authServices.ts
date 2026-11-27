@@ -11,7 +11,7 @@ import {
 
 import { auth } from "../config/firebase";
 
-const API_URL = "http://localhost:8000";
+const API_URL = import.meta.env.VITE_API_URL;
 
 type RegistrationInput = {
   email: string;

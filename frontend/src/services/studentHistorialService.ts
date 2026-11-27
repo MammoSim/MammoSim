@@ -2,7 +2,7 @@ import { onAuthStateChanged, type User } from "firebase/auth";
 import { auth } from "../config/firebase";
 import { type StudentSessionDetail, type StudentResult, type StudentSession } from "../types/StudentHistorial";
 
-const API_URL = "http://localhost:8000";
+const API_URL = import.meta.env.VITE_API_URL;
 
 async function request<T>(path: string, signal?: AbortSignal): Promise<T> {
   const user = await new Promise<User | null>((resolve, reject) => {

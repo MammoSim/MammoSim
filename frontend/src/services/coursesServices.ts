@@ -9,7 +9,7 @@ export type Course = {
   id_docente: string;
 };
 
-const API_URL = "http://localhost:8000";
+const API_URL = import.meta.env.VITE_API_URL;
 
 function waitForUser(): Promise<User | null> {
   return new Promise((resolve, reject) => {

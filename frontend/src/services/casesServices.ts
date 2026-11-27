@@ -2,6 +2,9 @@ import { onAuthStateChanged, type User } from "firebase/auth";
 import { auth } from "../config/firebase";
 import type { clinicalCase } from "../types/ClinicalCase";
 
+
+const API_URL = import.meta.env.VITE_API_URL;
+
 type CasoResumenApi = {
   id_caso: string;
   titulo: string;
@@ -57,7 +60,7 @@ export async function getCases(signal?: AbortSignal): Promise<clinicalCase[]> {
 
   const token = await user.getIdToken();
 
-  const response = await fetch("http://localhost:8000/casos", {
+  const response = await fetch(`${API_URL}/casos`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
