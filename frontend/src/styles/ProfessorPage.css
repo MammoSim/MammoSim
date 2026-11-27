@@ -58,3 +58,18 @@
     letter-spacing: 0.12em;
     color: #ffc1da;
 }
+
+@media (max-width: 480px) {
+  .professor_page {
+    padding: 16px;
+  }
+
+  .professor_card {
+    margin-top: 20px;
+    padding: 16px;
+  }
+
+  .course_code {
+    letter-spacing: 0.03em;
+  }
+}

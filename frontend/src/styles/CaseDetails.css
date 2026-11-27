@@ -40,3 +40,24 @@
     opacity: 0.6;
     cursor: not-allowed;
 }
+
+/*Ajuste de pantalla*/
+@media (max-width: 1100px) {
+  .cases_container {
+    grid-template-columns: minmax(0, 750px);
+  }
+}
+
+@media (max-width: 480px) {
+  .cases_container {
+    gap: 16px;
+  }
+
+  .detail_container {
+    padding: 16px;
+  }
+
+  .start_sim {
+    width: 100%;
+  }
+}

@@ -113,7 +113,7 @@ export default function LoginForm({
           </button>
           {loginError && <p role="alert">{loginError}</p>}
           <p className="auth_link">
-            ¿Ya tienes una cuenta?<Link to="/register"> Registrate </Link>
+            ¿Aún no tienes una cuenta?<Link to="/register"> Registrate </Link>
           </p>
         </form>
       </section>

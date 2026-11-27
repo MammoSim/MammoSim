@@ -64,3 +64,23 @@
 .submit_form_setting:hover {
   filter: brightness(0.8);
 }
+
+/*Ajuste de pantalla*/
+
+@media (max-width: 480px) {
+  .account_info_container {
+    padding: 16px;
+  }
+
+  .account_setting_form {
+    padding: 16px;
+  }
+
+  .account_setting_form h2 {
+    margin-bottom: 12px;
+  }
+
+  .submit_form_setting {
+    width: 100%;
+  }
+}

@@ -119,3 +119,93 @@
     height: auto;
     align-self: center;
 }
+
+
+/*Ajuste de pantalla*/
+@media (max-width: 800px) {
+  .dialog_container[open] {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .dialog_left {
+    flex: none;
+    width: 100%;
+    align-self: stretch;
+    padding: 20px;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .dialog_container .logo {
+    width: 120px;
+  }
+
+  .dialog_left p {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .mode_container {
+    flex: none;
+    width: 100%;
+    padding: 20px;
+  }
+
+  .mode_container h2 {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .dialog_container {
+    width: calc(100% - 16px);
+    max-width: calc(100% - 16px);
+    max-height: calc(100dvh - 16px);
+  }
+
+  .dialog_left,
+  .mode_container {
+    padding: 16px;
+  }
+
+  .dialog_container .logo {
+    width: 90px;
+  }
+
+  .class_mode,
+  .no_mode {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 14px;
+    gap: 10px;
+  }
+
+  .dialog_container .icon {
+    width: 36px;
+    height: 36px;
+    place-self: start;
+  }
+
+  .class_mode h3,
+  .no_mode h3 {
+    margin: 0 0 8px;
+    font-size: 1.2rem;
+  }
+
+  .code_container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .code_container label,
+  .code_container input {
+    flex: none;
+    width: 100%;
+  }
+
+  .code_container button,
+  .no_code_button_container button {
+    width: 100%;
+    min-height: 44px;
+  }
+}

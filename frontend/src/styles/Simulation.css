@@ -66,3 +66,22 @@
   width: 100% !important;
   height: 100% !important;
 }
+
+
+/*Ajuste de pantalla*/
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .simulation_header {
+    gap: 8px;
+    padding: 6px 10px;
+  }
+
+  .simulation_header h2 {
+    flex-basis: auto;
+    font-size: 1rem;
+  }
+
+  .simulation_header p {
+    font-size: 0.8rem;
+  }
+}
