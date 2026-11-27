@@ -7,6 +7,7 @@ import {
   getMySessions,
 } from "../services/studentHistorialService";
 import HistoryDetails from "../components/history/HistoryDetails";
+import ModelsPreview from "../components/history/ModelsPreview";
 
 export default function HistorialPage() {
   const [sessions, setSessions] = useState<StudentSession[]>([]);
@@ -69,7 +70,7 @@ export default function HistorialPage() {
             ) : (
               <div className="history_list">
                 {sessions.map((session) => (
-                  <article key={session.id_sesion} className="history_card">
+                  <article key={session.id_sesion} className="history_card history_session_card">
                     <div>
                       <h2>Sesión {session.id_sesion}</h2>
 
@@ -100,6 +101,12 @@ export default function HistorialPage() {
                           ? "Completada"
                           : "En curso"}
                       </p>
+                    </div>
+
+                    <div>
+                      {session.casos_asignados.map((caseId) => (
+                        <ModelsPreview key={caseId} caseId={caseId}/>
+                      ))}
                     </div>
 
                     <div className="history_detail_case">

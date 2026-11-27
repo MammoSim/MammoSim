@@ -3,6 +3,7 @@ import { getSessionDetails } from "../../services/studentHistorialService";
 import type { StudentSessionDetail } from "../../types/StudentHistorial";
 import "../../styles/History.css";
 import CaseReview from "./CaseReview";
+import ModelsPreview from "./ModelsPreview";
 
 type HistoryDetailsProps = {
   sessionId: string;
@@ -60,8 +61,11 @@ export default function HistoryDetails({
         <p role="alert">{error}</p>
       ) : detail ? (
         <>
-          <div className="history_card">
+          <div className="history_card history_header_with_model">
             <h2>Detalle de la simulación</h2>
+            {selectedCase && (
+              <ModelsPreview caseId={selectedCase.id_caso} title={selectedCase.titulo ?? selectedCase.id_caso}/>
+            )}
             <div>
               <p>
                 Realizada el{" "}

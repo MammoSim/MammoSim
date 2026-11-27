@@ -1,9 +1,10 @@
 import type { clinicalCase } from "../../types/ClinicalCase";
 import "../../styles/CasesCatalog.css";
+import ModelsPreview from "../history/ModelsPreview";
 
 type CaseCardProps = {
   clinicalCase: clinicalCase;
-  onSelect: (selectedCase: clinicalCase) => void;
+  onSelect: (clinicalCase: clinicalCase) => void;
 };
 
 export default function CaseCard({ clinicalCase, onSelect }: CaseCardProps) {
@@ -26,6 +27,12 @@ export default function CaseCard({ clinicalCase, onSelect }: CaseCardProps) {
       )}
 
       <p style={{ color: dificultad }}>Dificultad: {clinicalCase.dificultad}</p>
+      {clinicalCase && (
+        <ModelsPreview
+          caseId={clinicalCase.clinical_id}
+          title={clinicalCase.title ?? clinicalCase.clinical_id}
+        />
+      )}
       <h3>{clinicalCase.title} </h3>
       {clinicalCase.pacientAge !== undefined && (
         <p>

@@ -4,6 +4,7 @@ import type { CasoRevision } from "../../types/StudentHistorial";
 import { getCourseSessionsDetail } from "../../services/coursesServices";
 import CaseReview from "../history/CaseReview";
 import "../../styles/History.css";
+import ModelsPreview from "./ModelsPreview";
 
 type DetailsProps = {
   sessionId: string;
@@ -97,12 +98,17 @@ export default function ProfessorHistorialDetails({
         </>
       ) : detail ? (
         <>
-          <div className="history_card">
+          <div className="history_card history_header_with_model">
+            {selectedCase && (
+              <ModelsPreview
+                caseId={selectedCase.id_caso}
+                title={selectedCase.titulo ?? selectedCase.id_caso}
+              />
+            )}
             <div>
               <h2>Detalle de la simulación</h2>
               <p>
-                Estudiante:{" "}
-                {detail.nombre_estudiante ?? "Nombre no disponible"}
+                Estudiante: {detail.nombre_estudiante ?? "Nombre no disponible"}
               </p>
             </div>
 
@@ -153,11 +159,7 @@ export default function ProfessorHistorialDetails({
               finalice la sesión.
             </p>
           ) : caso ? (
-            <CaseReview
-              key={caso.id_caso}
-              caso={caso}
-              sesion={detail}
-            />
+            <CaseReview key={caso.id_caso} caso={caso} sesion={detail} />
           ) : (
             <p>
               No se recibió el detalle completo de las preguntas de este caso.
