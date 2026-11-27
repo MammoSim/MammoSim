@@ -1,97 +1,116 @@
-import type {
-  HistoryQuestion,
-  SimulationHistory,
-} from "../../types/SimulationHistory";
-import HistoryCard from "./HistoryCard";
-import QuestionSection from "./QuestionSection";
+import { useEffect, useState } from "react";
+import { getSessionDetails } from "../../services/studentHistorialService";
+import type { StudentSessionDetail } from "../../types/StudentHistorial";
 import "../../styles/History.css";
-import AnalysisSummary from "./AnalysisSummary";
-import { useState } from "react";
+import CaseReview from "./CaseReview";
+import ModelsPreview from "./ModelsPreview";
 
 type HistoryDetailsProps = {
-  simulation: SimulationHistory;
+  sessionId: string;
   onBack: () => void;
 };
 
 export default function HistoryDetails({
-  simulation,
+  sessionId,
   onBack,
 }: HistoryDetailsProps) {
-  const [selectedQuestion, setSelectedQuestion] =
-    useState<HistoryQuestion | null>(null);
+  const [detail, setDetail] = useState<StudentSessionDetail | null>(null);
+  const [selectedCaseId, setSelectedCaseId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const [showDecision, setShowDecision] = useState(false);
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadDetail() {
+      try {
+        const data = await getSessionDetails(sessionId, controller.signal);
+
+        if (!controller.signal.aborted) {
+          setDetail(data);
+        }
+      } catch (error) {
+        if (!controller.signal.aborted) {
+          setError(
+            error instanceof Error
+              ? error.message
+              : "No fue posible cargar el detalle.",
+          );
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    void loadDetail();
+
+    return () => controller.abort();
+  }, [sessionId]);
+
+  const selectedCase =
+    detail?.casos.find((caso) => caso.id_caso === selectedCaseId) ??
+    detail?.casos[0];
+
   return (
     <section className="history_details">
-      <HistoryCard
-        simulation={simulation}
-        onSelect={() => {}}
-        showDetailButton={false}
-      />
-      <div className="history_details_columns">
-        <section className="questions_summary">
-          {showDecision ? (
-            <>
-              <h2>Interacción con el agente tutor</h2>
+      {loading ? (
+        <p role="status">Cargando detalle...</p>
+      ) : error ? (
+        <p role="alert">{error}</p>
+      ) : detail ? (
+        <>
+          <div className="history_card history_header_with_model">
+            <h2>Detalle de la simulación</h2>
+            {selectedCase && (
+              <ModelsPreview caseId={selectedCase.id_caso} title={selectedCase.titulo ?? selectedCase.id_caso}/>
+            )}
+            <div>
               <p>
-                Observa la recomendacion del agente, tu decision y como se
-                evaluo
+                Realizada el{" "}
+                {new Date(detail.fecha_inicio).toLocaleString("es-CO")}
               </p>
-              <div>
-                <h3>Respuesta inicial del estudiante</h3>
-                <p>Pregunta </p>
-                <p>Respuesta {simulation.score}</p>
-              </div>
-              <div>
-                <h2>Recomendación del agente tutor</h2>
-                <p>recomendacion</p>
-              </div>
-              <div>
-                <h3>Decisión final del estudiante</h3>
-                <p>Respuesta {simulation.score}</p>
-              </div>
-            </>
-          ) : selectedQuestion ? (
-            <>
-              <h3>Pregunta {selectedQuestion.number}</h3>
-              <p>{selectedQuestion.statement}</p>
-              <p>Respuesta registrada: {selectedQuestion.selectedAnswer}</p>
-            </>
-          ) : (
-            <p>Selecciona una pregunta</p>
-          )}
-        </section>
 
-        <div className="history_details_right">
-          <AnalysisSummary simulacion={simulation} />
-          <section className="question_container">
-            <QuestionSection
-              questions={simulation.questions}
-              selectedNumber={selectedQuestion?.number ?? null}
-              onSelect={(question) => {
-                setSelectedQuestion(question);
-                setShowDecision(false);
-              }}
-            />
-            <button
-              type="button"
-              aria-pressed={showDecision}
-              onClick={() => {
-                setSelectedQuestion(null);
-                setShowDecision(true);
-              }}
-              className="button_question"
-            >
-              Decisión final
+              <p>
+                Puntuación de la sesión:{" "}
+                {detail.puntuacion === null
+                  ? "No disponible"
+                  : `${detail.puntuacion}/10`}
+              </p>
+            </div>
+            <button type="button" onClick={onBack} className="back_button">
+              Volver al historial
             </button>
-          </section>
-        </div>
-      </div>
-      <div style={{display: "flex", justifyContent:"end"}}>
-        <button type="button" onClick={onBack} className="back_button">
-          Volver al historial
-        </button>
-      </div>
+          </div>
+          {detail.casos.length > 1 && (
+            <>
+              <label htmlFor="history-case">Caso analizado</label>
+              <select
+                id="history-case"
+                value={selectedCase?.id_caso ?? ""}
+                onChange={(event) => setSelectedCaseId(event.target.value)}
+              >
+                {detail.casos.map((caso) => (
+                  <option key={caso.id_caso} value={caso.id_caso}>
+                    {caso.titulo ?? caso.id_caso}
+                  </option>
+                ))}
+              </select>
+            </>
+          )}
+
+          {selectedCase ? (
+            <CaseReview
+              key={selectedCase.id_caso}
+              caso={selectedCase}
+              sesion={detail}
+            />
+          ) : (
+            <p>No hay casos disponibles en esta sesión.</p>
+          )}
+        </>
+      ) : null}
     </section>
   );
 }

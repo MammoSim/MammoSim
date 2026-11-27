@@ -1,32 +1,22 @@
 import { useEffect, useState } from "react";
-import { type ProfessorSessionDetail } from "../../types/ProfessorHistorial";
+import type { ProfessorSessionDetail } from "../../types/ProfessorHistorial";
+import type { CasoRevision } from "../../types/StudentHistorial";
 import { getCourseSessionsDetail } from "../../services/coursesServices";
+import CaseReview from "../history/CaseReview";
+import "../../styles/History.css";
+import ModelsPreview from "./ModelsPreview";
 
 type DetailsProps = {
   sessionId: string;
   onBack: () => void;
 };
 
-function decisionLabel(value: string) {
-  switch (value) {
-    case "biopsiar":
-      return "Biopsiar";
-    case "seguimiento":
-      return "Seguimiento";
-    case "ignorar":
-      return "Ignorar";
-    case "estudio_adicional":
-      return "Estudio adcional";
-    default:
-      return value;
-  }
-}
-
 export default function ProfessorHistorialDetails({
   sessionId,
   onBack,
-}: DetailsProps){
+}: DetailsProps) {
   const [detail, setDetail] = useState<ProfessorSessionDetail | null>(null);
+  const [selectedCaseId, setSelectedCaseId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -57,99 +47,124 @@ export default function ProfessorHistorialDetails({
         }
       }
     }
+
     void loadDetail();
 
     return () => controller.abort();
   }, [sessionId]);
 
+  const selectedCase =
+    detail?.casos.find((caso) => caso.id_caso === selectedCaseId) ??
+    detail?.casos[0];
+
+  let caso: CasoRevision | null = null;
+
+  if (
+    selectedCase &&
+    selectedCase.preguntas != null &&
+    selectedCase.enunciado_decision != null &&
+    selectedCase.opciones_decision != null &&
+    selectedCase.respuesta_correcta != null &&
+    selectedCase.hallazgos != null &&
+    selectedCase.retroalimentacion != null
+  ) {
+    caso = {
+      ...selectedCase,
+      preguntas: selectedCase.preguntas,
+      enunciado_decision: selectedCase.enunciado_decision,
+      opciones_decision: selectedCase.opciones_decision,
+      respuesta_correcta: selectedCase.respuesta_correcta,
+      recomendacion_ia: selectedCase.recomendacion_ia ?? null,
+      hallazgos: selectedCase.hallazgos,
+      retroalimentacion: selectedCase.retroalimentacion,
+    };
+  }
+
   return (
-    <section>
-      <button type="button" onClick={onBack}>Volver al historial</button>
+    <section className="history_details">
       {loading ? (
-        <p role="status">Cargando detalle...</p>
+        <>
+          <button type="button" onClick={onBack} className="back_button">
+            Volver al historial
+          </button>
+          <p role="status">Cargando detalle...</p>
+        </>
       ) : error ? (
-        <p  role="alert">{error}</p>
+        <>
+          <button type="button" onClick={onBack} className="back_button">
+            Volver al historial
+          </button>
+          <p role="alert">{error}</p>
+        </>
       ) : detail ? (
         <>
-          <h2>{detail.nombre_estudiante ?? " Nombre no disponible"}</h2>
-          <p>Sesión: {" "} {detail.id_sesion}</p>
-          <p>
-            Estado:{" "} {detail.estado === "completada" ? "Completada" : "En curso"}
-          </p>
-          <p>Inicio:{" "} {new Date(detail.fecha_inicio).toLocaleString("es-CO")}</p>
-          
-          {detail.fecha_fin && (
+          <div className="history_card history_header_with_model">
+            {selectedCase && (
+              <ModelsPreview
+                caseId={selectedCase.id_caso}
+                title={selectedCase.titulo ?? selectedCase.id_caso}
+              />
+            )}
+            <div>
+              <h2>Detalle de la simulación</h2>
+              <p>
+                Estudiante: {detail.nombre_estudiante ?? "Nombre no disponible"}
+              </p>
+            </div>
+
+            <div>
+              <p>
+                Realizada el{" "}
+                {new Date(detail.fecha_inicio).toLocaleString("es-CO")}
+              </p>
+
+              <p>
+                Puntuación de la sesión:{" "}
+                {detail.puntuacion === null
+                  ? "No disponible"
+                  : `${detail.puntuacion}/10`}
+              </p>
+
+              <p>
+                Estado:{" "}
+                {detail.estado === "completada" ? "Completada" : "En curso"}
+              </p>
+            </div>
+
+            <button type="button" onClick={onBack} className="back_button">
+              Volver al historial
+            </button>
+          </div>
+
+          {detail.casos.length > 1 && (
+            <>
+              <label htmlFor="professor-history-case">Caso analizado</label>
+              <select
+                id="professor-history-case"
+                value={selectedCase?.id_caso ?? ""}
+                onChange={(event) => setSelectedCaseId(event.target.value)}
+              >
+                {detail.casos.map((item) => (
+                  <option key={item.id_caso} value={item.id_caso}>
+                    {item.titulo ?? item.id_caso}
+                  </option>
+                ))}
+              </select>
+            </>
+          )}
+
+          {detail.estado !== "completada" ? (
             <p>
-              Finalización: {" "}{new Date(detail.fecha_fin).toLocaleString("es-CO")}
+              El detalle completo estará disponible cuando el estudiante
+              finalice la sesión.
+            </p>
+          ) : caso ? (
+            <CaseReview key={caso.id_caso} caso={caso} sesion={detail} />
+          ) : (
+            <p>
+              No se recibió el detalle completo de las preguntas de este caso.
             </p>
           )}
-          <p>
-            Puntuación de la sesión:{" "}
-            {detail.puntuacion === null
-              ? "Aún no se encuentra disponible"
-              : `${detail.puntuacion}/10`}
-          </p>
-          {detail.casos.length === 0 && (<p>Esta sesión no contiene casos</p>)}
-          {detail.casos.map((caso) =>(
-            <article key={caso.id_caso}>
-                <h3>{caso.titulo ?? caso.id_caso}</h3>
-                <p>
-                    Nota del caso:{" "}
-                    {caso.nota_caso === null ? "Aún no disponible" : `${caso.nota_caso}/10`}
-                </p>
-                <h4>Respuestas registradas</h4>
-
-                {caso.respuestas.length === 0 ? (<p>Todavía no hay respuestas</p>) : (
-                    <div>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th scope="col">Pregunta</th>
-                                    <th scope="col">Opción elegida</th>
-                                    <th scope="col">Evaluación</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {caso.respuestas.map((respuesta) => (
-                                    <tr key={respuesta.numero_pregunta}>
-                                        <th scope="row">{respuesta.numero_pregunta}</th>
-                                        <td>{respuesta.opcion_elegida}</td>
-                                        <td>{respuesta.correcta ? "Correcta" : "Incorrecta"}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                )}
-                <h4>Decisión inicial</h4>
-                {caso.decision_inicial ? (<p>{decisionLabel(caso.decision_inicial.decision)} {" - "} {caso.decision_inicial.acierto ? "Correcta" : "Incorrecta"}</p>) : (<p>Todavía no registrada</p>)}
-
-                <h4>Recomendación del agente tutor y decisión final</h4>
-                {caso.decision_final ? (
-                    <>
-                        <p>
-                            Opción recomendada: {" "}
-                            {decisionLabel(caso.decision_final.opcion_ia)}
-                        </p>
-                        
-                        <p>
-                            Recomendación: {" "}
-                            {decisionLabel(caso.decision_final.ia_correcta ? "Correcta" : "Incorrecta")}
-                        </p>
-                        <p>
-                            Decisión final: {" "}
-                            {decisionLabel(caso.decision_final.decision)} {" - "} {caso.decision_final.acierto ? "Correcto" : "Incorrecta"}    
-                        </p>
-                        <p>
-                            Coincidió con el tutor:{" "}
-                            {caso.decision_final.siguio_ia ? "Si" : "No"}
-                        </p>
-                    </>
-                ): (
-                    <p>Todavía no hay una decision final registrada</p>
-                )}
-            </article>
-          ))}
         </>
       ) : null}
     </section>

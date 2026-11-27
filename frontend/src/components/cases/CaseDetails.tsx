@@ -1,6 +1,8 @@
+import { useSimulationMode } from "../../hooks/useSimulationMode";
 import type { clinicalCase } from "../../types/ClinicalCase";
 import "../../styles/CaseDetails.css";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import ModelsPreview from "../history/ModelsPreview";
 
 type CaseDetailsProps = {
   clinicalCase: clinicalCase;
@@ -13,13 +15,11 @@ export default function CaseDetails({
 }: CaseDetailsProps) {
   const navigate = useNavigate();
 
-  const location = useLocation();
+  const { mode } = useSimulationMode();
 
-  const idCurso =
-    typeof location.state?.id_curso === "string"
-      ? location.state.id_curso
-      : null;
-
+  const idCurso = mode?.tipo === "clase" ? mode.id_curso : null;
+  // Agrega esta línea para comprobar el curso
+  console.log("CaseDetails - idCurso:", idCurso);
   return (
     <aside className="detail_container">
       <h2>{clinicalCase.clinical_id}</h2>
@@ -36,10 +36,17 @@ export default function CaseDetails({
           Edad simulada: <br /> {clinicalCase.pacientAge} años
         </p>
       )}
+
+      {clinicalCase && (
+        <ModelsPreview
+          caseId={clinicalCase.clinical_id}
+          title={clinicalCase.title ?? clinicalCase.clinical_id}
+        />
+      )}
+
       <h4>Descripción del caso</h4>
       <p>{clinicalCase.descripcion_breve}</p>
-      <p>Objetivos de aprendizaje</p>
-      { canStartSimulation && (
+      {canStartSimulation && (
         <button
           type="button"
           className="start_sim"

@@ -9,6 +9,7 @@ import "../styles/Sidebar.css";
 import PageHeader from "../components/layout/PageHeader";
 import { getCases } from "../services/casesServices";
 import { useProfile } from "../hooks/useProfile";
+import AlertDialog from "../components/alert/AlertDialog";
 
 export default function CasesPage() {
   const [cases, setCases] = useState<clinicalCase[]>([]);
@@ -20,6 +21,8 @@ export default function CasesPage() {
     loading: profileLoading,
     error: profileError,
   } = useProfile();
+
+  const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -55,6 +58,7 @@ export default function CasesPage() {
     <div className="sidebar_container">
       <Sidebar />
       <main className="content">
+        <AlertDialog isOpen={isOpen} onClose={() => setIsOpen(false)}/>
 
         {/* Cargar la información del perfil */}
         {profileLoading ? (

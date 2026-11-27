@@ -19,8 +19,9 @@
 
 .history_card{
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 120px minmax(0,1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0,1fr) auto;
     align-items: center;
+    gap: 24px;
     padding: 16px;
     background-color: #101A3D;
     border-radius: 12px;
@@ -30,7 +31,9 @@
         font-size: 1.5rem;
     }
     p {
+        margin: 0;
         font-size: 0.8rem;
+        line-height: 2;
     }
 }
 
@@ -50,6 +53,67 @@
         cursor: pointer;
     }
 }
+
+
+/* Modelo peview */
+.model_preview{
+    display: block;
+    width: 100%;
+    height: 200px;
+    background-color: #0b1230;
+    border-radius: 12px;
+}
+
+.history_models {
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+
+.history_session_card {
+  grid-template-columns: minmax(0, 1fr) minmax(180px, 280px) auto;
+}
+
+.history_header_with_model {
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(160px, 220px)
+    minmax(0, 1fr)
+    auto;
+}
+
+.history_header_with_model .model_preview {
+  height: 170px;
+}
+
+.history_header_with_model .back_button {
+  margin: 0;
+  justify-self: end;
+}
+
+@media (max-width: 1100px) {
+  .history_header_with_model {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 800px) {
+  .history_session_card,
+  .history_header_with_model {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .history_header_with_model .back_button {
+    justify-self: center;
+  }
+
+  .history_models {
+    width: 100%;
+    max-width: 320px;
+    justify-self: center;
+  }
+}
+
 
 /*Volver al historial*/
 .back_button { 
@@ -108,6 +172,7 @@
 .history_details {
   display: flex;
   flex-direction: column;
+  justify-self: end;
   gap: 20px;
   min-width: 0;
 }
@@ -170,5 +235,16 @@
 @media (max-width: 1000px) {
   .history_details_columns {
     grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 800px) {
+  .history_card {
+    grid-template-columns: minmax(0, 1fr);
+    text-align: left;
+  }
+
+  .history_card .back_button {
+    justify-self: center;
   }
 }
