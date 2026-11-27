@@ -8,6 +8,7 @@ import "../styles/ProfessorPage.css";
 import SidebarProfessor from "../components/layout/SidebarProfessor";
 import { useProfile } from "../hooks/useProfile";
 import PageHeader from "../components/layout/PageHeader";
+import AlertDialog from "../components/alert/AlertDialog";
 
 export default function ProfessorPage() {
   const [course, setCourse] = useState<Course | null>(null);
@@ -21,6 +22,8 @@ export default function ProfessorPage() {
     loading: profileLoading,
     error: profileError,
   } = useProfile();
+
+  const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -86,6 +89,7 @@ export default function ProfessorPage() {
       <SidebarProfessor />
 
       <main className="professor_page">
+        <AlertDialog isOpen={isOpen} onClose={() => setIsOpen(false)}/>
         {/* Cargar la información del perfil */}
         {profileLoading ? (
           <p role="status">Cargando perfil...</p>

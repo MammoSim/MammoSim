@@ -1,0 +1,39 @@
+.academy_alert_dialog{
+    width: min(520px, 120vw);
+    box-sizing: border-box;
+    margin: auto;
+    padding: 24px;
+    border: 1px solid #3559d6;
+    border-radius: 16px;
+    background: #ffffff;
+    color: #101a3d;
+    text-align: center;
+}
+.academy_alert_dialog::backdrop{
+    background-color: rgb(0 0 0 / 65%);
+}
+
+.academy_alert_close{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.academy_alert_dialog .button_close{
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    cursor: pointer;
+    background-color: red;
+    border: none;
+    border-radius: 50%;
+    color: #ffffff;
+}
+
+.icon_academy_alert{
+    color: red;
+    filter: drop-shadow(0 3px 0 #101a3d);
+    width: 40%;
+    height: 40%;
+}
