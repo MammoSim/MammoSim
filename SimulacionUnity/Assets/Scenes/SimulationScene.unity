@@ -5058,7 +5058,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faa883cc44721d94281d7faa27df8956, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ApiClient
-  baseUrl: http://localhost:8000
+  baseUrl: https://mammosim.onrender.com
   usarDatosDeEjemplo: 0
 --- !u!4 &516705442
 Transform:
@@ -9500,7 +9500,7 @@ MonoBehaviour:
   modelosLocales:
   - referencia: mama_caso_001
     prefab: {fileID: 0}
-  urlBaseModelos: http://localhost:5173/modelos/
+  urlBaseModelos: https://mammosim.web.app/modelos/
   tamanoModelo: 0.6
   giroAutomatico: 0
   flotacion: 0.03
