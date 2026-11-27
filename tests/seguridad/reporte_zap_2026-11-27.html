@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ZAP por Informe de Escaneo Checkmarx para MammoSim</title>
+<link
+	href="2026-11-27-ZAP-Report-/normalize/normalize.css" rel="stylesheet">
+<link
+	href="2026-11-27-ZAP-Report-/themes/original/main.css" rel="stylesheet">
+<link
+	href="2026-11-27-ZAP-Report-/themes/original/colors.css" rel="stylesheet">
+</head>
+<body>
+	<header>
+		<h1>ZAP por Informe de Escaneo Checkmarx para MammoSim</h1>
+		<p>
+			<span>Generated with</span> <a href="https://zaproxy.org"><img
+				src="2026-11-27-ZAP-Report-/zap32x32.png" alt="The ZAP logo" class="zap-logo">ZAP</a>
+			<span>on vie 27 nov 2026, at 15:04:31</span>
+		</p>
+		<p>ZAP Versión: 2.17.0</p>
+		<p>
+			ZAP by <a href="https://checkmarx.com/">Checkmarx</a>
+		</p>
+	</header>
+
+	<main>
+
+		<section id="contents" class="contents">
+			<h2>Contents</h2>
+			<nav>
+				<ol>
+					<li><a
+						href="#about-this-report">About This Report</a>
+						<ol>
+							
+							<li><a
+								href="#report-parameters">Report Parameters</a></li>
+						</ol></li>
+					<data-th-block>
+					<li><a
+						href="#summaries">Summaries</a>
+						<ol>
+							<li><a
+								href="#risk-confidence-counts">Alert Counts by Risk and Confidence</a></li>
+							<li><a
+								href="#site-risk-counts">Alert Counts by Site and Risk</a></li>
+							<li><a
+								href="#alert-type-counts">Alert Counts by Alert Type</a></li>
+							<li><a
+								href="#insights">Insights</a></li>
+						</ol></li>
+					<li><a
+						href="#alerts">Alerts</a>
+						<ol>
+							
+							 
+							 
+							
+							
+							
+							
+							
+							
+							<li><a
+								href="#alerts--risk-1-confidence-2"><span>Risk</span>=<span
+									class="risk-level">Bajo</span>, <span>Confidence</span>=<span
+									class="confidence-level">Media</span> <span>(1)</span></a></li>
+							
+							
+							  
+							 
+						</ol></li>
+					<li><a
+						href="#appendix">Appendix</a>
+						<ol>
+							<li><a
+								href="#alert-types">Alert Types</a></li>
+						</ol></li>
+					</data-th-block>
+				</ol>
+			</nav>
+		</section>
+
+		<section
+			id="about-this-report" class="about-this-report">
+			<h2>About This Report</h2>
+
+			
+
+			<section
+				id="report-parameters">
+				<h3>Report Parameters</h3>
+				<div class="report-parameters--container">
+					<h4>Contexts</h4>
+					
+					
+					<p>No contexts were selected, so all contexts were included by default.</p>
+					  
+
+					<h4>Sites</h4>
+					
+					<p>The following sites were included:</p>
+					<ul class="sites-list">
+						<li><span class="site">http://localhost:8000</span></li>
+					</ul>
+					
+					<p>(If no sites were selected, all sites were included by default.)</p>
+					<p>An included site must also be within one of the included contexts for its data to be included in the report.</p>
+
+					<h4>Risk levels</h4>
+					<p>
+						<span>Included</span>:
+						 
+						<span class="included-risk-codes"><span class="risk-level">Alto</span>, <span class="risk-level">Medio</span>, <span class="risk-level">Bajo</span>, <span class="risk-level">Informativo</span></span>
+					</p>
+					<p>
+						<span>Excluded</span>:
+						 <span>None</span>
+						
+					</p>
+
+					<h4>Confidence levels</h4>
+					<p>
+						<span>Included</span>:
+						
+						
+						<span class="included-confidence-codes"><span class="confidence-level">Confirmado por Usuario</span>, <span class="confidence-level">Alta</span>, <span class="confidence-level">Media</span>, <span class="confidence-level">Baja</span></span>
+					</p>
+					<p>
+						<span>Excluded</span>:
+						
+						
+						<span class="included-confidence-codes"> <span class="confidence-level">Confirmado por Usuario</span>, <span class="confidence-level">Alta</span>, <span class="confidence-level">Media</span>, <span class="confidence-level">Baja</span>, <span class="confidence-level">Falso positivo</span></span>
+					</p>
+				</div>
+			</section>
+		</section>
+
+		
+		<section>
+			
+		</section>
+		
+		<section id="summaries" class="summaries">
+			<h2>Summaries</h2>
+
+			<section
+				id="risk-confidence-counts">
+				<h3>Alert Counts by Risk and Confidence</h3>
+				<table class="risk-confidence-counts-table">
+					<caption>
+						<p>This table shows the number of alerts for each level of risk and confidence included in the report.</p>
+						<p>(The percentages in brackets represent the count as a percentage of the total number of alerts included in the report, rounded to one decimal place.)</p>
+					</caption>
+					<colgroup>
+						<col>
+						<col>
+					</colgroup>
+					<colgroup>
+						<col
+							style="width: 14.0%"><col
+							style="width: 14.0%"><col
+							style="width: 14.0%"><col
+							style="width: 14.0%">
+						<col style="width: 14.0%">
+					</colgroup>
+					<thead>
+						<tr>
+							<td colspan="2" rowspan="2"></td>
+							<th scope="colgroup"
+								colspan="5">Confidence</th>
+						</tr>
+						<tr>
+							<th scope="col">Confirmado por Usuario</th>
+							<th scope="col">Alta</th>
+							<th scope="col">Media</th>
+							<th scope="col">Baja</th>
+							<th scope="col">Total</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="rowgroup"
+								rowspan="5">Risk</th>
+							<th scope="row">Alto</th>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>0</span><br> <span class="additional-info-percentages">(0,0 %)</span></td>
+						</tr>
+						<tr>
+							
+							<th scope="row">Medio</th>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>0</span><br> <span class="additional-info-percentages">(0,0 %)</span></td>
+						</tr>
+						<tr>
+							
+							<th scope="row">Bajo</th>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>1</span><br> <span
+								class="additional-info-percentages">(100,0 %)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>1</span><br> <span class="additional-info-percentages">(100,0 %)</span></td>
+						</tr>
+						<tr>
+							
+							<th scope="row">Informativo</th>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>0</span><br> <span class="additional-info-percentages">(0,0 %)</span></td>
+						</tr>
+						<tr>
+							<th scope="row">Total</th>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>1</span><br> <span
+								class="additional-info-percentages">(100,0 %)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0,0 %)</span></td>
+							<td><span>1</span><br> <span
+								class="additional-info-percentages">(100%)</span></td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section
+				id="site-risk-counts">
+				<h3>Alert Counts by Site and Risk</h3>
+				<table class="site-risk-counts-table">
+					<caption>
+						<p>This table shows, for each site for which one or more alerts were raised, the number of alerts raised at each risk level.</p>
+						<p>Alerts with a confidence level of &quot;False Positive&quot; have been excluded from these counts.</p>
+						<p>(The numbers in brackets are the number of alerts raised for the site at or above that risk level.)</p>
+					</caption>
+					<colgroup>
+						<col>
+						<col>
+					</colgroup>
+					<colgroup>
+						<col
+							style="width: 16.25%"><col
+							style="width: 16.25%"><col
+							style="width: 16.25%"><col
+							style="width: 16.25%">
+					</colgroup>
+					<thead>
+						<tr>
+							<td colspan="2" rowspan="2"></td>
+							<th scope="colgroup" colspan="4">Risk</th>
+						</tr>
+						<tr>
+							<th scope="col">
+								<span>Alto</span><br>  <span
+									class="additional-info-percentages">(= Alto)</span>  
+							</th>
+							<th scope="col">
+								<span>Medio</span><br>   <span
+									class="additional-info-percentages">(&gt;= Medio)</span> 
+							</th>
+							<th scope="col">
+								<span>Bajo</span><br>   <span
+									class="additional-info-percentages">(&gt;= Bajo)</span> 
+							</th>
+							<th scope="col">
+								<span>Informativo</span><br>   <span
+									class="additional-info-percentages">(&gt;= Informativo)</span> 
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="rowgroup"
+								rowspan="1">Site</th>
+							<th scope="row">http://localhost:8000</th>
+							
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(0)</span></td>
+							<td><span>1</span><br> <span
+								class="additional-info-percentages">(1)</span></td>
+							<td><span>0</span><br> <span
+								class="additional-info-percentages">(1)</span></td>
+							
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section
+				id="alert-type-counts">
+				<h3>Alert Counts by Alert Type</h3>
+				<table class="alert-type-counts-table">
+					<caption>
+						<p>This table shows the number of alerts of each alert type, together with the alert type&#39;s risk level.</p>
+						<p>(The percentages in brackets represent each count as a percentage, rounded to one decimal place, of the total number of alerts included in this report.)</p>
+					</caption>
+					<thead>
+						<tr>
+							<th scope="col">Alert type</th>
+							<th scope="col">Risk</th>
+							<th scope="col">Count</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<th scope="row"><a
+								href="#alert-type-0">Falta encabezado X-Content-Type-Options</a></th>
+							<td class="risk-level">Bajo</td>
+							<td><span>5</span><br> <span
+								class="additional-info-percentages">(500,0 %)</span></td>
+						</tr>
+					</tbody>
+					<tfoot>
+						<tr>
+							<th scope="row">Total</th>
+							<td></td>
+							<td>1</td>
+						</tr>
+					</tfoot>
+				</table>
+			</section>
+			
+			<section
+				id="insights">
+				<h3 class="left-header">Insights</h3>
+				
+				<table class="insights-table">
+						<caption>
+						<p>This table shows information that is likely to be very relevant to you, but which is not related to vulnerabilities, or potentially even related to the application in question.</p>
+					</caption>
+					<thead>
+					<tr>
+						<th scope="col">Level</th>
+						<th scope="col">Razón</th>
+						<th scope="col">Site</th>
+						<th scope="col">Descripción</th>
+						<th scope="col">Statistic</th>
+					</tr>
+					</thead>
+					<tbody>
+					
+						<tr>
+						<td class="risk-2">
+							<div>Medio</div>
+						</td>
+						<td>
+							<div>Exceeded Low</div>
+						</td>
+						<td>
+							<div></div>
+						</td>
+						<td>
+							<div>Percentage of memory used</div>
+						</td>
+						<td align="center">
+							<div>82   </div>
+						</td>
+						</tr>
+					
+						<tr>
+						<td class="risk-2">
+							<div>Medio</div>
+						</td>
+						<td>
+							<div>Exceeded High</div>
+						</td>
+						<td>
+							<div>http://localhost:8000</div>
+						</td>
+						<td>
+							<div>Percentage of responses with status code 4xx</div>
+						</td>
+						<td align="center">
+							<div>96 %</div>
+						</td>
+						</tr>
+					
+						<tr>
+						<td class="risk-0">
+							<div>Información</div>
+						</td>
+						<td>
+							<div>Informativo</div>
+						</td>
+						<td>
+							<div>http://localhost:8000</div>
+						</td>
+						<td>
+							<div>Percentage of responses with status code 2xx</div>
+						</td>
+						<td align="center">
+							<div>3 %</div>
+						</td>
+						</tr>
+					
+						<tr>
+						<td class="risk-0">
+							<div>Información</div>
+						</td>
+						<td>
+							<div>Informativo</div>
+						</td>
+						<td>
+							<div>http://localhost:8000</div>
+						</td>
+						<td>
+							<div>Percentage of responses with status code 3xx</div>
+						</td>
+						<td align="center">
+							<div>2 %</div>
+						</td>
+						</tr>
+					
+						<tr>
+						<td class="risk-0">
+							<div>Información</div>
+						</td>
+						<td>
+							<div>Informativo</div>
+						</td>
+						<td>
+							<div>http://localhost:8000</div>
+						</td>
+						<td>
+							<div>Percentage of endpoints with content type application/json</div>
+						</td>
+						<td align="center">
+							<div>100 %</div>
+						</td>
+						</tr>
+					
+						<tr>
+						<td class="risk-0">
+							<div>Información</div>
+						</td>
+						<td>
+							<div>Informativo</div>
+						</td>
+						<td>
+							<div>http://localhost:8000</div>
+						</td>
+						<td>
+							<div>Percentage of endpoints with method DELETE</div>
+						</td>
+						<td align="center">
+							<div>4 %</div>
+						</td>
+						</tr>
+					
+						<tr>
+						<td class="risk-0">
+							<div>Información</div>
+						</td>
+						<td>
+							<div>Informativo</div>
+						</td>
+						<td>
+							<div>http://localhost:8000</div>
+						</td>
+						<td>
+							<div>Percentage of endpoints with method GET</div>
+						</td>
+						<td align="center">
+							<div>62 %</div>
+						</td>
+						</tr>
+					
+						<tr>
+						<td class="risk-0">
+							<div>Información</div>
+						</td>
+						<td>
+							<div>Informativo</div>
+						</td>
+						<td>
+							<div>http://localhost:8000</div>
+						</td>
+						<td>
+							<div>Percentage of endpoints with method POST</div>
+						</td>
+						<td align="center">
+							<div>33 %</div>
+						</td>
+						</tr>
+					
+						<tr>
+						<td class="risk-0">
+							<div>Información</div>
+						</td>
+						<td>
+							<div>Informativo</div>
+						</td>
+						<td>
+							<div>http://localhost:8000</div>
+						</td>
+						<td>
+							<div>Count of total endpoints</div>
+						</td>
+						<td align="center">
+							<div>24   </div>
+						</td>
+						</tr>
+					
+						<tr>
+						<td class="risk-0">
+							<div>Información</div>
+						</td>
+						<td>
+							<div>Informativo</div>
+						</td>
+						<td>
+							<div>http://localhost:8000</div>
+						</td>
+						<td>
+							<div>Percentage of slow responses</div>
+						</td>
+						<td align="center">
+							<div>3 %</div>
+						</td>
+						</tr>
+					
+					</tbody>
+				</table>
+			</section>
+		</section>
+
+		<section id="alerts" class="alerts">
+			<h2>Alerts</h2>
+			<ol>
+				
+				 
+				 
+				 
+				
+				
+				
+				
+				<li id="alerts--risk-1-confidence-2">
+					<h3>
+						<span>Risk</span>=<span
+							class="risk-level">Bajo</span>, <span>Confidence</span>=<span
+							class="confidence-level">Media</span> <span>(1)</span>
+					</h3>
+					<ol>
+						
+						<li class="alerts--site-li">
+							<h4>
+								<span class="site">http://localhost:8000</span> <span>(1)</span>
+							</h4>
+							<ol>
+								
+								<li>
+									<h5>
+										<a
+											href="#alert-type-0">Falta encabezado X-Content-Type-Options</a> <span>(1)</span>
+									</h5>
+									<ol>
+										<li><details>
+												<summary>
+													<span class="request-method-n-url">GET http://localhost:8000/openapi.json</span>
+												</summary>
+												
+<table class="alerts-table">
+	<tr>
+		<th scope="row">Alert tags</th>
+		<td>
+			<ul class="alert-tags-list">
+				<li>
+					<span><a href="https://top10.owasp.org/2021/A05_2021-Security_Misconfiguration/">OWASP_2021_A05</a></span> 
+				</li>
+				<li>
+					 <span>POLICY_QA_STD = </span>
+				</li>
+				<li>
+					 <span>POLICY_PENTEST = </span>
+				</li>
+				<li>
+					<span><a href="https://www.zaproxy.org/docs/desktop/addons/common-library/alerttags/#systemic">SYSTEMIC</a></span> 
+				</li>
+				<li>
+					<span><a href="https://cwe.mitre.org/data/definitions/693.html">CWE-693</a></span> 
+				</li>
+				<li>
+					<span><a href="https://owasp.github.io/www-project-top-ten/2017/A6_2017-Security_Misconfiguration.html">OWASP_2017_A06</a></span> 
+				</li>
+				<li>
+					<span><a href="https://top10.owasp.org/2025/A02_2025-Security_Misconfiguration/">OWASP_2025_A02</a></span> 
+				</li>
+			</ul>
+		</td>
+	</tr>
+	<tr>
+		<th scope="row">Alert description</th>
+		<td> 
+<p>La cabecera Anti-MIME-Sniffing X-Content-Type-Options no se ha establecido en &#39;nosniff&#39;. Esto permite que las versiones anteriores de Internet Explorer y Chrome realicen MIME-sniffing en el cuerpo de la respuesta, lo que puede provocar que el cuerpo dé la respuesta se interprete y se muestre como un tipo de contenido distinto del tipo de contenido declarado. Las versiones actuales (principios de 2014) y heredadas de Firefox utilizarán el tipo de contenido declarado (si se establece uno), en lugar de realizar MIME-sniffing.</p>
+ </td>
+	</tr>
+	<tr>
+		<th scope="row">Other info</th>
+		<td> 
+<p>Este problema aún se aplica a las páginas de tipo error (401, 403, 500, etc.), ya que esas páginas a menudo se ven afectadas por problemas de inyección, en cuyo caso aún existe la preocupación de que los navegadores husmeen las páginas lejos de su tipo de contenido real.</p>
+
+<p>En el umbral «Alto» esta regla de análisis no alertará sobre respuestas de error del cliente o servidor.</p>
+ </td>
+	</tr>
+	<tr>
+		<th scope="row">Request</th>
+		<td><details open="open">
+				<summary>Request line and header section (271 bytes)</summary>
+				
+				<pre><code>GET http://localhost:8000/openapi.json HTTP/1.1
+host: localhost:8000
+user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36
+pragma: no-cache
+cache-control: no-cache
+Accept: application/json,*/*
+
+</code></pre>
+				
+				
+			</details> <details class="request-body" open="open">
+				<summary>Request body (0 bytes)</summary>
+				
+				<pre><code></code></pre>
+				
+				
+			</details></td>
+	</tr>
+	<tr>
+		<th scope="row">Response</th>
+		<td><details open="open">
+				<summary>Status line and header section (142 bytes)</summary>
+				
+				<pre><code>HTTP/1.1 200 OK
+date: Fri, 27 Nov 2026 20:00:58 GMT
+server: uvicorn
+content-length: 26336
+content-type: application/json
+vary: Origin
+
+</code></pre>
+				
+				
+			</details> <details class="response-body">
+				<summary>Response body (26336 bytes)</summary>
+				
+				<pre><code>{&quot;openapi&quot;:&quot;3.1.0&quot;,&quot;info&quot;:{&quot;title&quot;:&quot;MammoSim API&quot;,&quot;version&quot;:&quot;0.1.0&quot;},&quot;paths&quot;:{&quot;/auth/registro&quot;:{&quot;post&quot;:{&quot;tags&quot;:[&quot;usuarios&quot;],&quot;summary&quot;:&quot;Registrar&quot;,&quot;description&quot;:&quot;1. Crea usuarios/{uid} la primera vez que alguien entra.\n\nEl uid y el correo salen del TOKEN (ya verificado), nunca del cuerpo de la\npetición: así nadie puede registrarse a nombre de otro.&quot;,&quot;operationId&quot;:&quot;registrar_auth_registro_post&quot;,&quot;requestBody&quot;:{&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/RegistroIn&quot;}}},&quot;required&quot;:true},&quot;responses&quot;:{&quot;201&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/RegistroOut&quot;}}}},&quot;422&quot;:{&quot;description&quot;:&quot;Validation Error&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/HTTPValidationError&quot;}}}}},&quot;security&quot;:[{&quot;HTTPBearer&quot;:[]}]}},&quot;/usuarios/me&quot;:{&quot;get&quot;:{&quot;tags&quot;:[&quot;usuarios&quot;],&quot;summary&quot;:&quot;Mi Perfil&quot;,&quot;description&quot;:&quot;2. Perfil del usuario que inició sesión (ya implementado, sirve de modelo).&quot;,&quot;operationId&quot;:&quot;mi_perfil_usuarios_me_get&quot;,&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/UsuarioOut&quot;}}}}},&quot;security&quot;:[{&quot;HTTPBearer&quot;:[]}]}},&quot;/cursos&quot;:{&quot;post&quot;:{&quot;tags&quot;:[&quot;cursos&quot;],&quot;summary&quot;:&quot;Crear Curso&quot;,&quot;description&quot;:&quot;3. Crea el curso del docente con un código único generado por el servidor.&quot;,&quot;operationId&quot;:&quot;crear_curso_cursos_post&quot;,&quot;requestBody&quot;:{&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/CursoIn&quot;}}},&quot;required&quot;:true},&quot;responses&quot;:{&quot;201&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/CursoOut&quot;}}}},&quot;422&quot;:{&quot;description&quot;:&quot;Validation Error&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/HTTPValidationError&quot;}}}}},&quot;security&quot;:[{&quot;HTTPBearer&quot;:[]}]}},&quot;/cursos/mio&quot;:{&quot;get&quot;:{&quot;tags&quot;:[&quot;cursos&quot;],&quot;summary&quot;:&quot;Mi Curso&quot;,&quot;description&quot;:&quot;4. El curso del docente que hace la petición.&quot;,&quot;operationId&quot;:&quot;mi_curso_cursos_mio_get&quot;,&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/CursoOut&quot;}}}}},&quot;security&quot;:[{&quot;HTTPBearer&quot;:[]}]}},&quot;/inscripciones&quot;:{&quot;post&quot;:{&quot;tags&quot;:[&quot;cursos&quot;],&quot;summary&quot;:&quot;Unirse A Curso&quot;,&quot;description&quot;:&quot;5. Se une a un curso con su código; si ya había estado, la reactiva.&quot;,&quot;operationId&quot;:&quot;unirse_a_curso_inscripciones_post&quot;,&quot;requestBody&quot;:{&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/InscripcionIn&quot;}}},&quot;required&quot;:true},&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/CursoOut&quot;}}}},&quot;422&quot;:{&quot;description&quot;:&quot;Validation Error&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/HTTPValidationError&quot;}}}}},&quot;security&quot;:[{&quot;HTTPBearer&quot;:[]}]}},&quot;/inscripciones/{id_curso}&quot;:{&quot;delete&quot;:{&quot;tags&quot;:[&quot;cursos&quot;],&quot;summary&quot;:&quot;Salirse Del Curso&quot;,&quot;description&quot;:&quot;6. Se sale del curso: activo pasa a False y el historial se conserva.&quot;,&quot;operationId&quot;:&quot;salirse_del_curso_inscripciones__id_curso__delete&quot;,&quot;security&quot;:[{&quot;HTTPBearer&quot;:[]}],&quot;parameters&quot;:[{&quot;name&quot;:&quot;id_curso&quot;,&quot;in&quot;:&quot;path&quot;,&quot;required&quot;:true,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Curso&quot;}}],&quot;responses&quot;:{&quot;204&quot;:{&quot;description&quot;:&quot;Successful Response&quot;},&quot;422&quot;:{&quot;description&quot;:&quot;Validation Error&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/HTTPValidationError&quot;}}}}}}},&quot;/inscripciones/mias&quot;:{&quot;get&quot;:{&quot;tags&quot;:[&quot;cursos&quot;],&quot;summary&quot;:&quot;Mis Cursos&quot;,&quot;description&quot;:&quot;7. Los cursos donde el estudiante tiene la inscripción activa.&quot;,&quot;operationId&quot;:&quot;mis_cursos_inscripciones_mias_get&quot;,&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;items&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/CursoOut&quot;},&quot;type&quot;:&quot;array&quot;,&quot;title&quot;:&quot;Response Mis Cursos Inscripciones Mias Get&quot;}}}}},&quot;security&quot;:[{&quot;HTTPBearer&quot;:[]}]}},&quot;/cursos/mio/sesiones&quot;:{&quot;get&quot;:{&quot;tags&quot;:[&quot;cursos&quot;],&quot;summary&quot;:&quot;Sesiones De Mi Curso&quot;,&quot;description&quot;:&quot;19. Las sesiones de su curso (nunca prácticas libres ni de otros cursos),\nde la más reciente a la más antigua. Con ?id_usuario= se filtra por estudiante.&quot;,&quot;operationId&quot;:&quot;sesiones_de_mi_curso_cursos_mio_sesiones_get&quot;,&quot;security&quot;:[{&quot;HTTPBearer&quot;:[]}],&quot;parameters&quot;:[{&quot;name&quot;:&quot;id_usuario&quot;,&quot;in&quot;:&quot;query&quot;,&quot;required&quot;:false,&quot;schema&quot;:{&quot;anyOf&quot;:[{&quot;type&quot;:&quot;string&quot;},{&quot;type&quot;:&quot;null&quot;}],&quot;title&quot;:&quot;Id Usuario&quot;}}],&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;items&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/SesionDocenteOut&quot;},&quot;title&quot;:&quot;Response Sesiones De Mi Curso Cursos Mio Sesiones Get&quot;}}}},&quot;422&quot;:{&quot;description&quot;:&quot;Validation Error&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/HTTPValidationError&quot;}}}}}}},&quot;/cursos/mio/sesiones/{id_sesion}&quot;:{&quot;get&quot;:{&quot;tags&quot;:[&quot;cursos&quot;],&quot;summary&quot;:&quot;Detalle De Sesion&quot;,&quot;description&quot;:&quot;20. Respuestas, decisiones inicial y final, siguio_ia y nota de cada caso.\n404 si la sesión no es de su curso (así no se sabe si existe en otro).&quot;,&quot;operationId&quot;:&quot;detalle_de_sesion_cursos_mio_sesiones__id_sesion__get&quot;,&quot;security&quot;:[{&quot;HTTPBearer&quot;:[]}],&quot;parameters&quot;:[{&quot;name&quot;:&quot;id_sesion&quot;,&quot;in&quot;:&quot;path&quot;,&quot;required&quot;:true,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Sesion&quot;}}],&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/SesionDetalleOut&quot;}}}},&quot;422&quot;:{&quot;description&quot;:&quot;Validation Error&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/HTTPValidationError&quot;}}}}}}},&quot;/casos&quot;:{&quot;get&quot;:{&quot;tags&quot;:[&quot;casos&quot;],&quot;summary&quot;:&quot;Listar Casos&quot;,&quot;description&quot;:&quot;8. Lista de casos sin ningún campo que revele la respuesta.\nCualquier rol, pero exige estar registrado (403 si no).&quot;,&quot;operationId&quot;:&quot;listar_casos_casos_get&quot;,&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;items&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/CasoResumen&quot;},&quot;type&quot;:&quot;array&quot;,&quot;title&quot;:&quot;Response Listar Casos Casos Get&quot;}}}}},&quot;security&quot;:[{&quot;HTTPBearer&quot;:[]}]}},&quot;/casos/{id_caso}&quot;:{&quot;get&quot;:{&quot;tags&quot;:[&quot;casos&quot;],&quot;summary&quot;:&quot;Ver Caso&quot;,&quot;description&quot;:&quot;9. El caso para resolverlo, sin respuestas ni explicaciones.\nSolo se entrega si el caso está en la sesión en_curso del estudiante\n(403 si no); sin esa comprobación se podrían leer las preguntas fuera del examen.&quot;,&quot;operationId&quot;:&quot;ver_caso_casos__id_caso__get&quot;,&quot;security&quot;:[{&quot;HTTPBearer&quot;:[]}],&quot;parameters&quot;:[{&quot;name&quot;:&quot;id_caso&quot;,&quot;in&quot;:&quot;path&quot;,&quot;required&quot;:true,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Caso&quot;}}],&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{}}}},&quot;422&quot;:{&quot;description&quot;:&quot;Validation Error&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/HTTPValidationError&quot;}}}}}}},&quot;/sesiones&quot;:{&quot;post&quot;:{&quot;tags&quot;:[&quot;sesiones&quot;],&quot;summary&quot;:&quot;Crear Sesion&quot;,&quot;description&quot;:&quot;10. Abre una sesión de examen (modo examen: una sola en curso a la vez).&quot;,&quot;operationId&quot;:&quot;crear_sesion_sesiones_post&quot;,&quot;requestBody&quot;:{&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/SesionIn&quot;}}},&quot;required&quot;:true},&quot;responses&quot;:{&quot;201&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/SesionOut&quot;}}}},&quot;422&quot;:{&quot;description&quot;:&quot;Validation Error&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/HTTPValidationError&quot;}}}}},&quot;security&quot;:[{&quot;HTTPBearer&quot;:[]}]}},&quot;/sesiones/mias&quot;:{&quot;get&quot;:{&quot;tags&quot;:[&quot;sesiones&quot;],&quot;summary&quot;:&quot;Mis Sesiones&quot;,&quot;description&quot;:&quot;11. Historial del estudiante, de la más reciente a la más antigua.\nIncluye las prácticas libres; con ?id_curso= se filtra por un curso.&quot;,&quot;operationId&quot;:&quot;mis_sesiones_sesiones_mias_get&quot;,&quot;security&quot;:[{&quot;HTTPBearer&quot;:[]}],&quot;parameters&quot;:[{&quot;name&quot;:&quot;id_curso&quot;,&quot;in&quot;:&quot;query&quot;,&quot;required&quot;:false,&quot;schema&quot;:{&quot;anyOf&quot;:[{&quot;type&quot;:&quot;string&quot;},{&quot;type&quot;:&quot;null&quot;}],&quot;title&quot;:&quot;Id Curso&quot;}}],&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;items&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/SesionOut&quot;},&quot;title&quot;:&quot;Response Mis Sesiones Sesiones Mias Get&quot;}}}},&quot;422&quot;:{&quot;description&quot;:&quot;Validation Error&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/HTTPValidationError&quot;}}}}}}},&quot;/sesiones/activa&quot;:{&quot;get&quot;:{&quot;tags&quot;:[&quot;sesiones&quot;],&quot;summary&quot;:&quot;Sesion Activa&quot;,&quot;description&quot;:&quot;21. La sesión en_curso, con los casos ya terminados y el caso donde va,\npara continuar la misma si cerró la ventana. 404 si no tiene.&quot;,&quot;operationId&quot;:&quot;sesion_activa_sesiones_activa_get&quot;,&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/SesionActivaOut&quot;}}}}},&quot;security&quot;:[{&quot;HTTPBearer&quot;:[]}]}},&quot;/sesiones/{id_sesion}/cerrar&quot;:{&quot;post&quot;:{&quot;tags&quot;:[&quot;sesiones&quot;],&quot;summary&quot;:&quot;Cerrar Sesion&quot;,&quot;description&quot;:&quot;12. Cierra la sesión y calcula su resultado. No se puede cerrar a medias.&quot;,&quot;operationId&quot;:&quot;cerrar_sesion_sesiones__id_sesion__cerrar_post&quot;,&quot;security&quot;:[{&quot;HTTPBearer&quot;:[]}],&quot;parameters&quot;:[{&quot;name&quot;:&quot;id_sesion&quot;,&quot;in&quot;:&quot;path&quot;,&quot;required&quot;:true,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Sesion&quot;}}],&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/ResultadoOut&quot;}}}},&quot;422&quot;:{&quot;description&quot;:&quot;Validation Error&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/HTTPValidationError&quot;}}}}}}},&quot;/sesiones/{id_sesion}/resultado&quot;:{&quot;get&quot;:{&quot;tags&quot;:[&quot;sesiones&quot;],&quot;summary&quot;:&quot;Ver Resultado&quot;,&quot;description&quot;:&quot;18. El resultado de una sesión ya completada.&quot;,&quot;operationId&quot;:&quot;ver_resultado_sesiones__id_sesion__resultado_get&quot;,&quot;security&quot;:[{&quot;HTTPBearer&quot;:[]}],&quot;parameters&quot;:[{&quot;name&quot;:&quot;id_sesion&quot;,&quot;in&quot;:&quot;path&quot;,&quot;required&quot;:true,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Sesion&quot;}}],&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/ResultadoOut&quot;}}}},&quot;422&quot;:{&quot;description&quot;:&quot;Validation Error&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/HTTPValidationError&quot;}}}}}}},&quot;/sesiones/{id_sesion}/casos/{id_caso}/respuestas&quot;:{&quot;post&quot;:{&quot;tags&quot;:[&quot;dentro de un caso&quot;],&quot;summary&quot;:&quot;Responder Pregunta&quot;,&quot;description&quot;:&quot;13. Guarda la respuesta (una sola vez) y devuelve la explicación de inmediato.&quot;,&quot;operationId&quot;:&quot;responder_pregunta_sesiones__id_sesion__casos__id_caso__respuestas_post&quot;,&quot;security&quot;:[{&quot;HTTPBearer&quot;:[]}],&quot;parameters&quot;:[{&quot;name&quot;:&quot;id_sesion&quot;,&quot;in&quot;:&quot;path&quot;,&quot;required&quot;:true,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Sesion&quot;}},{&quot;name&quot;:&quot;id_caso&quot;,&quot;in&quot;:&quot;path&quot;,&quot;required&quot;:true,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Caso&quot;}}],&quot;requestBody&quot;:{&quot;required&quot;:true,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/RespuestaIn&quot;}}}},&quot;responses&quot;:{&quot;201&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/RespuestaOut&quot;}}}},&quot;422&quot;:{&quot;description&quot;:&quot;Validation Error&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/HTTPValidationError&quot;}}}}}}},&quot;/sesiones/{id_sesion}/casos/{id_caso}/decision-inicial&quot;:{&quot;post&quot;:{&quot;tags&quot;:[&quot;dentro de un caso&quot;],&quot;summary&quot;:&quot;Decision Inicial&quot;,&quot;description&quot;:&quot;14. Exige las 7 respuestas. Guarda si acertó, pero NO se lo dice.&quot;,&quot;operationId&quot;:&quot;decision_inicial_sesiones__id_sesion__casos__id_caso__decision_inicial_post&quot;,&quot;security&quot;:[{&quot;HTTPBearer&quot;:[]}],&quot;parameters&quot;:[{&quot;name&quot;:&quot;id_sesion&quot;,&quot;in&quot;:&quot;path&quot;,&quot;required&quot;:true,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Sesion&quot;}},{&quot;name&quot;:&quot;id_caso&quot;,&quot;in&quot;:&quot;path&quot;,&quot;required&quot;:true,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Caso&quot;}}],&quot;requestBody&quot;:{&quot;required&quot;:true,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/DecisionIn&quot;}}}},&quot;responses&quot;:{&quot;201&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/GuardadaOut&quot;}}}},&quot;422&quot;:{&quot;description&quot;:&quot;Validation Error&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/HTTPValidationError&quot;}}}}}}},&quot;/sesiones/{id_sesion}/casos/{id_caso}/recomendacion-ia&quot;:{&quot;get&quot;:{&quot;tags&quot;:[&quot;dentro de un caso&quot;],&quot;summary&quot;:&quot;Recomendacion Ia&quot;,&quot;description&quot;:&quot;15. Solo después de la decisión inicial. No escribe nada y nunca dice\nsi la recomendación es la correcta.&quot;,&quot;operationId&quot;:&quot;recomendacion_ia_sesiones__id_sesion__casos__id_caso__recomendacion_ia_get&quot;,&quot;security&quot;:[{&quot;HTTPBearer&quot;:[]}],&quot;parameters&quot;:[{&quot;name&quot;:&quot;id_sesion&quot;,&quot;in&quot;:&quot;path&quot;,&quot;required&quot;:true,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Sesion&quot;}},{&quot;name&quot;:&quot;id_caso&quot;,&quot;in&quot;:&quot;path&quot;,&quot;required&quot;:true,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Caso&quot;}}],&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/RecomendacionOut&quot;}}}},&quot;422&quot;:{&quot;description&quot;:&quot;Validation Error&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/HTTPValidationError&quot;}}}}}}},&quot;/sesiones/{id_sesion}/casos/{id_caso}/decision-final&quot;:{&quot;post&quot;:{&quot;tags&quot;:[&quot;dentro de un caso&quot;],&quot;summary&quot;:&quot;Decision Final&quot;,&quot;description&quot;:&quot;16. Exige la decisión inicial. Se guarda siempre, aunque no cambie de opinión.&quot;,&quot;operationId&quot;:&quot;decision_final_sesiones__id_sesion__casos__id_caso__decision_final_post&quot;,&quot;security&quot;:[{&quot;HTTPBearer&quot;:[]}],&quot;parameters&quot;:[{&quot;name&quot;:&quot;id_sesion&quot;,&quot;in&quot;:&quot;path&quot;,&quot;required&quot;:true,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Sesion&quot;}},{&quot;name&quot;:&quot;id_caso&quot;,&quot;in&quot;:&quot;path&quot;,&quot;required&quot;:true,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Caso&quot;}}],&quot;requestBody&quot;:{&quot;required&quot;:true,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/DecisionIn&quot;}}}},&quot;responses&quot;:{&quot;201&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/GuardadaOut&quot;}}}},&quot;422&quot;:{&quot;description&quot;:&quot;Validation Error&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/HTTPValidationError&quot;}}}}}}},&quot;/sesiones/{id_sesion}/casos/{id_caso}/retroalimentacion&quot;:{&quot;get&quot;:{&quot;tags&quot;:[&quot;dentro de un caso&quot;],&quot;summary&quot;:&quot;Retroalimentacion&quot;,&quot;description&quot;:&quot;17. Solo después de la decisión final. La nota se calcula al vuelo.&quot;,&quot;operationId&quot;:&quot;retroalimentacion_sesiones__id_sesion__casos__id_caso__retroalimentacion_get&quot;,&quot;security&quot;:[{&quot;HTTPBearer&quot;:[]}],&quot;parameters&quot;:[{&quot;name&quot;:&quot;id_sesion&quot;,&quot;in&quot;:&quot;path&quot;,&quot;required&quot;:true,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Sesion&quot;}},{&quot;name&quot;:&quot;id_caso&quot;,&quot;in&quot;:&quot;path&quot;,&quot;required&quot;:true,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Caso&quot;}}],&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/RetroalimentacionOut&quot;}}}},&quot;422&quot;:{&quot;description&quot;:&quot;Validation Error&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/HTTPValidationError&quot;}}}}}}},&quot;/sesiones/{id_sesion}/casos/{id_caso}/progreso&quot;:{&quot;get&quot;:{&quot;tags&quot;:[&quot;dentro de un caso&quot;],&quot;summary&quot;:&quot;Progreso Caso&quot;,&quot;description&quot;:&quot;Consulta el progreso sin revelar respuestas correctas.&quot;,&quot;operationId&quot;:&quot;progreso_caso_sesiones__id_sesion__casos__id_caso__progreso_get&quot;,&quot;security&quot;:[{&quot;HTTPBearer&quot;:[]}],&quot;parameters&quot;:[{&quot;name&quot;:&quot;id_sesion&quot;,&quot;in&quot;:&quot;path&quot;,&quot;required&quot;:true,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Sesion&quot;}},{&quot;name&quot;:&quot;id_caso&quot;,&quot;in&quot;:&quot;path&quot;,&quot;required&quot;:true,&quot;schema&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Caso&quot;}}],&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{}}}},&quot;422&quot;:{&quot;description&quot;:&quot;Validation Error&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/HTTPValidationError&quot;}}}}}}},&quot;/salud&quot;:{&quot;get&quot;:{&quot;tags&quot;:[&quot;sistema&quot;],&quot;summary&quot;:&quot;Salud&quot;,&quot;description&quot;:&quot;Render usa esta ruta para saber que el servicio está vivo.&quot;,&quot;operationId&quot;:&quot;salud_salud_get&quot;,&quot;responses&quot;:{&quot;200&quot;:{&quot;description&quot;:&quot;Successful Response&quot;,&quot;content&quot;:{&quot;application/json&quot;:{&quot;schema&quot;:{}}}}}}}},&quot;components&quot;:{&quot;schemas&quot;:{&quot;CasoDetalle&quot;:{&quot;properties&quot;:{&quot;id_caso&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Caso&quot;},&quot;titulo&quot;:{&quot;anyOf&quot;:[{&quot;type&quot;:&quot;string&quot;},{&quot;type&quot;:&quot;null&quot;}],&quot;title&quot;:&quot;Titulo&quot;},&quot;respuestas&quot;:{&quot;items&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/RespuestaDetalle&quot;},&quot;type&quot;:&quot;array&quot;,&quot;title&quot;:&quot;Respuestas&quot;},&quot;decision_inicial&quot;:{&quot;anyOf&quot;:[{&quot;$ref&quot;:&quot;#/components/schemas/DecisionInicialDetalle&quot;},{&quot;type&quot;:&quot;null&quot;}]},&quot;decision_final&quot;:{&quot;anyOf&quot;:[{&quot;$ref&quot;:&quot;#/components/schemas/DecisionFinalDetalle&quot;},{&quot;type&quot;:&quot;null&quot;}]},&quot;nota_caso&quot;:{&quot;anyOf&quot;:[{&quot;type&quot;:&quot;number&quot;},{&quot;type&quot;:&quot;null&quot;}],&quot;title&quot;:&quot;Nota Caso&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;required&quot;:[&quot;id_caso&quot;,&quot;respuestas&quot;],&quot;title&quot;:&quot;CasoDetalle&quot;},&quot;CasoResumen&quot;:{&quot;properties&quot;:{&quot;id_caso&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Caso&quot;},&quot;titulo&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Titulo&quot;},&quot;descripcion_breve&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Descripcion Breve&quot;},&quot;lado&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Lado&quot;},&quot;vistas&quot;:{&quot;items&quot;:{&quot;type&quot;:&quot;string&quot;},&quot;type&quot;:&quot;array&quot;,&quot;title&quot;:&quot;Vistas&quot;},&quot;dificultad&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Dificultad&quot;},&quot;modelo_3d_ref&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Modelo 3D Ref&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;required&quot;:[&quot;id_caso&quot;,&quot;titulo&quot;,&quot;descripcion_breve&quot;,&quot;lado&quot;,&quot;vistas&quot;,&quot;dificultad&quot;,&quot;modelo_3d_ref&quot;],&quot;title&quot;:&quot;CasoResumen&quot;},&quot;CursoIn&quot;:{&quot;properties&quot;:{&quot;nombre&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;minLength&quot;:2,&quot;title&quot;:&quot;Nombre&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;required&quot;:[&quot;nombre&quot;],&quot;title&quot;:&quot;CursoIn&quot;},&quot;CursoOut&quot;:{&quot;properties&quot;:{&quot;id_curso&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Curso&quot;},&quot;codigo&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Codigo&quot;},&quot;nombre&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Nombre&quot;},&quot;id_docente&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Docente&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;required&quot;:[&quot;id_curso&quot;,&quot;codigo&quot;,&quot;nombre&quot;,&quot;id_docente&quot;],&quot;title&quot;:&quot;CursoOut&quot;},&quot;DecisionFinalDetalle&quot;:{&quot;properties&quot;:{&quot;decision&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;enum&quot;:[&quot;biopsiar&quot;,&quot;seguimiento&quot;,&quot;ignorar&quot;,&quot;estudio_adicional&quot;],&quot;title&quot;:&quot;Decision&quot;},&quot;acierto&quot;:{&quot;type&quot;:&quot;boolean&quot;,&quot;title&quot;:&quot;Acierto&quot;},&quot;opcion_ia&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;enum&quot;:[&quot;biopsiar&quot;,&quot;seguimiento&quot;,&quot;ignorar&quot;,&quot;estudio_adicional&quot;],&quot;title&quot;:&quot;Opcion Ia&quot;},&quot;ia_correcta&quot;:{&quot;type&quot;:&quot;boolean&quot;,&quot;title&quot;:&quot;Ia Correcta&quot;},&quot;siguio_ia&quot;:{&quot;type&quot;:&quot;boolean&quot;,&quot;title&quot;:&quot;Siguio Ia&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;required&quot;:[&quot;decision&quot;,&quot;acierto&quot;,&quot;opcion_ia&quot;,&quot;ia_correcta&quot;,&quot;siguio_ia&quot;],&quot;title&quot;:&quot;DecisionFinalDetalle&quot;},&quot;DecisionIn&quot;:{&quot;properties&quot;:{&quot;decision&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;enum&quot;:[&quot;biopsiar&quot;,&quot;seguimiento&quot;,&quot;ignorar&quot;,&quot;estudio_adicional&quot;],&quot;title&quot;:&quot;Decision&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;required&quot;:[&quot;decision&quot;],&quot;title&quot;:&quot;DecisionIn&quot;},&quot;DecisionInicialDetalle&quot;:{&quot;properties&quot;:{&quot;decision&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;enum&quot;:[&quot;biopsiar&quot;,&quot;seguimiento&quot;,&quot;ignorar&quot;,&quot;estudio_adicional&quot;],&quot;title&quot;:&quot;Decision&quot;},&quot;acierto&quot;:{&quot;type&quot;:&quot;boolean&quot;,&quot;title&quot;:&quot;Acierto&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;required&quot;:[&quot;decision&quot;,&quot;acierto&quot;],&quot;title&quot;:&quot;DecisionInicialDetalle&quot;},&quot;GuardadaOut&quot;:{&quot;properties&quot;:{&quot;guardada&quot;:{&quot;type&quot;:&quot;boolean&quot;,&quot;title&quot;:&quot;Guardada&quot;,&quot;default&quot;:true}},&quot;type&quot;:&quot;object&quot;,&quot;title&quot;:&quot;GuardadaOut&quot;},&quot;HTTPValidationError&quot;:{&quot;properties&quot;:{&quot;detail&quot;:{&quot;items&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/ValidationError&quot;},&quot;type&quot;:&quot;array&quot;,&quot;title&quot;:&quot;Detail&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;title&quot;:&quot;HTTPValidationError&quot;},&quot;InscripcionIn&quot;:{&quot;properties&quot;:{&quot;codigo&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Codigo&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;required&quot;:[&quot;codigo&quot;],&quot;title&quot;:&quot;InscripcionIn&quot;},&quot;PreguntaResultado&quot;:{&quot;properties&quot;:{&quot;numero&quot;:{&quot;type&quot;:&quot;integer&quot;,&quot;title&quot;:&quot;Numero&quot;},&quot;correcta&quot;:{&quot;type&quot;:&quot;boolean&quot;,&quot;title&quot;:&quot;Correcta&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;required&quot;:[&quot;numero&quot;,&quot;correcta&quot;],&quot;title&quot;:&quot;PreguntaResultado&quot;},&quot;RecomendacionOut&quot;:{&quot;properties&quot;:{&quot;opcion_ia&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;enum&quot;:[&quot;biopsiar&quot;,&quot;seguimiento&quot;,&quot;ignorar&quot;,&quot;estudio_adicional&quot;],&quot;title&quot;:&quot;Opcion Ia&quot;},&quot;texto&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Texto&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;required&quot;:[&quot;opcion_ia&quot;,&quot;texto&quot;],&quot;title&quot;:&quot;RecomendacionOut&quot;},&quot;RegistroIn&quot;:{&quot;properties&quot;:{&quot;nombre_completo&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;minLength&quot;:2,&quot;title&quot;:&quot;Nombre Completo&quot;},&quot;carrera&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;minLength&quot;:1,&quot;title&quot;:&quot;Carrera&quot;},&quot;semestre&quot;:{&quot;anyOf&quot;:[{&quot;type&quot;:&quot;integer&quot;,&quot;maximum&quot;:14.0,&quot;minimum&quot;:1.0},{&quot;type&quot;:&quot;null&quot;}],&quot;title&quot;:&quot;Semestre&quot;},&quot;acepto_terminos&quot;:{&quot;type&quot;:&quot;boolean&quot;,&quot;title&quot;:&quot;Acepto Terminos&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;required&quot;:[&quot;nombre_completo&quot;,&quot;carrera&quot;,&quot;acepto_terminos&quot;],&quot;title&quot;:&quot;RegistroIn&quot;},&quot;RegistroOut&quot;:{&quot;properties&quot;:{&quot;usuario&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/UsuarioOut&quot;},&quot;aviso&quot;:{&quot;anyOf&quot;:[{&quot;type&quot;:&quot;string&quot;},{&quot;type&quot;:&quot;null&quot;}],&quot;title&quot;:&quot;Aviso&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;required&quot;:[&quot;usuario&quot;],&quot;title&quot;:&quot;RegistroOut&quot;},&quot;RespuestaDetalle&quot;:{&quot;properties&quot;:{&quot;numero_pregunta&quot;:{&quot;type&quot;:&quot;integer&quot;,&quot;title&quot;:&quot;Numero Pregunta&quot;},&quot;opcion_elegida&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;enum&quot;:[&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;],&quot;title&quot;:&quot;Opcion Elegida&quot;},&quot;correcta&quot;:{&quot;type&quot;:&quot;boolean&quot;,&quot;title&quot;:&quot;Correcta&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;required&quot;:[&quot;numero_pregunta&quot;,&quot;opcion_elegida&quot;,&quot;correcta&quot;],&quot;title&quot;:&quot;RespuestaDetalle&quot;},&quot;RespuestaIn&quot;:{&quot;properties&quot;:{&quot;numero_pregunta&quot;:{&quot;type&quot;:&quot;integer&quot;,&quot;maximum&quot;:7.0,&quot;minimum&quot;:1.0,&quot;title&quot;:&quot;Numero Pregunta&quot;},&quot;opcion_elegida&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;enum&quot;:[&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;],&quot;title&quot;:&quot;Opcion Elegida&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;required&quot;:[&quot;numero_pregunta&quot;,&quot;opcion_elegida&quot;],&quot;title&quot;:&quot;RespuestaIn&quot;},&quot;RespuestaOut&quot;:{&quot;properties&quot;:{&quot;correcta&quot;:{&quot;type&quot;:&quot;boolean&quot;,&quot;title&quot;:&quot;Correcta&quot;},&quot;respuesta_correcta&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;enum&quot;:[&quot;A&quot;,&quot;B&quot;,&quot;C&quot;,&quot;D&quot;],&quot;title&quot;:&quot;Respuesta Correcta&quot;},&quot;explicacion&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Explicacion&quot;},&quot;mensaje&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Mensaje&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;required&quot;:[&quot;correcta&quot;,&quot;respuesta_correcta&quot;,&quot;explicacion&quot;,&quot;mensaje&quot;],&quot;title&quot;:&quot;RespuestaOut&quot;},&quot;ResultadoOut&quot;:{&quot;properties&quot;:{&quot;id_usuario&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Usuario&quot;},&quot;id_curso&quot;:{&quot;anyOf&quot;:[{&quot;type&quot;:&quot;string&quot;},{&quot;type&quot;:&quot;null&quot;}],&quot;title&quot;:&quot;Id Curso&quot;},&quot;total_casos&quot;:{&quot;type&quot;:&quot;integer&quot;,&quot;title&quot;:&quot;Total Casos&quot;},&quot;aciertos_iniciales&quot;:{&quot;type&quot;:&quot;integer&quot;,&quot;title&quot;:&quot;Aciertos Iniciales&quot;},&quot;aciertos_finales&quot;:{&quot;type&quot;:&quot;integer&quot;,&quot;title&quot;:&quot;Aciertos Finales&quot;},&quot;preguntas_acertadas&quot;:{&quot;type&quot;:&quot;integer&quot;,&quot;title&quot;:&quot;Preguntas Acertadas&quot;},&quot;veces_siguio_ia&quot;:{&quot;type&quot;:&quot;integer&quot;,&quot;title&quot;:&quot;Veces Siguio Ia&quot;},&quot;siguio_ia_correcta&quot;:{&quot;type&quot;:&quot;integer&quot;,&quot;title&quot;:&quot;Siguio Ia Correcta&quot;},&quot;siguio_ia_incorrecta&quot;:{&quot;type&quot;:&quot;integer&quot;,&quot;title&quot;:&quot;Siguio Ia Incorrecta&quot;},&quot;puntuacion&quot;:{&quot;type&quot;:&quot;number&quot;,&quot;maximum&quot;:10.0,&quot;minimum&quot;:0.0,&quot;title&quot;:&quot;Puntuacion&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;required&quot;:[&quot;id_usuario&quot;,&quot;total_casos&quot;,&quot;aciertos_iniciales&quot;,&quot;aciertos_finales&quot;,&quot;preguntas_acertadas&quot;,&quot;veces_siguio_ia&quot;,&quot;siguio_ia_correcta&quot;,&quot;siguio_ia_incorrecta&quot;,&quot;puntuacion&quot;],&quot;title&quot;:&quot;ResultadoOut&quot;},&quot;RetroalimentacionOut&quot;:{&quot;properties&quot;:{&quot;hallazgos&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Hallazgos&quot;},&quot;retroalimentacion&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Retroalimentacion&quot;},&quot;respuesta_correcta&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;enum&quot;:[&quot;biopsiar&quot;,&quot;seguimiento&quot;,&quot;ignorar&quot;,&quot;estudio_adicional&quot;],&quot;title&quot;:&quot;Respuesta Correcta&quot;},&quot;preguntas&quot;:{&quot;items&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/PreguntaResultado&quot;},&quot;type&quot;:&quot;array&quot;,&quot;title&quot;:&quot;Preguntas&quot;},&quot;ia_correcta&quot;:{&quot;type&quot;:&quot;boolean&quot;,&quot;title&quot;:&quot;Ia Correcta&quot;},&quot;siguio_ia&quot;:{&quot;type&quot;:&quot;boolean&quot;,&quot;title&quot;:&quot;Siguio Ia&quot;},&quot;nota_caso&quot;:{&quot;type&quot;:&quot;number&quot;,&quot;maximum&quot;:10.0,&quot;minimum&quot;:0.0,&quot;title&quot;:&quot;Nota Caso&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;required&quot;:[&quot;hallazgos&quot;,&quot;retroalimentacion&quot;,&quot;respuesta_correcta&quot;,&quot;preguntas&quot;,&quot;ia_correcta&quot;,&quot;siguio_ia&quot;,&quot;nota_caso&quot;],&quot;title&quot;:&quot;RetroalimentacionOut&quot;},&quot;SesionActivaOut&quot;:{&quot;properties&quot;:{&quot;id_sesion&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Sesion&quot;},&quot;id_usuario&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Usuario&quot;},&quot;id_curso&quot;:{&quot;anyOf&quot;:[{&quot;type&quot;:&quot;string&quot;},{&quot;type&quot;:&quot;null&quot;}],&quot;title&quot;:&quot;Id Curso&quot;},&quot;casos_asignados&quot;:{&quot;items&quot;:{&quot;type&quot;:&quot;string&quot;},&quot;type&quot;:&quot;array&quot;,&quot;title&quot;:&quot;Casos Asignados&quot;},&quot;estado&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;enum&quot;:[&quot;en_curso&quot;,&quot;completada&quot;],&quot;title&quot;:&quot;Estado&quot;},&quot;fecha_inicio&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;format&quot;:&quot;date-time&quot;,&quot;title&quot;:&quot;Fecha Inicio&quot;},&quot;fecha_fin&quot;:{&quot;anyOf&quot;:[{&quot;type&quot;:&quot;string&quot;,&quot;format&quot;:&quot;date-time&quot;},{&quot;type&quot;:&quot;null&quot;}],&quot;title&quot;:&quot;Fecha Fin&quot;},&quot;casos_terminados&quot;:{&quot;items&quot;:{&quot;type&quot;:&quot;string&quot;},&quot;type&quot;:&quot;array&quot;,&quot;title&quot;:&quot;Casos Terminados&quot;},&quot;caso_actual&quot;:{&quot;anyOf&quot;:[{&quot;type&quot;:&quot;string&quot;},{&quot;type&quot;:&quot;null&quot;}],&quot;title&quot;:&quot;Caso Actual&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;required&quot;:[&quot;id_sesion&quot;,&quot;id_usuario&quot;,&quot;casos_asignados&quot;,&quot;estado&quot;,&quot;fecha_inicio&quot;,&quot;casos_terminados&quot;],&quot;title&quot;:&quot;SesionActivaOut&quot;},&quot;SesionDetalleOut&quot;:{&quot;properties&quot;:{&quot;id_sesion&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Sesion&quot;},&quot;id_usuario&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Usuario&quot;},&quot;nombre_estudiante&quot;:{&quot;anyOf&quot;:[{&quot;type&quot;:&quot;string&quot;},{&quot;type&quot;:&quot;null&quot;}],&quot;title&quot;:&quot;Nombre Estudiante&quot;},&quot;estado&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;enum&quot;:[&quot;en_curso&quot;,&quot;completada&quot;],&quot;title&quot;:&quot;Estado&quot;},&quot;fecha_inicio&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;format&quot;:&quot;date-time&quot;,&quot;title&quot;:&quot;Fecha Inicio&quot;},&quot;fecha_fin&quot;:{&quot;anyOf&quot;:[{&quot;type&quot;:&quot;string&quot;,&quot;format&quot;:&quot;date-time&quot;},{&quot;type&quot;:&quot;null&quot;}],&quot;title&quot;:&quot;Fecha Fin&quot;},&quot;puntuacion&quot;:{&quot;anyOf&quot;:[{&quot;type&quot;:&quot;number&quot;},{&quot;type&quot;:&quot;null&quot;}],&quot;title&quot;:&quot;Puntuacion&quot;},&quot;casos&quot;:{&quot;items&quot;:{&quot;$ref&quot;:&quot;#/components/schemas/CasoDetalle&quot;},&quot;type&quot;:&quot;array&quot;,&quot;title&quot;:&quot;Casos&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;required&quot;:[&quot;id_sesion&quot;,&quot;id_usuario&quot;,&quot;estado&quot;,&quot;fecha_inicio&quot;,&quot;casos&quot;],&quot;title&quot;:&quot;SesionDetalleOut&quot;},&quot;SesionDocenteOut&quot;:{&quot;properties&quot;:{&quot;id_sesion&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Sesion&quot;},&quot;id_usuario&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Usuario&quot;},&quot;nombre_estudiante&quot;:{&quot;anyOf&quot;:[{&quot;type&quot;:&quot;string&quot;},{&quot;type&quot;:&quot;null&quot;}],&quot;title&quot;:&quot;Nombre Estudiante&quot;},&quot;estado&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;enum&quot;:[&quot;en_curso&quot;,&quot;completada&quot;],&quot;title&quot;:&quot;Estado&quot;},&quot;fecha_inicio&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;format&quot;:&quot;date-time&quot;,&quot;title&quot;:&quot;Fecha Inicio&quot;},&quot;puntuacion&quot;:{&quot;anyOf&quot;:[{&quot;type&quot;:&quot;number&quot;},{&quot;type&quot;:&quot;null&quot;}],&quot;title&quot;:&quot;Puntuacion&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;required&quot;:[&quot;id_sesion&quot;,&quot;id_usuario&quot;,&quot;estado&quot;,&quot;fecha_inicio&quot;],&quot;title&quot;:&quot;SesionDocenteOut&quot;},&quot;SesionIn&quot;:{&quot;properties&quot;:{&quot;id_curso&quot;:{&quot;anyOf&quot;:[{&quot;type&quot;:&quot;string&quot;},{&quot;type&quot;:&quot;null&quot;}],&quot;title&quot;:&quot;Id Curso&quot;},&quot;casos&quot;:{&quot;items&quot;:{&quot;type&quot;:&quot;string&quot;},&quot;type&quot;:&quot;array&quot;,&quot;minItems&quot;:1,&quot;title&quot;:&quot;Casos&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;required&quot;:[&quot;casos&quot;],&quot;title&quot;:&quot;SesionIn&quot;},&quot;SesionOut&quot;:{&quot;properties&quot;:{&quot;id_sesion&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Sesion&quot;},&quot;id_usuario&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Usuario&quot;},&quot;id_curso&quot;:{&quot;anyOf&quot;:[{&quot;type&quot;:&quot;string&quot;},{&quot;type&quot;:&quot;null&quot;}],&quot;title&quot;:&quot;Id Curso&quot;},&quot;casos_asignados&quot;:{&quot;items&quot;:{&quot;type&quot;:&quot;string&quot;},&quot;type&quot;:&quot;array&quot;,&quot;title&quot;:&quot;Casos Asignados&quot;},&quot;estado&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;enum&quot;:[&quot;en_curso&quot;,&quot;completada&quot;],&quot;title&quot;:&quot;Estado&quot;},&quot;fecha_inicio&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;format&quot;:&quot;date-time&quot;,&quot;title&quot;:&quot;Fecha Inicio&quot;},&quot;fecha_fin&quot;:{&quot;anyOf&quot;:[{&quot;type&quot;:&quot;string&quot;,&quot;format&quot;:&quot;date-time&quot;},{&quot;type&quot;:&quot;null&quot;}],&quot;title&quot;:&quot;Fecha Fin&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;required&quot;:[&quot;id_sesion&quot;,&quot;id_usuario&quot;,&quot;casos_asignados&quot;,&quot;estado&quot;,&quot;fecha_inicio&quot;],&quot;title&quot;:&quot;SesionOut&quot;},&quot;UsuarioOut&quot;:{&quot;properties&quot;:{&quot;id_usuario&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Id Usuario&quot;},&quot;nombre_completo&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Nombre Completo&quot;},&quot;correo&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Correo&quot;},&quot;rol&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;enum&quot;:[&quot;estudiante&quot;,&quot;docente&quot;],&quot;title&quot;:&quot;Rol&quot;},&quot;carrera&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Carrera&quot;},&quot;semestre&quot;:{&quot;anyOf&quot;:[{&quot;type&quot;:&quot;integer&quot;},{&quot;type&quot;:&quot;null&quot;}],&quot;title&quot;:&quot;Semestre&quot;},&quot;acepto_terminos&quot;:{&quot;type&quot;:&quot;boolean&quot;,&quot;title&quot;:&quot;Acepto Terminos&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;required&quot;:[&quot;id_usuario&quot;,&quot;nombre_completo&quot;,&quot;correo&quot;,&quot;rol&quot;,&quot;carrera&quot;,&quot;acepto_terminos&quot;],&quot;title&quot;:&quot;UsuarioOut&quot;},&quot;ValidationError&quot;:{&quot;properties&quot;:{&quot;loc&quot;:{&quot;items&quot;:{&quot;anyOf&quot;:[{&quot;type&quot;:&quot;string&quot;},{&quot;type&quot;:&quot;integer&quot;}]},&quot;type&quot;:&quot;array&quot;,&quot;title&quot;:&quot;Location&quot;},&quot;msg&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Message&quot;},&quot;type&quot;:{&quot;type&quot;:&quot;string&quot;,&quot;title&quot;:&quot;Error Type&quot;},&quot;input&quot;:{&quot;title&quot;:&quot;Input&quot;},&quot;ctx&quot;:{&quot;type&quot;:&quot;object&quot;,&quot;title&quot;:&quot;Context&quot;}},&quot;type&quot;:&quot;object&quot;,&quot;required&quot;:[&quot;loc&quot;,&quot;msg&quot;,&quot;type&quot;],&quot;title&quot;:&quot;ValidationError&quot;}},&quot;securitySchemes&quot;:{&quot;HTTPBearer&quot;:{&quot;type&quot;:&quot;http&quot;,&quot;scheme&quot;:&quot;bearer&quot;}}}}</code></pre>
+				
+				
+			</details></td>
+	</tr>
+	<tr>
+		<th scope="row">Parameter</th>
+		<td><pre><code>x-content-type-options</code></pre></td>
+	</tr>
+	
+	
+	<tr>
+		<th scope="row">Solution</th>
+		<td> 
+<p>Asegúrese de que la aplicación/servidor web establece el encabezado Content-Type adecuadamente, y que establece el encabezado X-Content-Type-Options a &#39;nosniff&#39; para todas las páginas web.</p>
+
+<p>Si es posible, asegúrese de que el usuario final utiliza un navegador web moderno y compatible con los estándares que no realiza MIME-sniffing en absoluto, o que puede ser dirigido por la aplicación web/servidor web para que no realice MIME-sniffing.</p>
+ </td>
+	</tr>
+</table>
+
+											</details></li>
+									</ol>
+								</li>
+								
+							</ol>
+						</li>
+						
+					</ol>
+				</li>
+				
+				
+				  
+				 
+			</ol>
+		</section>
+
+		<section id="appendix" class="appendix">
+			<h2>Appendix</h2>
+
+			<section id="alert-types" class="alert-types">
+				<h3>Alert Types</h3>
+				<p class="alert-types-intro">This section contains additional information on the types of alerts in the report.</p>
+				<ol>
+					<li
+						id="alert-type-0">
+						<h4>Falta encabezado X-Content-Type-Options</h4>
+						<table class="alert-types-table">
+							<tr>
+								<th scope="row">Source</th>
+								<td>
+									
+									   <span>raised by a passive scanner</span> <span>(<a
+										href="https://www.zaproxy.org/docs/alerts/10021/">Falta encabezado X-Content-Type-Options</a>)
+									</span>   
+								</td>
+							</tr>
+							<tr>
+								<th scope="row">CWE ID</th>
+								<td><a
+									href="https://cwe.mitre.org/data/definitions/693.html">693</a></td>
+							</tr>
+							<tr>
+								<th scope="row">WASC ID</th>
+								<td>15</td>
+							</tr>
+							<tr>
+								<th scope="row">Reference</th>
+								<td>
+									<ol>
+										<li><a
+											href="https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/compatibility/gg622941(v=vs.85)">https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/compatibility/gg622941(v=vs.85)</a></li>
+										<li><a
+											href="https://owasp.org/www-community/Security_Headers">https://owasp.org/www-community/Security_Headers</a></li>
+									</ol>
+								</td>
+							</tr>
+						</table>
+					</li>
+				</ol>
+			</section>
+		</section>
+		 
+	</main>
+</body>
+</html>
+
+
+
