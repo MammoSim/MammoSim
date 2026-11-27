@@ -60,12 +60,21 @@
   position: relative;
 }
 
-/* Canvas adaptable al navegador */
+
+/* Canvas adaptable al navegador y compatible con gestos táctiles */
 .unity_canvas {
   display: block;
   width: 100% !important;
   height: 100% !important;
+
+  /* Evita que el navegador intercepte los gestos sobre Unity */
+  touch-action: none;
+
+  /* Evita seleccionar elementos al arrastrar */
+  user-select: none;
+  -webkit-user-select: none;
 }
+
 
 
 /*Ajuste de pantalla*/
