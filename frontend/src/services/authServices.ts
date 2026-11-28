@@ -5,6 +5,7 @@ import {
   onAuthStateChanged,
   reauthenticateWithCredential,
   signInWithEmailAndPassword,
+  signOut,
   updatePassword,
   type User,
 } from "firebase/auth";
@@ -58,7 +59,8 @@ export async function registerUser(
       error.code === "auth/email-already-in-use"
     ) {
       throw new Error(
-        "Este correo ya está registrado. Inicia sesión con tu cuenta existente.", {cause: error}
+        "Este correo ya está registrado. Inicia sesión con tu cuenta existente.",
+        { cause: error },
       );
     }
     throw error;
@@ -91,9 +93,13 @@ export async function registerUser(
   return response.json();
 }
 
+{
+  /*Inicio de sesión teniendo en cuenta el rol */
+}
 export async function loginUser(
   email: string,
   password: string,
+  userType: Usuario["rol"],
 ): Promise<Usuario["rol"]> {
   const credential = await signInWithEmailAndPassword(
     auth,
@@ -101,24 +107,40 @@ export async function loginUser(
     password,
   );
 
-  const token = await credential.user.getIdToken();
+  try {
+    const token = await credential.user.getIdToken();
 
-  const response = await fetch(`${API_URL}/usuarios/me`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
+    const response = await fetch(`${API_URL}/usuarios/me`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  if (!response.ok) {
-    throw new Error(
-      response.status === 404
-        ? "Tu cuenta aún no tiene un perfil registrado. Regístrate"
-        : "No fue posible consultar tu perfil.",
-    );
+    if (!response.ok) {
+      throw new Error(
+        response.status === 404
+          ? "Tu cuenta aún no tiene un perfil registrado. Regístrate"
+          : "No fue posible consultar tu perfil.",
+      );
+    }
+    const usuario: Usuario = await response.json();
+    if(usuario.rol !== userType){
+      const opcion = usuario.rol === "docente" ? "Docente" : "Estudiante";
+
+      throw new Error(
+        `Esta cuenta es de ${usuario.rol}. Selecciona la opción ${opcion} para ingresar.`,
+      );
+    }
+
+    return usuario.rol;
+  } catch (error) {
+    await signOut(auth);
+    throw error;
   }
-  const usuario: Usuario = await response.json();
+}
 
-  return usuario.rol;
+{
+  /*Obtener los datos del perfil */
 }
 
 export async function getMyProfile(signal?: AbortSignal): Promise<Usuario> {
@@ -140,30 +162,35 @@ export async function getMyProfile(signal?: AbortSignal): Promise<Usuario> {
   const response = await fetch(`${API_URL}/usuarios/me`, {
     headers: {
       Authorization: `Bearer ${token}`,
-    }, signal, 
+    },
+    signal,
   });
 
-
   if (!response.ok) {
-    throw new Error( response.status === 404 ? "Tu cuenta aún no tiene un perfil registrado":`No fue posible consultar tu perfil ${response.statusText}`,);
+    throw new Error(
+      response.status === 404
+        ? "Tu cuenta aún no tiene un perfil registrado"
+        : `No fue posible consultar tu perfil ${response.statusText}`,
+    );
   }
 
   return response.json();
 }
 
-
-{/*Cambio de contraseña*/}
-export async function changePassword(currentPassword: string, newPassword: string): Promise<void>{
+{
+  /*Cambio de contraseña*/
+}
+export async function changePassword(
+  currentPassword: string,
+  newPassword: string,
+): Promise<void> {
   const user = auth.currentUser;
 
-  if(!user?.email){
+  if (!user?.email) {
     throw new Error("Debes iniciar sesión para cmabiar la contraseña");
   }
 
-  const credential = EmailAuthProvider.credential(
-    user.email,
-    currentPassword,
-  );
+  const credential = EmailAuthProvider.credential(user.email, currentPassword);
 
   await reauthenticateWithCredential(user, credential);
   await updatePassword(user, newPassword);
