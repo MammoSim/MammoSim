@@ -9504,6 +9504,11 @@ MonoBehaviour:
   tamanoModelo: 0.6
   giroAutomatico: 0
   flotacion: 0.03
+  sensibilidadRotacion: 0.25
+  sensibilidadZoomTactil: 0.012
+  sensibilidadZoomMouse: 0.15
+  limitesZoomMouse: {x: 0.6, y: 1.5}
+  limitesZoomTactil: {x: 0.6, y: 4}
 --- !u!1 &1187177385
 GameObject:
   m_ObjectHideFlags: 0
@@ -9662,6 +9667,7 @@ MonoBehaviour:
   rangoDistancia: {x: 0.8, y: 8}
   rangoInclinacion: {x: -10, y: 80}
   suavizado: 10
+  sensibilidadZoomTactil: 0.005
 --- !u!1 &1212491547
 GameObject:
   m_ObjectHideFlags: 0

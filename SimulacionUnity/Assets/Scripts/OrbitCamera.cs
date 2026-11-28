@@ -105,10 +105,12 @@ public class OrbitCamera : MonoBehaviour
     }
 
     void LateUpdate()
-    {
-        LeerEntrada();
+{
+    // La cámara permanece fija salvo cuando se usan
+    // los métodos EnfocarEscena, EnfocarMamografia y EnfocarRobot.
+    // LeerEntrada();
 
-        float k = 1f - Mathf.Exp(-suavizado * Time.deltaTime);
+    float k = 1f - Mathf.Exp(-suavizado * Time.deltaTime);
 
         _yawS = Mathf.LerpAngle(_yawS, _yaw, k);
         _pitchS = Mathf.Lerp(_pitchS, _pitch, k);
@@ -183,11 +185,9 @@ public class OrbitCamera : MonoBehaviour
     void LeerTactil(int cantidad, Vector2 dedo1, Vector2 dedo2)
     {
         if (cantidad != _dedosAnteriores)
-        {
-            _gestoBloqueado = EstaSobreUI(dedo1);
-
-            if (cantidad >= 2)
-                _gestoBloqueado |= EstaSobreUI(dedo2);
+{
+    // Prueba temporal: desactivar el bloqueo de la UI.
+    _gestoBloqueado = false;
 
             _ultimaPosTactil = dedo1;
 
