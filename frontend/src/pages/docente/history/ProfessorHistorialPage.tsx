@@ -74,7 +74,7 @@ export default function ProfessorHistorialPage() {
         ) : (
           <div className="history_list">
             {sessions.map((session) => (
-              <article key={session.id_sesion} className="history_card">
+              <article key={session.id_sesion} className="history_card professor_history_card">
                 <div>
                   <h2>{session.nombre_estudiante ?? "Nombre no disponible"}</h2>
                   <p>
@@ -89,6 +89,7 @@ export default function ProfessorHistorialPage() {
                       : "En curso"}
                   </p>
                 </div>
+                
                 <div>
                   <p>
                     Puntuación:{" "}

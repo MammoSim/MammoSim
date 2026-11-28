@@ -14,7 +14,10 @@ export default function LoginPage() {
   const [isModeOpen, setIsModeOpen] = useState(false);
   const location = useLocation();
 
-  const registrationMessage = typeof location.state?.registrationMessage === "string" ? location.state.registrationMessage : null; 
+  const registrationMessage =
+    typeof location.state?.registrationMessage === "string"
+      ? location.state.registrationMessage
+      : null;
   return (
     <main className="auth_page">
       <section className="auth_welcome">
@@ -34,9 +37,15 @@ export default function LoginPage() {
         <LoginForm
           userType={userType}
           onUserTypeChange={setUserType}
-          authenticate={loginUser}
+          authenticate={(email, password) =>
+            loginUser(email, password, userType)
+          }
           onAuthenticated={(role) => {
-            if (role === "estudiante") {setIsModeOpen(true)} else {navigate("/docente", {replace: true})};
+            if (role === "estudiante") {
+              setIsModeOpen(true);
+            } else {
+              navigate("/docente", { replace: true });
+            }
           }}
         />
         <SimulationModeDialog

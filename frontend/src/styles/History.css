@@ -9,6 +9,10 @@
     color: #ffffff;
 }
 
+.history_container h2{
+  font-size: 2.5rem;
+}
+
 .history_list {
     display: flex;
     flex-direction: column;
@@ -26,26 +30,25 @@
     background-color: #101A3D;
     border-radius: 12px;
     box-shadow: 0 5px 4px #15224f;
-    h1 {
+    h2 {
         margin: 0;
-        font-size: 1.5rem;
+        font-size: 1.8rem;
     }
     p {
         margin: 0;
-        font-size: 0.8rem;
+        font-size: 1rem;
         line-height: 2;
     }
 }
 
 .history_detail_case {
     display: grid;
-    justify-content: center;
+    justify-items: end;
     button {
         width: 120px;
-        justify-self: center;
+        min-height: 44px;
         background-color: #F19EDC;
         box-shadow: 0 2px 2px #FFC1DA;
-        margin-bottom: 8px;
         border: none;
         padding: 0.5rem;
         border-radius: 16px;
@@ -54,6 +57,11 @@
     }
 }
 
+@media (max-width: 800px) {
+  .history_detail_case {
+    justify-items: center;
+  }
+}
 
 /* Modelo peview */
 .model_preview{
@@ -177,6 +185,15 @@
   min-width: 0;
 }
 
+.container_decision{
+  background-color: #15224f9c;
+  padding: 10px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 12px;
+}
+
 .history_details_columns {
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
@@ -247,4 +264,32 @@
   .history_card .back_button {
     justify-self: center;
   }
+}
+
+.professor_history_card {
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) auto;
+  max-width: 1000px;
+  width: 100%;
+  box-sizing: border-box;
+  gap: 24px;
+  margin-inline: auto;
+}
+
+.professor_history_card .history_detail_case button {
+  margin: 0;
+}
+
+@media (max-width: 800px) {
+  .professor_history_card {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+  }
+}
+
+.evaluation_badge.evaluation_correct {
+  color: #22c55e;
+}
+
+.evaluation_badge.evaluation_incorrect {
+  color: #ef4444;
 }

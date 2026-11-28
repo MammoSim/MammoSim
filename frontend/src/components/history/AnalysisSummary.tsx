@@ -1,11 +1,20 @@
-import type { CasoRevision, StudentSessionDetail } from "../../types/StudentHistorial";
+import type {
+  CasoRevision,
+  StudentSessionDetail,
+} from "../../types/StudentHistorial";
 
 type AnalysisSummaryProps = {
   caso: CasoRevision;
-  sesion: Pick< StudentSessionDetail, "estado" | "fecha_inicio" | "fecha_fin" | "puntuacion">;
+  sesion: Pick<
+    StudentSessionDetail,
+    "estado" | "fecha_inicio" | "fecha_fin" | "puntuacion"
+  >;
 };
 
-export default function AnalysisSummary({ caso, sesion }: AnalysisSummaryProps) {
+export default function AnalysisSummary({
+  caso,
+  sesion,
+}: AnalysisSummaryProps) {
   return (
     <div className="summary_container">
       <h3>Resumen del análisis</h3>
@@ -26,15 +35,21 @@ export default function AnalysisSummary({ caso, sesion }: AnalysisSummaryProps) 
             </tr>
             <tr>
               <th scope="row">Estado</th>
-              <td>{sesion.estado === "completada" ? "Completado" : "En curso"}</td>
+              <td>
+                {sesion.estado === "completada" ? "Completado" : "En curso"}
+              </td>
             </tr>
             <tr>
-              <th scope="row">Fecha y hora</th>
-              <td>{sesion.fecha_inicio}</td>
+              <th scope="row">Fecha inicio</th>
+              <td>{new Date(sesion.fecha_inicio).toLocaleString("es-CO")}</td>
             </tr>
             <tr>
-              <th scope="row">Fecha y hora</th>
-              <td>{sesion.fecha_fin}</td>
+              <th scope="row">Fecha fin</th>
+              <td>
+                {sesion.fecha_fin
+                  ? new Date(sesion.fecha_fin).toLocaleString("es-CO")
+                  : "Sin finalizar"}
+              </td>
             </tr>
           </tbody>
         </table>

@@ -69,10 +69,10 @@ export default function HistorialPage() {
               <p>Aún no tienes sesiones registradas.</p>
             ) : (
               <div className="history_list">
-                {sessions.map((session) => (
+                {sessions.map((session, index) => (
                   <article key={session.id_sesion} className="history_card history_session_card">
                     <div>
-                      <h2>Sesión {session.id_sesion}</h2>
+                      <h2>Sesión {String(index + 1).padStart(3, "0")}</h2>
 
                       <p>
                         Modalidad:{" "}
