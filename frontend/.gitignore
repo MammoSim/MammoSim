@@ -22,3 +22,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# Caché local de Firebase CLI
+.firebase/ 
